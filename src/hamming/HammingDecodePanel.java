@@ -22,15 +22,15 @@ import util.BinaryFormat;
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
-public class HammingEncodePanel extends JPanel {
+public class HammingDecodePanel extends JPanel {
     private static final long serialVersionUID = 7579549903973444096L;
 
-    private JLabel dWord = new JLabel("Data Word");
+    private JLabel dWord = new JLabel("Code Word");
     private ImprovedFormattedTextField dwField;
     private HammingCode dwResult = new HammingCode();
     private Font fixed = new Font("Consolas", Font.PLAIN, 14);
 
-    public HammingEncodePanel() {
+    public HammingDecodePanel() {
         BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
         setLayout(layout);
         
@@ -44,7 +44,7 @@ public class HammingEncodePanel extends JPanel {
         dWord.setFont(fixed);
         dwField.setFont(fixed);
         dwResult.setFont(fixed);        
-        dwResult.setDataWord("110010010011");
+        dwResult.setCodeWord("0111000");
 
         add(Spacer.Horizontal(10));
         add(dWord);
@@ -62,7 +62,7 @@ public class HammingEncodePanel extends JPanel {
      */
     private void createInputField() {
         BinaryFormat bf = new BinaryFormat();
-        dwField = new ImprovedFormattedTextField(bf, "110010010011");
+        dwField = new ImprovedFormattedTextField(bf, "0111000");
         
         dwField.setMaximumSize(new Dimension(200, 20));
         dwField.setMinimumSize(new Dimension(100, 0));
@@ -72,7 +72,7 @@ public class HammingEncodePanel extends JPanel {
             @Override
             public void keyReleased(KeyEvent arg0) {
                 if (dwField.isEditValid()) {
-                    dwResult.setDataWord(dwField.getText());
+                    dwResult.setCodeWord(dwField.getText());
                     revalidate();
                 }
             }

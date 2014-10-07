@@ -122,9 +122,14 @@ public class HCodeDigit extends JPanel {
                 CH + 2);
         
         //If the bit is a parity bit, outline it.
-        if (CA.length == 2) {
+        if (isParity()) {
             Rectangle r = g.getClipBounds();
             g2.drawRect(0, 0, r.width - 1, r.height - 1);
         }
+    }
+
+    
+    public final boolean isParity() {
+        return CA.length == 2;
     }
 }

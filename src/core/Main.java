@@ -22,22 +22,8 @@ public class Main {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        /*for (int i = 0; i < 9; i++) {
-            JTextField textField = new JTextField(Integer.toString(i));
-            //when i==4, put long text in the text field...
-            if (i==4) {
-                textField.setText("This is longer than you think.");
-            }
-            panel.add(textField);
-        }*/
         
         panel.add(new HammingPanel());
-        
-        /*SpringUtilities.makeGrid(panel,
-                3, 3, // rows, cols
-                20, 5, // initial x, y
-                20, 5);// xPad, yPad */
-        
         
         frame.add(panel);
         frame.pack();
