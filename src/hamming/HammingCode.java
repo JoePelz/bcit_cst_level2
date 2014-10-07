@@ -191,4 +191,11 @@ public class HammingCode extends JPanel {
         JLabel results = new JLabel("Original Data Word: " + getDataWord());
         pResults.add(results);
     }
+
+    /**
+     * @param parityEven the parityEven to set
+     */
+    public void setParityEven(boolean parityEven) {
+        this.parityEven = parityEven;
+    }
 }

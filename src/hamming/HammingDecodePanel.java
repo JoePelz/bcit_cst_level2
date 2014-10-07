@@ -78,4 +78,12 @@ public class HammingDecodePanel extends JPanel {
             }
         });
     }
+    
+    public void setParityEven(boolean parityEven) {
+        dwResult.setParityEven(parityEven);
+        if (dwField.isEditValid()) {
+            dwResult.setCodeWord(dwField.getText());
+            revalidate();
+        }
+    }
 }
