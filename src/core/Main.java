@@ -2,9 +2,10 @@ package core;
 
 import hamming.HammingPanel;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import settheory.SetPanel;
 
 /**
  * 
@@ -17,15 +18,18 @@ public class Main {
     * @param args Unused
     */
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Direction");
+        JFrame frame = new JFrame("CST Level 2");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         
-        panel.add(new HammingPanel());
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Architecture", null, new HammingPanel(), "Does nothing");
+        tabbedPane.addTab("Math", null, new SetPanel(), "Does nothing");
         
-        frame.add(panel);
+//        JPanel panel = new JPanel();
+//        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        
+        frame.add(tabbedPane);
         frame.pack();
         frame.setVisible(true);
     }

@@ -18,11 +18,6 @@ import javax.swing.JRadioButton;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
-enum Parity {
-    EVEN,
-    ODD
-}
-
 /**
  * 
  * @author Joe Pelz - A00893517
