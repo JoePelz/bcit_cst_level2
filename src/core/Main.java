@@ -23,8 +23,8 @@ public class Main {
 
         
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Architecture", null, new HammingPanel(), "Does nothing");
-        tabbedPane.addTab("Math", null, new SetPanel(), "Does nothing");
+        tabbedPane.addTab("Architecture", null, new HammingPanel(), "COMP 2721");
+        tabbedPane.addTab("Math", null, new SetPanel(), "COMP 2121");
         
 //        JPanel panel = new JPanel();
 //        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
