@@ -38,8 +38,8 @@ public class HammingEncodePanel extends JPanel {
         
         //Alignment
         dWord.setHorizontalAlignment(JLabel.RIGHT);
-        dWord.setAlignmentY(TOP_ALIGNMENT);
-        dwField.setAlignmentY(TOP_ALIGNMENT);
+        dWord.setAlignmentY(CENTER_ALIGNMENT);
+        dwField.setAlignmentY(CENTER_ALIGNMENT);
         
         dWord.setFont(fixed);
         dwField.setFont(fixed);
@@ -64,7 +64,7 @@ public class HammingEncodePanel extends JPanel {
         BinaryFormat bf = new BinaryFormat();
         dwField = new ImprovedFormattedTextField(bf, "110010010011");
         
-        dwField.setMaximumSize(new Dimension(200, 20));
+        dwField.setMaximumSize(new Dimension(200, 30));
         dwField.setMinimumSize(new Dimension(100, 0));
         dwField.setColumns(17);
         

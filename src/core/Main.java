@@ -4,6 +4,8 @@ import hamming.HammingPanel;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import settheory.SetPanel;
 
@@ -20,7 +22,22 @@ public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("CST Level 2");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            return;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return;
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+            return;
+        }
         
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Architecture", null, new HammingPanel(), "COMP 2721");
