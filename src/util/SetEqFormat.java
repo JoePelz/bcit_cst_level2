@@ -26,7 +26,9 @@ public class SetEqFormat extends Format{
                 || c == '∪' 
                 || c == '-' 
                 || c == '*' 
-                || c == '∩'
+                || c == '∩' 
+                || c == '∆' 
+                || c == '^'
                 || c == '\'')
             return true;
         return false;
@@ -76,10 +78,13 @@ public class SetEqFormat extends Format{
             pos.setErrorIndex(source.length());
         }
         
+        /*
         if (source.length() == 0)
             return null;
         else
             return source;
+        */
+        return source;
     }
 
 }

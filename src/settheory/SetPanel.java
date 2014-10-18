@@ -3,7 +3,7 @@
  */
 package settheory;
 
-import gui.ImprovedFormattedTextField;
+import gui.EquationField;
 import gui.Spacer;
 
 import java.awt.Font;
@@ -20,7 +20,10 @@ import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 
 import util.SetEqFormat;
@@ -46,10 +49,11 @@ public class SetPanel extends JPanel {
     private JButton addINTERSECTION = new JButton("∩");
     private JButton addMINUS = new JButton("-");
     private JButton addNOT = new JButton("'");
+    private JButton addXOR = new JButton("∆");
     private JButton addOPEN = new JButton("(");
     private JButton addCLOSE = new JButton(")");
     private JButton clear = new JButton("Clear");
-    private ImprovedFormattedTextField eqBox;
+    private EquationField eqBox;
     
     private Venn image;
     
@@ -95,12 +99,12 @@ public class SetPanel extends JPanel {
     }
 
     private void addEquationField() {
-        eqBox = new ImprovedFormattedTextField(new SetEqFormat());
+        eqBox = new EquationField(new SetEqFormat());
         eqBox.setColumns(20);
         eqBox.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent arg0) {
-                if (eqBox.isEditValid()) {
+                if (eqBox.validContent()) {
                     try {
                         calc = new SetsEquation(eqBox.getText());
                         updateVenn();
@@ -134,9 +138,8 @@ public class SetPanel extends JPanel {
         
         @Override
         public void actionPerformed(ActionEvent e) {
-            String text = eqBox.getText();
-            eqBox.setText(text + token);
-            if (eqBox.isEditValid()) {
+            eqBox.pushText(token);
+            if (eqBox.validContent()) {
                 try {
                     calc = new SetsEquation(eqBox.getText());
                     updateVenn();
@@ -151,20 +154,22 @@ public class SetPanel extends JPanel {
     private void addButtons() {
         JPanel jpButtons = new JPanel(new GridLayout(3, 4));
 
-        addA.addActionListener(new AddToEquation(" A"));
-        addB.addActionListener(new AddToEquation(" B"));
-        addC.addActionListener(new AddToEquation(" C"));
-        addD.addActionListener(new AddToEquation(" D"));
-        addUNION.addActionListener(new AddToEquation(" ∪"));
-        addINTERSECTION.addActionListener(new AddToEquation(" ∩"));
-        addMINUS.addActionListener(new AddToEquation(" -"));
-        addOPEN.addActionListener(new AddToEquation(" ("));
-        addCLOSE.addActionListener(new AddToEquation(" )"));
+        addA.addActionListener(new AddToEquation("A"));
+        addB.addActionListener(new AddToEquation("B"));
+        addC.addActionListener(new AddToEquation("C"));
+        addD.addActionListener(new AddToEquation("D"));
+        addUNION.addActionListener(new AddToEquation("∪"));
+        addINTERSECTION.addActionListener(new AddToEquation("∩"));
+        addMINUS.addActionListener(new AddToEquation("-"));
+        addXOR.addActionListener(new AddToEquation("∆"));
+        addNOT.addActionListener(new AddToEquation("'"));
+        addOPEN.addActionListener(new AddToEquation("("));
+        addCLOSE.addActionListener(new AddToEquation(")"));
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 eqBox.setText("");
-                if (eqBox.isEditValid()) {
+                if (eqBox.validContent()) {
                     try {
                         calc = new SetsEquation(eqBox.getText());
                         updateVenn();
@@ -175,10 +180,6 @@ public class SetPanel extends JPanel {
                 }
             }
         });
-
-        //add logic here to put it in front of 
-        //   the last char, if following a char. 
-        addNOT.addActionListener(new AddToEquation("'"));
         
         jpButtons.add(addA);
         jpButtons.add(addB);
@@ -187,6 +188,7 @@ public class SetPanel extends JPanel {
         jpButtons.add(addUNION);
         jpButtons.add(addINTERSECTION);
         jpButtons.add(addMINUS);
+        jpButtons.add(addXOR);
         jpButtons.add(addNOT);
         jpButtons.add(addOPEN);
         jpButtons.add(addCLOSE);
@@ -267,5 +269,33 @@ public class SetPanel extends JPanel {
         c.anchor = GridBagConstraints.LAST_LINE_START;
         
         add(cb, c);
+    }
+    
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Set Theory Venn Diagrams, by Joe Pelz");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            return;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return;
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+            return;
+        }
+        
+        
+        SetPanel sp = new SetPanel();
+        
+        frame.add(sp);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

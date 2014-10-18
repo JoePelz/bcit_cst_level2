@@ -24,6 +24,8 @@ public class SetsEquation {
         String transform = eq.replaceAll(" ", "");
         transform = transform.replaceAll("∪", "+");
         transform = transform.replaceAll("∩", "*");
+        transform = transform.replaceAll("∩", "*");
+        transform = transform.replaceAll("∆", "^");
         givenEquation = transform;
         
 //        System.out.println("\n==================\nBegin parse: " + givenEquation);
@@ -40,7 +42,8 @@ public class SetsEquation {
                 || c == '+'
                 || c == '-'
                 || c == '\''
-                || c == '*') {
+                || c == '*'
+                || c == '^') {
             return true;
         }
         return false;
@@ -65,6 +68,9 @@ public class SetsEquation {
     }
     
     private SetsState parseEquation(String eq) {
+        if (eq.length() == 0) {
+            return new SetsState();
+        }
         int opPos;
         int opPos2;
         int opParen;
@@ -118,7 +124,7 @@ public class SetsEquation {
             eq = eq.substring(0, opPos) + eq.substring(opPos + 1);
             opPos = eq.indexOf('\'');
         }
-        
+
         //=============================
         //while there is a AND operator
         //  connect the sets
@@ -138,6 +144,27 @@ public class SetsEquation {
             //Turn A*B into A.  (remove the * and the B)
             eq = eq.substring(0, opPos) + eq.substring(opPos + 2);
             opPos = eq.indexOf('*');
+        }
+
+        //=============================
+        //while there is a XOR operator
+        //  connect the sets
+        //  save the results as op1
+        //  sub the results back in.
+        opPos = eq.indexOf('^');
+        while (opPos != -1) {
+//            System.out.println(eq + ": Xor.");
+            try {
+                op1 = refs.get(eq.charAt(opPos - 1));
+                op2 = refs.get(eq.charAt(opPos + 1));
+            } catch (StringIndexOutOfBoundsException e) {
+                throw new IllegalArgumentException("Invalid Equation");
+            }
+            op1.xor(op2);
+            
+            //Turn A^B into A.  (remove the ^ and the B)
+            eq = eq.substring(0, opPos) + eq.substring(opPos + 2);
+            opPos = eq.indexOf('^');
         }
         
         //=============================

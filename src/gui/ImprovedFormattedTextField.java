@@ -1,5 +1,12 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.text.Format;
+import java.text.ParseException;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -8,13 +15,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import util.ParseAllFormat;
-
-import java.awt.Color;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.text.Format;
-import java.text.ParseException;
 
 /**
  * <p>Extension of {@code JFormattedTextField} which solves some of the usability issues</p>
@@ -25,7 +25,7 @@ public class ImprovedFormattedTextField extends JFormattedTextField {
   private static final Color ERROR_FOREGROUND_COLOR = null;
 
   private Color fBackground, fForeground;
-
+  
   /**
    * Create a new {@code ImprovedFormattedTextField} instance which will use {@code aFormat} for the
    * validation of the user input.
@@ -37,6 +37,7 @@ public class ImprovedFormattedTextField extends JFormattedTextField {
     super( new ParseAllFormat( aFormat ) );
     setFocusLostBehavior( JFormattedTextField.COMMIT_OR_REVERT );
     updateBackgroundOnEachUpdate();
+    
     //improve the caret behavior
     //see also http://tips4java.wordpress.com/2010/02/21/formatted-text-field-tips/
     addFocusListener( new MousePositionCorrectorListener() );
@@ -53,7 +54,7 @@ public class ImprovedFormattedTextField extends JFormattedTextField {
     this( aFormat );
     setValue( aValue );
   }
-
+  
   private void updateBackgroundOnEachUpdate() {
     getDocument().addDocumentListener( new DocumentListener() {
       @Override
@@ -86,7 +87,7 @@ public class ImprovedFormattedTextField extends JFormattedTextField {
       setForeground( valid ? fForeground : ERROR_FOREGROUND_COLOR );
     }
   }
-
+  
   @Override
   public void updateUI() {
     super.updateUI();

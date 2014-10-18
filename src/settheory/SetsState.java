@@ -112,4 +112,19 @@ public class SetsState {
             }
         }
     }
+
+    /**
+     * 
+     * @param op2
+     */
+    public void xor(SetsState op2) {
+        HashMap<String, Boolean> other = op2.getMap();
+        for (String s : map.keySet()) {
+            try {
+                map.put(s, (map.get(s) && !other.get(s)) || (!map.get(s) && other.get(s)));
+            } catch (NullPointerException e) {
+                System.err.println("oops.");
+            }
+        }
+    }
 }
