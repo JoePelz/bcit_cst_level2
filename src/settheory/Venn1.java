@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import util.Utils;
+
 public class Venn1 extends Venn {
 
     /** Random generated serial id. */
@@ -28,15 +30,15 @@ public class Venn1 extends Venn {
          * a call to image.getWidth(null) fails. (gives -1) 
          */
         image = new ImageIcon(getClass().getResource(path));
-        iOutline = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iOutline = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
 
         path = base + "Venn1_A.png";
         image = new ImageIcon(getClass().getResource(path));
-        iA = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iA = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn1_U.png";
         image = new ImageIcon(getClass().getResource(path));
-        iU = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iU = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         Dimension size = new Dimension(iOutline.getWidth(), iOutline.getHeight());
         setPreferredSize(size);

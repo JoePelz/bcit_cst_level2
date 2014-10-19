@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import util.Utils;
+
 public class Venn4 extends Venn {
 
     /** Random generated serial id. */
@@ -42,71 +44,71 @@ public class Venn4 extends Venn {
          * a call to image.getWidth(null) fails. 
          */
         image = new ImageIcon(getClass().getResource(path));
-        iOutline = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iOutline = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
 
         path = base + "Venn4_A.png";
         image = new ImageIcon(getClass().getResource(path));
-        iA = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iA = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_AB.png";
         image = new ImageIcon(getClass().getResource(path));
-        iAB = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iAB = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_B.png";
         image = new ImageIcon(getClass().getResource(path));
-        iB = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iB = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_AC.png";
         image = new ImageIcon(getClass().getResource(path));
-        iAC = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iAC = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_ABC.png";
         image = new ImageIcon(getClass().getResource(path));
-        iABC = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iABC = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_BC.png";
         image = new ImageIcon(getClass().getResource(path));
-        iBC = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iBC = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_C.png";
         image = new ImageIcon(getClass().getResource(path));
-        iC = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iC = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_D.png";
         image = new ImageIcon(getClass().getResource(path));
-        iD = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iD = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_AD.png";
         image = new ImageIcon(getClass().getResource(path));
-        iAD = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iAD = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_BD.png";
         image = new ImageIcon(getClass().getResource(path));
-        iBD = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iBD = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_CD.png";
         image = new ImageIcon(getClass().getResource(path));
-        iCD = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iCD = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_ABD.png";
         image = new ImageIcon(getClass().getResource(path));
-        iABD = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iABD = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_ACD.png";
         image = new ImageIcon(getClass().getResource(path));
-        iACD = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iACD = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_BCD.png";
         image = new ImageIcon(getClass().getResource(path));
-        iBCD = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iBCD = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_ABCD.png";
         image = new ImageIcon(getClass().getResource(path));
-        iABCD = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iABCD = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         path = base + "Venn4_U.png";
         image = new ImageIcon(getClass().getResource(path));
-        iU = toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
+        iU = Utils.toBufferedImage(defToolkit.getImage(getClass().getResource(path)));
         
         Dimension size = new Dimension(iOutline.getWidth(), iOutline.getHeight());
         setPreferredSize(size);

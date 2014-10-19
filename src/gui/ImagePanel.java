@@ -10,6 +10,8 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import util.Utils;
+
 public class ImagePanel extends JPanel {
 
     /** Random generated serial id. */
@@ -30,7 +32,7 @@ public class ImagePanel extends JPanel {
         images = new ImageIcon(getClass().getResource(path));
         res = getClass().getResource(path);
         img = defToolkit.getImage(res);
-        image = toBufferedImage(img);
+        image = Utils.toBufferedImage(img);
         
         Dimension size = new Dimension(image.getWidth(), image.getHeight());
         setPreferredSize(size);
@@ -42,29 +44,5 @@ public class ImagePanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(image, 0, 0, null); // see javadoc for more info on the
                                         // parameters
-    }
-    
-    /**
-     * Convert an Image into a BufferedImage, so that it's editable.
-     * @param img the image to convert
-     * @return the image as a BufferedImage
-     */
-    public static BufferedImage toBufferedImage(Image img) {
-        if (img instanceof BufferedImage) {
-            return (BufferedImage) img;
-        }
-
-        // Create a buffered image with transparency
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), 
-                                                 img.getHeight(null), 
-                                                 BufferedImage.TYPE_4BYTE_ABGR);
-
-        // Draw the image on to the buffered image
-        Graphics bGr = bimage.createGraphics();
-        bGr.drawImage(img, 0, 0, null);
-        bGr.dispose();
-
-        // Return the buffered image
-        return bimage;
     }
 }

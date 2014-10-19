@@ -276,20 +276,11 @@ public class SetPanel extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-            
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
-            return;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            return;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return;
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-            return;
         }
+       
         
         
         SetPanel sp = new SetPanel();
