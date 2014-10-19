@@ -94,5 +94,6 @@ public class HammingPanel extends JPanel {
         TitledBorder myBorder = BorderFactory.createTitledBorder("Hamming Code");
         myBorder.setTitleFont(fixedBold);
         setBorder(myBorder);
+        setAlignmentX(LEFT_ALIGNMENT);
     }
 }

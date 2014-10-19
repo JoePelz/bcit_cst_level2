@@ -2,12 +2,15 @@ package core;
 
 import hamming.HammingPanel;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import settheory.SetPanel;
+import edgetrigger.EdgeTriggerPanel;
 
 /**
  * 
@@ -24,23 +27,19 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-            
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
-            return;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            return;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return;
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-            return;
         }
         
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Architecture", null, new HammingPanel(), "COMP 2721");
+        
+        JPanel archPanel = new JPanel();
+        archPanel.setLayout(new BoxLayout(archPanel, BoxLayout.PAGE_AXIS));
+        archPanel.add(new HammingPanel());
+        archPanel.add(new EdgeTriggerPanel());
+        
+        tabbedPane.addTab("Architecture", null, archPanel, "COMP 2721");
         tabbedPane.addTab("Math", null, new SetPanel(), "COMP 2121");
         
 //        JPanel panel = new JPanel();
