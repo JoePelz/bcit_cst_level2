@@ -39,11 +39,12 @@ public class EdgeTriggerPanel extends JPanel {
         addGraphicsPanel();
 
         //Add a selector box
-        addScrollbar();
+        addSliderbar();
         
         TitledBorder myBorder = BorderFactory.createTitledBorder("Edge Trigger circuit");
         setBorder(myBorder);
-        Dimension size = new Dimension(300, 150);
+//        Dimension size = new Dimension(300, 150);
+        Dimension size = new Dimension(1200, 400);
         setPreferredSize(size);
         setMaximumSize(size);
         setAlignmentX(LEFT_ALIGNMENT);
@@ -54,7 +55,7 @@ public class EdgeTriggerPanel extends JPanel {
         add(graphic);
     }
 
-    private void addScrollbar() {
+    private void addSliderbar() {
         JSlider bar = new JSlider(JSlider.HORIZONTAL, 0, 1000, 0);
         bar.addChangeListener(new ChangeListener() {
             
@@ -68,7 +69,7 @@ public class EdgeTriggerPanel extends JPanel {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Flip-flop Edge Trigger, by Joe Pelz");
+        JFrame frame = new JFrame("Flip-flop Edge Trigger, by Joe Pelz, Fall 2014");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -81,7 +82,7 @@ public class EdgeTriggerPanel extends JPanel {
         
         
         EdgeTriggerPanel etp = new EdgeTriggerPanel();
-        
+
         frame.add(etp);
         frame.pack();
         frame.setVisible(true);
