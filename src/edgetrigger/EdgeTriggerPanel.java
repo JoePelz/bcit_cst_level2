@@ -24,6 +24,7 @@ import javax.swing.event.ChangeListener;
 public class EdgeTriggerPanel extends JPanel {
     private static final long serialVersionUID = -1712387296868793108L;
 
+//    private EdgeTriggerGraphic graphic;
     private EdgeTriggerGraphic graphic;
     
     public EdgeTriggerPanel() {
@@ -51,6 +52,7 @@ public class EdgeTriggerPanel extends JPanel {
     }
     
     private void addGraphicsPanel() {
+//        graphic = new EdgeTriggerGraphic();
         graphic = new EdgeTriggerGraphic();
         add(graphic);
     }

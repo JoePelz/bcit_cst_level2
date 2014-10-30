@@ -3,71 +3,86 @@
  */
 package gui.shapes;
 
-
+import java.awt.Point;
+import java.awt.Polygon;
 
 /**
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
-public class GateAnd extends Gate{
-    Arc arc;
-    
+public class GateAnd extends Gate {
+
+    private Arc arc;
+
+    /**
+     * @param x
+     * @param y
+     * @param thickness
+     */
     public GateAnd(int x, int y, int thickness) {
-        super(x, y, thickness);
+        super(x, y, thickness, 2, -1);
         arc = new Arc(x, y, 1, 0, Math.PI, thickness);
         arc.setSubdivisions(12);
-        addShape(arc);
+        arc.setPie(false);
+        addShape(arc.getPolygon());
     }
 
+    /* (non-Javadoc)
+     * @see gui.shapes.Shape2#updatePoints()
+     */
     @Override
-    protected void updatePoints() {
-        int rY = (int) (34 * scaleY);
-        int rX = (int) (34 * scaleX);
-        int width = (int) (56 * scaleX);
-        
-        xPoints = new int[8];
-        yPoints = new int[8];
-        
-        //inside
-        //top middle
-        xPoints[0] = x + thickness + width;
-        yPoints[0] = y - rY + thickness;
-        
-        //top left
-        xPoints[1] = x + thickness;
-        yPoints[1] = y - rY + thickness;
-        
-        //bottom left
-        xPoints[2] = x + thickness;
-        yPoints[2] = y + rY - thickness;
+    public void updatePoints() {
+        int rY = (int) (0.5 * scaleY);
+        int rX = (int) (0.5 * scaleX);
+        int px;
+        int py;
+        int width = (int) (0.8 * scaleX);
 
-        //bottom middle
-        xPoints[3] = x + thickness + width;
-        yPoints[3] = y + rY - thickness;
-        
-        //outside
-        //bottom middle
-        xPoints[4] = x + width + thickness;
-        yPoints[4] = y + rY + thickness;
-        
-        //bottom left
-        xPoints[5] = x - thickness;
-        yPoints[5] = y + rY + thickness;
-        
-        //top left
-        xPoints[6] = x - thickness;
-        yPoints[6] = y - rY - thickness;
-        
-        //top middle
-        xPoints[7] = x + width + thickness;
-        yPoints[7] = y - rY - thickness;
-        
-        arc.setPosition(x + width + thickness, y);
+        arc.setPosition(x + width, y);
         arc.setScaleX(rX);
         arc.setScaleY(rY);
         arc.setThickness(thickness);
+        arc.updatePoints();
         
+        Polygon temp = arc.getPolygon();
+        
+        //top left
+        px = x;
+        py = y - rY;
+        temp.addPoint(px, py);
+        
+        //bottom left
+        px = x;
+        py = y + rY;
+        temp.addPoint(px, py);
+
         valid = true;
     }
+
+    /* (non-Javadoc)
+     * @see gui.shapes.Gate2#getOutput(int)
+     */
+    @Override
+    public Point getOutput(int i) {
+        int rX = (int) (0.5 * scaleX);
+        int width = (int) (0.8 * scaleX);
+        return new Point(x + width + rX, y);
+    }
+
+    /* (non-Javadoc)
+     * @see gui.shapes.Gate2#getInput(int)
+     */
+    @Override
+    public Point getInput(int i) {
+        int rY = (int) (0.25 * scaleY);
+        if (i == 0) {
+            return new Point(x, y - rY);
+        } else if (i == 1) {
+            return new Point(x, y + rY);
+        } else {
+            return null;
+        }
+    }
+
 }

@@ -3,7 +3,9 @@
  */
 package gui.shapes;
 
-import java.awt.Graphics;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 
 /**
  * 
@@ -19,13 +21,15 @@ public abstract class Shape {
     protected double scaleX = 1.0;
     protected double scaleY = 1.0;
     
-    protected int[] xPoints;
-    protected int[] yPoints;
+    protected Polygon p = new Polygon();
     
-    protected Shape(int x, int y, int thickness) {
+    private BasicStroke stroke;
+    
+    public Shape(int x, int y, int thickness) {
         this.x = x;
         this.y = y;
         this.thickness = thickness;
+        stroke = new BasicStroke(thickness);
         valid = false;
     }
     
@@ -35,19 +39,20 @@ public abstract class Shape {
      * Draw the given gate onto the graphics context.
      * @param g Graphics context to draw into
      */
-    public void drawStroke(Graphics g) {
+    public void drawStroke(Graphics2D g) {
         if (!valid) 
             updatePoints();
-        g.fillPolygon(xPoints, yPoints, xPoints.length);
+        g.setStroke(stroke);
+        g.drawPolygon(p);
     }
     /**
      * Fill the given gate onto the graphics context.
      * @param g Graphics context to draw into
      */
-    public void drawFill(Graphics g) {
+    public void drawFill(Graphics2D g) {
         if (!valid) 
             updatePoints();
-        g.fillPolygon(xPoints, yPoints, xPoints.length / 2);
+        g.fillPolygon(p);
     }
     
     public void setPosition(int x, int y) {
@@ -68,6 +73,13 @@ public abstract class Shape {
 
     public void setThickness(int thickness) {
         this.thickness = thickness;
-        valid = false;
+        stroke = new BasicStroke(thickness);
     }
+    public Polygon getPolygon() {
+        return p;
+    }
+    
+    public BasicStroke getStroke() {
+        return stroke;
+    };
 }
