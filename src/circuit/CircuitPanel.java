@@ -20,7 +20,7 @@ public class CircuitPanel extends JPanel {
     private static final long serialVersionUID = -1712387296868793108L;
 
 //    private EdgeTriggerGraphic graphic;
-    private HalfAdder circuit;
+    private Circuit circuit;
     
     public CircuitPanel() {
         //needs drop-down on top to choose number of variables (1, 2, 3 or 4)
@@ -34,18 +34,18 @@ public class CircuitPanel extends JPanel {
         //Add an image panel
         addGraphicsPanel();
         
-        TitledBorder myBorder = BorderFactory.createTitledBorder("Adder circuit");
+        TitledBorder myBorder = BorderFactory.createTitledBorder("Circuitry");
         setBorder(myBorder);
         setAlignmentX(LEFT_ALIGNMENT);
     }
     
     private void addGraphicsPanel() {
-        circuit = new HalfAdder();
+        circuit = new DLatch();
         add(circuit);
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Flip-flop Edge Trigger, by Joe Pelz, Fall 2014");
+        JFrame frame = new JFrame("Circuits, by Joe Pelz, Fall 2014");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");

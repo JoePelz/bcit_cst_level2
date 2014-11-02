@@ -37,8 +37,8 @@ public class EdgeTriggerGraphic extends JPanel {
     private GatePin nEnd = new GatePin(0, 0, 2);
     
     public EdgeTriggerGraphic() {
-        gnFILL.setEnabled(true);
-        gaFILL.setEnabled(true);
+        gnFILL.setBackgroundOff(Color.YELLOW);
+        gaFILL.setBackgroundOff(Color.YELLOW);
     }
             
     @Override

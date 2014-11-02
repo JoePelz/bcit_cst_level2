@@ -5,6 +5,7 @@ package gui.shapes;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 
 /**
@@ -82,4 +83,8 @@ public abstract class Shape {
     public BasicStroke getStroke() {
         return stroke;
     };
+
+    public Point getPosition() {
+        return new Point(x, y);
+    }
 }

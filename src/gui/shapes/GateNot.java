@@ -73,4 +73,30 @@ public class GateNot extends Gate {
         return new Point(x, y);
     }
 
+    @Override
+    public int calcOut() {
+        GateState input = GateState.NULL;
+        Link l = inputPorts[0];
+        if (l != null) {
+            input = l.getGateOut().getState();
+        }
+        
+        if (input == GateState.ON) {
+            if (getState() != GateState.OFF) {
+                setState(GateState.OFF);
+                return 1;
+            }
+        } else {
+            if (getState() != GateState.ON) {
+                setState(GateState.ON);
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Gate Not: " + super.toString();
+    }
 }

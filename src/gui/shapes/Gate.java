@@ -15,16 +15,17 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public abstract class Gate extends Shape{
-    protected ArrayList<Polygon> polygons = new ArrayList<Polygon>();
+    private ArrayList<Polygon> polygons = new ArrayList<Polygon>();
+    private ArrayList<Polygon> lines = new ArrayList<Polygon>();
     private Color backgroundOn = Color.YELLOW;
     private Color backgroundOff = Color.GRAY;
     private Color strokeOn = Color.BLACK;
     private Color strokeOff = Color.BLACK;
-    private boolean enabled;
+    private GateState enabled;
 
-    private Link outputPorts[];
+    protected Link outputPorts[];
     private boolean outputResize;
-    private Link inputPorts[];
+    protected Link inputPorts[];
     private boolean inputResize;
     
     public Gate(int x, int y, int thickness, int in, int out) throws IllegalArgumentException {
@@ -122,25 +123,29 @@ public abstract class Gate extends Shape{
         inputPorts[port] = null;
     }
 
-    /**
-     * @return the gate state.
-     */
-    public boolean isEnabled() {
-        return enabled;
-    }
-
     public abstract Point getOutput(int i);
     public abstract Point getInput(int i);
     
     /**
-     * @param enabled the gate state. true for enabled.
+     * @return the gate state.
      */
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public GateState getState() {
+        return enabled;
     }
     
+    /**
+     * @param enabled the gate state. true for enabled.
+     */
+    public void setState(GateState enabled) {
+        this.enabled = enabled;
+    }
+
     protected void addShape(Polygon p) {
         polygons.add(p);
+    }
+    
+    protected void addLine(Polygon p) {
+        lines.add(p);
     }
     
     @Override
@@ -149,16 +154,18 @@ public abstract class Gate extends Shape{
             updatePoints();
 
         //color by state
-        if (enabled) { 
+        if (enabled == GateState.ON) { 
             g.setColor(strokeOn);
         } else {
             g.setColor(strokeOff);
         }
         //Stroke all shapes
         g.setStroke(getStroke());
-        g.setColor(strokeOff);
         for (Polygon p : polygons) {
             g.drawPolygon(p);
+        }
+        for (Polygon p : lines) {
+            g.drawPolyline(p.xpoints, p.ypoints, p.npoints);
         }
         
         //draw input connections.
@@ -166,6 +173,12 @@ public abstract class Gate extends Shape{
             if (link != null) {
                 Point a = link.getGateOut().getOutput(link.getPortOut());
                 Point b = getInput(link.getPortIn());
+
+                if (link.getGateOut().getState() == GateState.ON) {
+                    g.setColor(backgroundOn);
+                } else {
+                    g.setColor(strokeOff);
+                }
                 g.drawLine(a.x, a.y, b.x, b.y);
             }
         }
@@ -177,7 +190,7 @@ public abstract class Gate extends Shape{
             updatePoints();
 
         //color by state
-        if (enabled) { 
+        if (enabled == GateState.ON) { 
             g.setColor(backgroundOn);
         } else {
             g.setColor(backgroundOff);
@@ -190,16 +203,19 @@ public abstract class Gate extends Shape{
     public ArrayList<Polygon> getPolygons() {
         return polygons;
     }
+    public ArrayList<Polygon> getLines() {
+        return lines;
+    }
 
     public Color getBackground() {
-        if (enabled)
+        if (enabled == GateState.ON)
             return backgroundOn;
         else
             return backgroundOff;
     }
 
     public Color getStrokeOn() {
-        if (enabled)
+        if (enabled == GateState.ON)
             return strokeOn;
         else
             return strokeOff;
@@ -225,5 +241,37 @@ public abstract class Gate extends Shape{
         Link link = new Link(gateOut, portOut, gateIn, portIn);
         gateOut.connectOut(link);
         gateIn.connectIn(link);
+    }
+
+    public int calcOut() {
+        boolean out = false;
+        for(Link l : inputPorts) {
+            if (l == null) {
+                continue;
+            }
+            if (l.getGateOut().getState() == GateState.ON) {
+                out = true;
+                break;
+            }
+        }
+        if (out) {
+            if (getState() != GateState.ON) {
+                setState(GateState.ON);
+                return 1;
+            }
+        } else {
+            if (getState() != GateState.OFF) {
+                setState(GateState.OFF);
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 
+     */
+    public void perform(int clickX, int clickY) {
+        //this gate was clicked on!
     }
 }

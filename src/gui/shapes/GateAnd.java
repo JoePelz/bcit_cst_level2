@@ -42,7 +42,6 @@ public class GateAnd extends Gate {
         arc.setPosition(x + width, y);
         arc.setScaleX(rX);
         arc.setScaleY(rY);
-        arc.setThickness(thickness);
         arc.updatePoints();
         
         Polygon temp = arc.getPolygon();
@@ -84,5 +83,36 @@ public class GateAnd extends Gate {
             return null;
         }
     }
+    
+    @Override
+    public int calcOut() {
+        boolean out = true;
+        for(Link l : inputPorts) {
+            if (l == null) {
+                out = false;
+                break;
+            }
+            if (l.getGateOut().getState() != GateState.ON) {
+                out = false;
+                break;
+            }
+        }
+        if (out) {
+            if (getState() != GateState.ON) {
+                setState(GateState.ON);
+                return 1;
+            }
+        } else {
+            if (getState() != GateState.OFF) {
+                setState(GateState.OFF);
+                return 1;
+            }
+        }
+        return 0;
+    }
 
+    @Override
+    public String toString() {
+        return "Gate And: " + super.toString();
+    }
 }
