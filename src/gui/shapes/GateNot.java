@@ -5,6 +5,7 @@ package gui.shapes;
 
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 
 /**
  * 
@@ -12,17 +13,20 @@ import java.awt.Polygon;
  * @version 1.0
  */
 public class GateNot extends Gate {
-    private static final double radius = 0.1;
+    private static final int radius = 200;
     Polygon triangle = new Polygon();
     Circle circle;
 
     public GateNot(int x, int y, int thickness) {
-        super(x, y, thickness, 1, -1);
+        super(x, y, thickness * 10, 1, -1);
         
-        circle = new Circle(x, y, radius, thickness);
+        circle = new Circle((int)(radius * 1.7), 0, radius * 0.2, 0);
         circle.setSubdivisions(32);
-        addShape(circle.getPolygon());
+        circle.updatePoints();
+        addShape(circle.getTransformedPolygon());
         addShape(triangle);
+        setScaleX(0.1);
+        setScaleY(0.1);
     }
 
     /* (non-Javadoc)
@@ -30,52 +34,36 @@ public class GateNot extends Gate {
      */
     @Override
     protected void updatePoints() {
-        int height = (int) (0.3 * scaleY);
-        int width = (int) (0.6 * scaleX);
-        int px;
-        int py;
+        int height = (int) (radius);
+        int width = (int) (radius * 1.5);
         
         triangle.reset();
         
         //bottom left
-        px = x;
-        py = y + height;
-        triangle.addPoint(px, py);
+        triangle.addPoint(0, height);
 
         //top left
-        px = x;
-        py = y - height;
-        triangle.addPoint(px, py);
+        triangle.addPoint(0, -height);
         
         //right center
-        px = x + width;
-        py = y;
-        triangle.addPoint(px, py);
-
-        circle.setPosition(x + width + (int)(thickness / 2.0 + radius * scaleX), y);
-        circle.setScaleX(scaleX);
-        circle.setScaleY(scaleY);
-        circle.setThickness(thickness);
-        circle.updatePoints();
+        triangle.addPoint(width, 0);
         
         valid = true;
     }
 
     @Override
     public Point getOutput(int i) {
-        int width = (int) (0.6 * scaleX);
-        
-        return new Point(x + width + (int)(thickness / 2.0 + radius * scaleX * 2), y);
+        return new Point((int)(1.9 * radius) + (thickness >> 1), 0);
     }
 
     @Override
     public Point getInput(int i) {
-        return new Point(x, y);
+        return new Point();
     }
 
     @Override
     public int calcOut() {
-        GateState input = GateState.NULL;
+        GateState input = GateState.UNKNOWN;
         Link l = inputPorts[0];
         if (l != null) {
             input = l.getGateOut().getState();
@@ -98,5 +86,13 @@ public class GateNot extends Gate {
     @Override
     public String toString() {
         return "Gate Not: " + super.toString();
+    }
+
+    public Rectangle getBounds() {
+            return new Rectangle(
+                    0 - (thickness >> 1), 
+                    -radius - (thickness >> 1),
+                    (int)(1.9 * radius) + thickness, 
+                    (radius << 1) + thickness);
     }
 }

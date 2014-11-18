@@ -17,9 +17,13 @@ public class Arc extends Shape {
     private boolean pie = true;
 
     /**
-     * @param x
-     * @param y
-     * @param thickness
+     * 
+     * @param x The x position of the arc's center
+     * @param y The y position of the arc's center
+     * @param radius The arc radius in pixels (at 1.0 scale)
+     * @param start The starting point of the circle (0.0 is 6 o'clock, pi/2 is 3 o'clock)
+     * @param stop The stop point of the circle (0.0 is 6 o'clock, pi/2 is 3 o'clock)
+     * @param thickness The edge thickness for the circle
      */
     public Arc(int x, int y, double radius, double start, double stop, int thickness) {
         super(x, y, thickness);
@@ -38,9 +42,7 @@ public class Arc extends Shape {
     }
     
     @Override
-    protected void updatePoints() {
-        int rX;
-        int rY;
+    public void updatePoints() {
         int i;
         int px;
         int py;
@@ -48,22 +50,19 @@ public class Arc extends Shape {
         int points = subdivisions;
 
         double factor = (stop - start) / subdivisions;
-//        double factor = Math.PI * 2 / points;
         double offset = start;
         
         //clear the polygon first.
         p.reset();
         //add points
-        rX = (int)(radius * scaleX);
-        rY = (int)(radius * scaleY);
         for(i = 0; i <= points; i++) {
-            px = x + (int) (Math.sin(i * factor + offset) * rX);
-            py = y + (int) (Math.cos(i * factor + offset) * rY);
+            px = (int) (Math.sin(i * factor + offset) * radius);
+            py = (int) (Math.cos(i * factor + offset) * radius);
             p.addPoint(px, py);
         }
         
         if (pie) {
-            p.addPoint(x, y);
+            p.addPoint(0, 0);
         }
         
         valid = true;

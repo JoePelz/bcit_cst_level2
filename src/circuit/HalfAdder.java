@@ -6,9 +6,9 @@ package circuit;
 import gui.shapes.Gate;
 import gui.shapes.GateAnd;
 import gui.shapes.GateInput;
+import gui.shapes.GateOr;
 import gui.shapes.GatePin;
 import gui.shapes.GateState;
-import gui.shapes.GateXor;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,26 +24,27 @@ import java.awt.Graphics2D;
 public class HalfAdder extends Circuit {
     private static final long serialVersionUID = 442544548172570492L;
     
-    private Font font = new Font("Consolas", Font.PLAIN, 15);
+    private Font font = new Font("Consolas", Font.PLAIN, 10);
 
-    private GateAnd ga = new GateAnd(10, 10, 2);
-    private GateXor go = new GateXor(10, 10, 2);
-//    private GateOr go = new GateOr(10, 10, 2);
+    private GateOr go = new GateOr(170, 100, 2);
+    private GateAnd ga = new GateAnd(170, 180, 2);
     
-    private GateInput input1 = new GateInput(10, 10, 2, GateState.ON);
-    private GatePin pin2 = new GatePin(10, 10, 2);
-    private GatePin pin3 = new GatePin(10, 10, 2);
-    private GateInput input2 = new GateInput(10, 10, 2, GateState.ON);
-    private GatePin pin5 = new GatePin(10, 10, 2);
-    private GatePin pin6 = new GatePin(10, 10, 2);
-    private GatePin pin7 = new GatePin(10, 10, 2);
-    private GatePin pin8 = new GatePin(10, 10, 2);
+    private GateInput input1 = new GateInput(30, 90, 2, GateState.ON);
+    private GatePin pin2 = new GatePin(110, 90, 2);
+    private GatePin pin3 = new GatePin(110, 170, 2);
+    private GateInput input2 = new GateInput(30, 110, 2, GateState.ON);
+    private GatePin pin5 = new GatePin(90, 110, 2);
+    private GatePin pin6 = new GatePin(90, 190, 2);
+    private GatePin pin7 = new GatePin(300, 100, 2);
+    private GatePin pin8 = new GatePin(300, 180, 2);
     
     public HalfAdder() {
         Dimension size = new Dimension(800, 500);
         setPreferredSize(size);
         setMaximumSize(size);
-
+        
+        go.setVariation(GateOr.XOR);
+        
         gates.add(ga);
         gates.add(go);
         gates.add(input1);
@@ -82,31 +83,10 @@ public class HalfAdder extends Circuit {
     public void paintComponent(Graphics g1) {
         super.paintComponent(g1);
         Graphics2D g = (Graphics2D) g1;
-        g.setFont(font.deriveFont((float)pd(0.03)));
-        
-        ga.setPosition(w(0.5), h(0.45));
-        ga.setScaleX(w(0.2));
-        ga.setScaleY(h(0.3));
-        go.setPosition(w(0.5), h(0.15));
-        go.setScaleX(w(0.2));
-        go.setScaleY(h(0.3));
-        
-        input1.setPosition(w(0.05), h(0.1));
-        pin2.setPosition(w(0.35), h(0.1));
-        pin3.setPosition(w(0.35), h(0.4));
-        
-        input2.setPosition(w(0.05), h(0.2));
-        pin5.setPosition(w(0.25), h(0.2));
-        pin6.setPosition(w(0.25), h(0.5));
-        
-        pin7.setPosition(w(0.95), h(0.15));
-        pin8.setPosition(w(0.95), h(0.45));
-        
+        g.setFont(font);
         
         //draw stuff.
-        int thickness = p(0.008);
         for (Gate gate : gates) {
-            gate.setThickness(thickness);
             gate.drawFill(g);
             gate.drawStroke(g);
         }

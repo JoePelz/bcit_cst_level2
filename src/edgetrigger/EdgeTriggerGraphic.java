@@ -59,17 +59,17 @@ public class EdgeTriggerGraphic extends JPanel {
         
 
         //Create the two gates
-        int thickness = p(0.015);
+        int thickness = p(0.02);
         ga.setPosition(w(0.58), h(0.52));
         ga.setThickness(thickness);
-        ga.setScaleX(wd(0.198));
-        ga.setScaleY(hd(0.74));
+        ga.setScaleX(wd(0.0005));
+        ga.setScaleY(hd(0.00185));
         gaFILL.setThickness(thickness);
 
         gn.setPosition(w(0.275), h(0.333));
         gn.setThickness(thickness);
-        gn.setScaleX(wd(0.198));
-        gn.setScaleY(hd(0.74));
+        gn.setScaleX(wd(0.00044));
+        gn.setScaleY(hd(0.0014));
         gnFILL.setThickness(thickness);
         
         //Link them all
@@ -133,33 +133,33 @@ public class EdgeTriggerGraphic extends JPanel {
         //NOT gate
         if (phase < 0.5) {
             //appearing
-            end   = remap(phase, 0.1, 0.25, 0.0, 0.198);
+            end   = remap(phase, 0.1, 0.25, 0.0, 0.00044);
             gnFILL.setPosition(w(0.275), h(0.333));
             gnFILL.setScaleX(wd(end));
-            gnFILL.setScaleY(hd(0.74));
+            gnFILL.setScaleY(hd(0.0014));
         } else {
             //disappearing
             start  = remap(phase, 0.6, 0.75, 0.275, 0.44);
-            end    = remap(phase, 0.6, 0.75, 0.198, 0.0);
-            shrink = remap(phase, 0.6, 0.75, 0.74, 0.0);
+            end    = remap(phase, 0.6, 0.75, 0.00044, 0.0);
+            shrink = remap(phase, 0.6, 0.75, 0.0014, 0.0);
             gnFILL.setPosition(w(start), h(0.333));
             gnFILL.setScaleX(wd(end));
             gnFILL.setScaleY(hd(shrink));
         }
         gnFILL.drawFill(g);
-        
+
         //AND gate
         if (phase < 0.3) {
             //appearing
-            end   = remap(phase, 0.21, 0.28, 0.0, 0.198);
+            end   = remap(phase, 0.21, 0.28, 0.0, 0.0005);
             gaFILL.setPosition(w(0.58), h(0.52));
-            gaFILL.setScaleY(hd(0.74));
+            gaFILL.setScaleY(hd(0.00185));
             gaFILL.setScaleX(wd(end));
         } else {
             //disappearing
             start  = remap(phase, 0.32, 0.39, 0.58, 0.835);
-            end    = remap(phase, 0.32, 0.39, 0.198, 0.0);
-            shrink = remap(phase, 0.32, 0.39, 0.74, 0.1);
+            end    = remap(phase, 0.32, 0.39, 0.0005, 0.0);
+            shrink = remap(phase, 0.32, 0.39, 0.00185, 0.0001);
             gaFILL.setPosition(w(start), h(0.52));
             gaFILL.setScaleY(hd(shrink));
             gaFILL.setScaleX(wd(end));

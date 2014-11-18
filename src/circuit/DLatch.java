@@ -5,8 +5,8 @@ package circuit;
 
 import gui.shapes.Gate;
 import gui.shapes.GateInput;
-import gui.shapes.GateNor;
 import gui.shapes.GateNot;
+import gui.shapes.GateOr;
 import gui.shapes.GatePin;
 import gui.shapes.GateState;
 
@@ -25,28 +25,31 @@ public class DLatch extends Circuit {
     
     private Font font = new Font("Consolas", Font.PLAIN, 15);
 
-    private GateNor norTop    = new GateNor(10, 10, 2);
-    private GateNor norBottom = new GateNor(10, 10, 2);
-    private GateNot not = new GateNot(10, 10, 2);
+    private GateOr norTop    = new GateOr(190, 100, 2);
+    private GateOr norBottom = new GateOr(190, 200, 2);
+    private GateNot not = new GateNot(90, 210, 2);
 
-    private GateInput inputD = new GateInput(10, 10, 2, GateState.OFF);
-    private GatePin pin1 = new GatePin(10, 10, 2);
-    private GatePin pin2 = new GatePin(10, 10, 2);
-    private GatePin pin3 = new GatePin(10, 10, 2);
-    private GatePin pin4 = new GatePin(10, 10, 2);
-    private GatePin pin5 = new GatePin(10, 10, 2);
-    private GatePin pin6 = new GatePin(10, 10, 2);
-    private GatePin pin7 = new GatePin(10, 10, 2);
-    private GatePin pin8 = new GatePin(10, 10, 2);
-    private GatePin pin9 = new GatePin(10, 10, 2);
-    private GatePin pin10 = new GatePin(10, 10, 2);
-    private GatePin pinNotQ = new GatePin(10, 10, 2);
-    private GatePin pinQ = new GatePin(10, 10, 2);
+    private GateInput inputD = new GateInput(30, 90, 2, GateState.OFF);
+    private GatePin pin1 = new GatePin(280, 100, 2);
+    private GatePin pin2 = new GatePin(280, 200, 2);
+    private GatePin pin3 = new GatePin(170, 130, 2);
+    private GatePin pin4 = new GatePin(170, 170, 2);
+    private GatePin pin5 = new GatePin(170, 110, 2);
+    private GatePin pin6 = new GatePin(170, 190, 2);
+    private GatePin pin7 = new GatePin(280, 130, 2);
+    private GatePin pin8 = new GatePin(280, 170, 2);
+    private GatePin pin9 = new GatePin(50, 90, 2);
+    private GatePin pin10 = new GatePin(50, 210, 2);
+    private GatePin pinNotQ = new GatePin(350, 100, 2);
+    private GatePin pinQ = new GatePin(350, 200, 2);
     
     public DLatch() {
         Dimension size = new Dimension(800, 500);
         setPreferredSize(size);
         setMaximumSize(size);
+
+        norTop.setVariation(GateOr.NOR);
+        norBottom.setVariation(GateOr.NOR);
 
         gates.add(norBottom);
         gates.add(norTop);
@@ -101,39 +104,10 @@ public class DLatch extends Circuit {
     public void paintComponent(Graphics g1) {
         super.paintComponent(g1);
         Graphics2D g = (Graphics2D) g1;
-        g.setFont(font.deriveFont((float)pd(0.03)));
         
-        norTop.setPosition(w(0.52), h(0.2));
-        norTop.setScaleX(w(0.17));
-        norTop.setScaleY(h(0.3));
-        norBottom.setPosition(w(0.52), h(0.8));
-        norBottom.setScaleX(w(0.17));
-        norBottom.setScaleY(h(0.3));
-        not.setPosition(w(0.25), h(0.87));
-        not.setScaleX(w(0.17));
-        not.setScaleY(h(0.3));
-
-        inputD.setPosition(w(0.05), h(0.13));
-        pin9.setPosition(w(0.15), h(0.13));
-        pin10.setPosition(w(0.15), h(0.87));
-        
-        pin1.setPosition(w(0.83), h(0.2));
-        pin2.setPosition(w(0.83), h(0.8));
-        pin7.setPosition(w(0.83), h(0.4));
-        pin8.setPosition(w(0.83), h(0.6));
-        pin3.setPosition(w(0.46), h(0.4));
-        pin4.setPosition(w(0.46), h(0.6));
-        pin5.setPosition(w(0.46), h(0.27));
-        pin6.setPosition(w(0.46), h(0.73));
-        
-        pinNotQ.setPosition(w(0.95), h(0.2));
-        pinQ.setPosition(w(0.95), h(0.8));
-        
-        
+        g.setFont(font);
         //draw stuff.
-        int thickness = p(0.008);
         for (Gate gate : gates) {
-            gate.setThickness(thickness);
             gate.drawFill(g);
             gate.drawStroke(g);
         }

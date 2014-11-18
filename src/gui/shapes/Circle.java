@@ -14,9 +14,10 @@ public class Circle extends Shape {
     private int subdivisions;
     
     /**
-     * @param x
-     * @param y
-     * @param thickness
+     * @param x the x position of the circle center.
+     * @param y The y position of the circle center. 
+     * @param radius The radius of the circle in pixels.
+     * @param thickness How thick the circle's stroke is.
      */
     public Circle(int x, int y, double radius, int thickness) {
         super(x, y, thickness);
@@ -30,10 +31,11 @@ public class Circle extends Shape {
             throw new IllegalArgumentException("Subdivisions must be between 3 and 100.\nNumber given was " + num + ".");
         }
         subdivisions = num;
+        valid = false;
     }
 
     @Override
-    protected void updatePoints() {
+    public void updatePoints() {
         int rX;
         int rY;
         int px;
@@ -46,11 +48,11 @@ public class Circle extends Shape {
         //clear the polygon first.
         p.reset();
         //add points
-        rX = (int)(radius * scaleX);
-        rY = (int)(radius * scaleY);
+        rX = (int)(radius);
+        rY = (int)(radius);
         for(int i = 0; i < points; i++) {
-            px = x + (int) (Math.sin(i * factor) * rX);
-            py = y + (int) (Math.cos(i * factor) * rY);
+            px = (int) (Math.sin(i * factor) * rX);
+            py = (int) (Math.cos(i * factor) * rY);
             p.addPoint(px, py);
         }
         

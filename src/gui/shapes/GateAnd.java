@@ -5,6 +5,7 @@ package gui.shapes;
 
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 
 /**
  * 
@@ -12,8 +13,13 @@ import java.awt.Polygon;
  * @version 1.0
  */
 public class GateAnd extends Gate {
-
+    public static final int AND = 0;
+    public static final int NAND = 1;
+    private static final int radius = 200;
+    private Polygon poly = new Polygon();
     private Arc arc;
+    private Circle inverter;
+    private int type;
 
     /**
      * @param x
@@ -21,64 +27,69 @@ public class GateAnd extends Gate {
      * @param thickness
      */
     public GateAnd(int x, int y, int thickness) {
-        super(x, y, thickness, 2, -1);
-        arc = new Arc(x, y, 1, 0, Math.PI, thickness);
-        arc.setSubdivisions(12);
+        super(x, y, thickness * 10, 2, -1);
+        arc = new Arc((int)(radius * 1.6), 0, radius, 0, Math.PI, thickness);
+        arc.setSubdivisions(16);
         arc.setPie(false);
-        addShape(arc.getPolygon());
+        arc.updatePoints();
+
+        inverter = new Circle((int)(
+                2.8 * radius), 
+                0, 
+                (int)(radius * 0.2), 
+                thickness * 10);
+        inverter.setSubdivisions(32);
+        inverter.updatePoints();
+        
+        setScaleY(0.1);
+        setScaleX(0.1);
+    }
+    
+    public void setVariation(int gateType) {
+        if (gateType > 2) {
+            throw new IllegalArgumentException("Gate must be of type GateAnd.AND / NAND");
+        }
+        type = gateType;
+        updatePoints();
     }
 
-    /* (non-Javadoc)
-     * @see gui.shapes.Shape2#updatePoints()
-     */
     @Override
     public void updatePoints() {
-        int rY = (int) (0.5 * scaleY);
-        int rX = (int) (0.5 * scaleX);
-        int px;
-        int py;
-        int width = (int) (0.8 * scaleX);
 
-        arc.setPosition(x + width, y);
-        arc.setScaleX(rX);
-        arc.setScaleY(rY);
-        arc.updatePoints();
-        
-        Polygon temp = arc.getPolygon();
+        poly = arc.getTransformedPolygon();
         
         //top left
-        px = x;
-        py = y - rY;
-        temp.addPoint(px, py);
+        poly.addPoint(0, -radius);
         
         //bottom left
-        px = x;
-        py = y + rY;
-        temp.addPoint(px, py);
+        poly.addPoint(0, radius);
 
+        clearShapes();
+        addShape(poly);
+        
+        if ((type & NAND) > 0) {
+            addShape(inverter.getTransformedPolygon());
+        }
+        
         valid = true;
     }
 
-    /* (non-Javadoc)
-     * @see gui.shapes.Gate2#getOutput(int)
-     */
     @Override
     public Point getOutput(int i) {
-        int rX = (int) (0.5 * scaleX);
-        int width = (int) (0.8 * scaleX);
-        return new Point(x + width + rX, y);
+        int width = (int) (2.6 * radius);
+        if ((type & NAND) > 0) {
+            width += (int)(radius * 0.4); 
+        }
+        return new Point(width, 0);
     }
 
-    /* (non-Javadoc)
-     * @see gui.shapes.Gate2#getInput(int)
-     */
     @Override
     public Point getInput(int i) {
-        int rY = (int) (0.25 * scaleY);
+        int rY = radius >> 1;
         if (i == 0) {
-            return new Point(x, y - rY);
+            return new Point(0, -rY);
         } else if (i == 1) {
-            return new Point(x, y + rY);
+            return new Point(0, rY);
         } else {
             return null;
         }
@@ -114,5 +125,20 @@ public class GateAnd extends Gate {
     @Override
     public String toString() {
         return "Gate And: " + super.toString();
+    }
+
+    public Rectangle getBounds() {
+        if (type == NAND)
+            return new Rectangle(
+                    0 - (thickness >> 1), 
+                    -radius - (thickness >> 1), 
+                    (int)(3 * radius) + thickness, 
+                    (radius << 1) + thickness);
+        else
+            return new Rectangle(
+                    0 - (thickness >> 1), 
+                    -radius - (thickness >> 1), 
+                    (int)(2.6 * radius) + thickness, 
+                    (radius << 1) + thickness);
     }
 }

@@ -3,10 +3,13 @@
  */
 package gui.shapes;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +17,7 @@ import java.util.ArrayList;
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
-public abstract class Gate extends Shape{
+public abstract class Gate extends Shape {
     private ArrayList<Polygon> polygons = new ArrayList<Polygon>();
     private ArrayList<Polygon> lines = new ArrayList<Polygon>();
     private Color backgroundOn = Color.YELLOW;
@@ -144,6 +147,11 @@ public abstract class Gate extends Shape{
         polygons.add(p);
     }
     
+    protected void clearShapes() {
+        polygons.clear();
+        lines.clear();
+    }
+    
     protected void addLine(Polygon p) {
         lines.add(p);
     }
@@ -161,19 +169,29 @@ public abstract class Gate extends Shape{
         }
         //Stroke all shapes
         g.setStroke(getStroke());
+        AffineTransform at_old = g.getTransform();
+        g.transform(getTransform());
         for (Polygon p : polygons) {
             g.drawPolygon(p);
         }
         for (Polygon p : lines) {
             g.drawPolyline(p.xpoints, p.ypoints, p.npoints);
         }
+        g.setTransform(at_old);
         
         //draw input connections.
+
+        g.setStroke(new BasicStroke((float) (thickness * getTransform().getScaleY())));
         for (Link link : inputPorts) {
             if (link != null) {
                 Point a = link.getGateOut().getOutput(link.getPortOut());
+                AffineTransform a_at = link.getGateOut().getTransform();
                 Point b = getInput(link.getPortIn());
-
+                AffineTransform b_at = getTransform();
+                
+                a_at.transform(a, a);
+                b_at.transform(b, b);
+                
                 if (link.getGateOut().getState() == GateState.ON) {
                     g.setColor(backgroundOn);
                 } else {
@@ -196,9 +214,12 @@ public abstract class Gate extends Shape{
             g.setColor(backgroundOff);
         }
         //Fill all shapes
+        AffineTransform at_old = g.getTransform();
+        g.transform(getTransform());
         for (Polygon p : polygons) {
             g.fillPolygon(p);
         }
+        g.setTransform(at_old);
     }
     public ArrayList<Polygon> getPolygons() {
         return polygons;
@@ -243,6 +264,17 @@ public abstract class Gate extends Shape{
         gateIn.connectIn(link);
     }
 
+    /**
+     * <p>This method calculates the output of the gate 
+     * based on the inputs available.</p>
+     * 
+     * <p>The inputs can be any of {GateState.ON, GateState.OFF, GateState.NULL, null}
+     * and any number of them, depending on the gate.</p>  
+     * 
+     * <p>Default operation is logical OR.</p>
+     * 
+     * @return Whether the calcOut changed the value of this gate's output.
+     */
     public int calcOut() {
         boolean out = false;
         for(Link l : inputPorts) {
@@ -273,5 +305,9 @@ public abstract class Gate extends Shape{
      */
     public void perform(int clickX, int clickY) {
         //this gate was clicked on!
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(-10, -10, 10, 10);
     }
 }

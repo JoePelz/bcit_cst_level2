@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 
 /**
  * 
@@ -52,26 +54,29 @@ public class GatePin extends Gate {
     @Override
     public void drawStroke(Graphics2D g) {
         super.drawStroke(g);
+
+        AffineTransform at_old = g.getTransform();
+        g.transform(getTransform());
         g.setColor(this.getBackground());
-        g.fillOval(x - (int)(1.5 * thickness), y - (int)(1.5 * thickness), thickness * 3, thickness * 3);
+        g.fillOval((int)(-1.5 * thickness), (int)(-1.5 * thickness), 3 * thickness, 3 * thickness);
         g.setColor(Color.BLACK);
-        
         FontMetrics fm = g.getFontMetrics();
         switch(labelSide) {
         case NE:
         default:
-            g.drawString(label, x + thickness, y - thickness);
+            g.drawString(label, thickness, -thickness);
             break;
         case NW:
-            g.drawString(label, x - thickness - fm.stringWidth(label), y - thickness);
+            g.drawString(label, -thickness - fm.stringWidth(label), -thickness);
             break;
         case SE:
-            g.drawString(label, x + thickness, y + thickness + fm.getHeight());
+            g.drawString(label, thickness, thickness + fm.getHeight());
             break;
         case SW:
-            g.drawString(label, x - thickness - fm.stringWidth(label), y + thickness + fm.getAscent());
+            g.drawString(label, -thickness - fm.stringWidth(label), thickness + fm.getAscent());
             break;
         }
+        g.setTransform(at_old);
     }
 
     /* (non-Javadoc)
@@ -79,7 +84,7 @@ public class GatePin extends Gate {
      */
     @Override
     public Point getOutput(int i) {
-        return new Point(x, y);
+        return new Point();
     }
 
     /* (non-Javadoc)
@@ -87,11 +92,15 @@ public class GatePin extends Gate {
      */
     @Override
     public Point getInput(int i) {
-        return new Point(x, y);
+        return new Point();
     }
     
     @Override
     public String toString() {
         return "Gate Pin: " + super.toString();
+    }
+    
+    public Rectangle getBounds() {
+        return new Rectangle((int)(-1.5 * thickness), (int)(-1.5 * thickness), 3 * thickness, 3 * thickness);
     }
 }

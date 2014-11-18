@@ -11,5 +11,5 @@ package gui.shapes;
 public enum GateState {
     ON,
     OFF,
-    NULL
+    UNKNOWN
 }

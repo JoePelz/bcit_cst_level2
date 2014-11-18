@@ -7,6 +7,7 @@ import gui.shapes.Gate;
 import gui.shapes.GateInput;
 
 import java.awt.BasicStroke;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -14,6 +15,11 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -25,29 +31,88 @@ import javax.swing.JPanel;
  */
 public class Circuit extends JPanel {
     private static final long serialVersionUID = 8065048015230286579L;
-    private Rectangle r;
     
     protected ArrayList<Gate> gates = new ArrayList<Gate>();
+
+    private Point translate = new Point();
+    private Point oldTranslate = new Point();
+    private Point mouseStart = new Point();
+    private double scale = 1.0;
+    private AffineTransform transform = new AffineTransform();
     
     public Circuit() {
+        //add keyboard listener that will let you press F and 
+        //center the view on the shapes 
+        // (b-boxes touching the screen edges)
         addMouseListener(new MouseAdapter() {
             
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    focusView();
+                    return;
+                }
                 Circuit.this.click(e.getX(), e.getY());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mouseStart = new Point(e.getX(), e.getY());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                oldTranslate = new Point(translate);
+            }
+        });
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                translate = new Point(oldTranslate.x + e.getX() - mouseStart.x, oldTranslate.y + e.getY() - mouseStart.y);
+                updateTransform();
+                repaint();
+            }
+        });
+        addMouseWheelListener(new MouseWheelListener() {
+            
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if (e.getWheelRotation() > 0) {
+                    translate.x = (int)((translate.x - e.getX()) * 0.8) + e.getX();
+                    translate.y = (int)((translate.y - e.getY()) * 0.8) + e.getY();
+                    scale *= 0.8; 
+                } else if (e.getWheelRotation() < 0) {
+                    translate.x = (int)((translate.x - e.getX()) * 1.2) + e.getX();
+                    translate.y = (int)((translate.y - e.getY()) * 1.2) + e.getY();
+                    scale *= 1.2;
+                }
+                oldTranslate = new Point(translate);
+                updateTransform();
+                repaint();
             }
         });
     }
+
+    private void updateTransform() {
+        //transform is xScale, xShear, yShear, yScale, xPos, yPos
+        transform.setTransform(scale, 0, 0, scale, translate.x, translate.y);
+    }
     
+    public AffineTransform getTransform() {
+        return transform;
+    }
+    
+
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void paintComponent(Graphics g1) {
+        super.paintComponent(g1);
         
-        r = g.getClipBounds();
+        Graphics2D g = (Graphics2D) g1;
         
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        g.setTransform(getTransform());
     }
 
     public void calcCircuit() {
@@ -55,13 +120,6 @@ public class Circuit extends JPanel {
     }
     
     public void calcCircuit(int maxIterations) {
-        //reset circuit.
-//        for(Gate g : gates) {
-//            if (g instanceof GateInput) {
-//                continue;
-//            }
-//            g.setState(GateState.NULL);
-//        }
         //Iterate over circuit
         int iteration = 0;
         int changes = 1;
@@ -78,30 +136,11 @@ public class Circuit extends JPanel {
 //        System.out.println("Settling took " + iteration + " iterations.");
     }
     
-    
     protected void wire(Graphics2D g, int x1, int y1, int x2, int y2, int thickness) {
         g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
         g.drawLine(x1, y1, x2, y2);
     }
     
-    protected double pd(double d) {
-        return (Math.sqrt(r.getWidth() * r.getHeight()) * d);
-    }
-    protected int p(double d) {
-        return (int) pd(d);
-    }
-    protected double wd(double p) {
-        return (r.getWidth() * p);
-    }
-    protected double hd(double p) {
-        return (r.getHeight() * p);
-    }
-    protected int w(double p) {
-        return (int) wd(p);
-    }
-    protected int h(double p) {
-        return (int) hd(p);
-    }
     public static double clamp(double d, double min, double max) {
         return (d < min ? min : d > max ? max : d);
     }
@@ -114,22 +153,97 @@ public class Circuit extends JPanel {
     }
     
     public void click(int x, int y) {
+        Point click = new Point(x, y);
+        if (gates.size() == 0) {
+            return;
+        }
         Gate closest = gates.get(0);
         Point gPos = closest.getPosition();
-        long dist = (gPos.x - x) * (gPos.x - x) + (gPos.y - y) * (gPos.y - y);
+        AffineTransform at;
+        try {
+            at = getTransform().createInverse();
+        } catch (NoninvertibleTransformException e) {
+            System.err.println("Couldn't invert the world transform?!");
+            return;
+        }
+        at.transform(click, click);
+        long dist = (gPos.x - click.x) * (gPos.x - click.x) + (gPos.y - click.y) * (gPos.y - click.y);
         long closestDist = dist; 
         
         for (Gate g : gates) {
             gPos = g.getPosition();
-            dist = (gPos.x - x) * (gPos.x - x) + (gPos.y - y) * (gPos.y - y);
+            dist = (gPos.x - click.x) * (gPos.x - click.x) + (gPos.y - click.y) * (gPos.y - click.y);
             if (dist < closestDist) {
                 closestDist = dist;
                 closest = g;
             }
         }
-//        System.out.printf("Clicked at {%d, %d} near a %s\n", x, y, closest);
+//        System.out.printf("Clicked at {%d, %d} near a %s\n", click.x, click.y, closest);
         closest.perform(x, y);
         calcCircuit();
+        repaint();
+    }
+    
+    public void focusView() {
+        Dimension size;
+        Rectangle bounds;
+        AffineTransform at;
+        Point gateTL = new Point();
+        Point gateBR = new Point();
+        Point destTL = new Point();
+        Point destBR = new Point();
+        if (gates.size() == 0) {
+            translate.setLocation(0, 0);
+            scale = 1.0;
+            return;
+        }
+        
+        bounds = gates.get(0).getBounds();
+        destTL.setLocation(bounds.x, bounds.y);
+        destBR.setLocation(bounds.x + bounds.width, bounds.y + bounds.height);
+        at = gates.get(0).getTransform();
+        at.transform(destTL, destTL);
+        at.transform(destBR, destBR);
+        
+        for (Gate g : gates) {
+            bounds = g.getBounds();
+            gateTL.setLocation(bounds.x, bounds.y);
+            gateBR.setLocation(bounds.x + bounds.width, bounds.y + bounds.height);
+            at = g.getTransform();
+            at.transform(gateTL, gateTL);
+            at.transform(gateBR, gateBR);
+            
+//            System.out.printf("The gate bounds are LEFT %3d,\tTOP %3d,\tRIGHT %3d,\tBOTTOM %3d\n", gateTL.x, gateTL.y, gateBR.x, gateBR.y);
+            destTL.setLocation(Math.min(gateTL.x, destTL.x), Math.min(gateTL.y, destTL.y));
+            destBR.setLocation(Math.max(gateBR.x, destBR.x), Math.max(gateBR.y, destBR.y));
+        }
+//        System.out.printf("The Final Bounds\n are LEFT %3d,\tTOP %3d,\tRIGHT %3d,\tBOTTOM %3d\n", destTL.x, destTL.y, destBR.x, destBR.y);
+        
+        //Add a margin for visual niceness.
+        destTL.x -= 10;
+        destTL.y -= 10;
+        destBR.x += 10;
+        destBR.y += 10;
+        
+        size = getSize();
+        double scaleW = ((double)size.width  / (destBR.x - destTL.x));
+        double scaleH = ((double)size.height / (destBR.y - destTL.y));
+        if (scaleW < scaleH) {
+            scale = scaleW;
+            translate = new Point(
+                    (int)(-destTL.x * scale), 
+                    ((int)(-destTL.y * scale) + (int)(-destBR.y * scale) + size.height) / 2);
+            oldTranslate = new Point(translate);
+        } else {
+            scale = scaleH;
+            translate = new Point(
+                    ((int)(-destTL.x * scale) + (int)(-destBR.x * scale) + size.width) / 2,
+                    (int)(-destTL.y * scale)); 
+            oldTranslate = new Point(translate);
+            
+        }
+        
+        updateTransform();
         repaint();
     }
 }

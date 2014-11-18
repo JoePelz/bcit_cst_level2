@@ -5,7 +5,7 @@ package circuit;
 
 import gui.shapes.Gate;
 import gui.shapes.GateInput;
-import gui.shapes.GateNor;
+import gui.shapes.GateOr;
 import gui.shapes.GatePin;
 import gui.shapes.GateState;
 
@@ -23,28 +23,31 @@ import java.awt.Graphics2D;
 public class SRLatch extends Circuit {
     private static final long serialVersionUID = 442544548172570492L;
     
-    private Font font = new Font("Consolas", Font.PLAIN, 15);
+    private Font font = new Font("Consolas", Font.PLAIN, 16);
 
-    private GateNor norTop    = new GateNor(10, 10, 2);
-    private GateNor norBottom = new GateNor(10, 10, 2);
+    private GateOr norTop    = new GateOr(150, 100, 2);
+    private GateOr norBottom = new GateOr(150, 200, 2);
 
-    private GateInput inputS = new GateInput(10, 10, 2, GateState.OFF);
-    private GateInput inputR = new GateInput(10, 10, 2, GateState.ON);
-    private GatePin pin1 = new GatePin(10, 10, 2);
-    private GatePin pin2 = new GatePin(10, 10, 2);
-    private GatePin pin7 = new GatePin(10, 10, 2);
-    private GatePin pin8 = new GatePin(10, 10, 2);
-    private GatePin pin3 = new GatePin(10, 10, 2);
-    private GatePin pin4 = new GatePin(10, 10, 2);
-    private GatePin pin5 = new GatePin(10, 10, 2);
-    private GatePin pin6 = new GatePin(10, 10, 2);
-    private GatePin pinNotQ = new GatePin(10, 10, 2);
-    private GatePin pinQ = new GatePin(10, 10, 2);
+    private GateInput inputS = new GateInput(30,  90, 2, GateState.OFF);
+    private GateInput inputR = new GateInput(30, 210, 2, GateState.ON);
+    private GatePin pin1 = new GatePin(230, 100, 2);
+    private GatePin pin7 = new GatePin(230, 130, 2);
+    private GatePin pin8 = new GatePin(230, 170, 2);
+    private GatePin pin2 = new GatePin(230, 200, 2);
+    private GatePin pin5 = new GatePin(100, 110, 2);
+    private GatePin pin3 = new GatePin(100, 130, 2);
+    private GatePin pin4 = new GatePin(100, 170, 2);
+    private GatePin pin6 = new GatePin(100, 190, 2);
+    private GatePin pinNotQ = new GatePin(310, 100, 2);
+    private GatePin pinQ = new GatePin(310, 200, 2);
     
     public SRLatch() {
         Dimension size = new Dimension(800, 500);
         setPreferredSize(size);
         setMaximumSize(size);
+        
+        norTop.setVariation(GateOr.NOR);
+        norBottom.setVariation(GateOr.NOR);
 
         gates.add(norBottom);
         gates.add(norTop);
@@ -103,34 +106,11 @@ public class SRLatch extends Circuit {
     public void paintComponent(Graphics g1) {
         super.paintComponent(g1);
         Graphics2D g = (Graphics2D) g1;
-        g.setFont(font.deriveFont((float)pd(0.03)));
-        
-        norBottom.setPosition(w(0.38), h(0.8));
-        norBottom.setScaleX(w(0.2));
-        norBottom.setScaleY(h(0.3));
-        norTop.setPosition(w(0.38), h(0.2));
-        norTop.setScaleX(w(0.2));
-        norTop.setScaleY(h(0.3));
 
-        inputS.setPosition(w(0.05), h(0.13));
-        inputR.setPosition(w(0.05), h(0.87));
-        pin1.setPosition(w(0.8), h(0.2));
-        pin2.setPosition(w(0.8), h(0.8));
-        pin7.setPosition(w(0.8), h(0.4));
-        pin8.setPosition(w(0.8), h(0.6));
-        pin3.setPosition(w(0.25), h(0.4));
-        pin4.setPosition(w(0.25), h(0.6));
-        pin5.setPosition(w(0.25), h(0.27));
-        pin6.setPosition(w(0.25), h(0.73));
-        
-        pinNotQ.setPosition(w(0.95), h(0.2));
-        pinQ.setPosition(w(0.95), h(0.8));
-        
+        g.setFont(font);
         
         //draw stuff.
-        int thickness = p(0.008);
         for (Gate gate : gates) {
-            gate.setThickness(thickness);
             gate.drawFill(g);
             gate.drawStroke(g);
         }
