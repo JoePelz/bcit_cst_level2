@@ -29,8 +29,9 @@ public class CircuitPanel extends JPanel {
     
     private void addGraphicsPanel() {
 //        circuit = new DLatch();
-        circuit = new SRLatch();
+//        circuit = new SRLatch();
 //        circuit = new HalfAdder();
+        circuit = new FullAdder();
 //        circuit = new CamTest();
         add(circuit);
     }
