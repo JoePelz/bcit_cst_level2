@@ -84,12 +84,12 @@ public class CircuitPanel extends JPanel implements ItemListener {
 
     private enum circuitPresets {
 //        C_CT("Cam Test", new CamTest()),
-        C_FF("D Flip-Flop", new FlipFlop()),
         C_HA("Half Adder", new HalfAdder()),
         C_FA("Full Adder", new FullAdder()),
         C_SRL("SR Latch", new SRLatch()),
         C_CDL("Clocked D Latch", new ClockedDLatch()),
-        C_UDL("Unclocked D Latch", new UnclockedDLatch());
+        C_UDL("Unclocked D Latch", new UnclockedDLatch()),
+        C_FF("D Flip-Flop", new FlipFlop());
         
         private String name;
         private Circuit circuit;
