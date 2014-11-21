@@ -1,15 +1,7 @@
 package circuit;
 
-import gui.shapes.Arc;
-import gui.shapes.Circle;
-import gui.shapes.Gate;
-import gui.shapes.GateAnd;
-import gui.shapes.GateOr;
-import gui.shapes.GateNot;
-import gui.shapes.GateInput;
-import gui.shapes.GatePin;
-import gui.shapes.GateState;
-import gui.shapes.Shape;
+
+import gui.shapes.*;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -22,24 +14,29 @@ import java.awt.Graphics2D;
  */
 @SuppressWarnings("unused")
 public class CamTest extends Circuit {
-    private Shape circle1;
-    private Shape circle2;
-    private Shape circle3;
-    private Shape circle4;
+    private GateInput circle1;
+    private GateInput circle2;
+    private GateEdgeTrigger circle3;
+    private GateAnd circle4;
     
     public CamTest() {
-        Dimension size = new Dimension(1400, 500);
-        setPreferredSize(size);
-        setMaximumSize(size);
+//        Dimension size = new Dimension(800, 500);
+//        setPreferredSize(size);
+//        setMaximumSize(size);
         
         
-        circle1 = new Circle(0, 0, 20, 3);
-        circle2 = new Arc(100, 0, 20, Math.PI / 2, Math.PI * 1.5, 3);
-        circle3 = new GateNot(100, 100, 3);
-        circle4 = new GateInput(-100, 100, 3, GateState.ON);
+        circle1 = new GateInput(0,   0, 3, GateState.OFF);
+        circle2 = new GateInput(0, 50, 3, GateState.OFF);
+        circle3 = new GateEdgeTrigger(20, 50, 3);
+        circle4 = new GateAnd(200, 30, 3);
+        circle4.setName("CamTest");
 
-//        ((GateAnd)circle3).setVariation(GateAnd.NAND);
+        Gate.connect(circle1, -1, circle4, -1);
+        Gate.connect(circle2, -1, circle3, -1);
+        Gate.connect(circle3, -1, circle4, -1);
         
+        gates.add((Gate)circle1);
+        gates.add((Gate)circle2);
         gates.add((Gate)circle3);
         gates.add((Gate)circle4);
     }

@@ -43,15 +43,14 @@ public class EdgeTriggerPanel extends JPanel {
         
         TitledBorder myBorder = BorderFactory.createTitledBorder("Edge Trigger circuit");
         setBorder(myBorder);
-//        Dimension size = new Dimension(300, 150);
-        Dimension size = new Dimension(1200, 400);
+        Dimension size = new Dimension(600, 250);
+//        Dimension size = new Dimension(1200, 400);
         setPreferredSize(size);
         setMaximumSize(size);
         setAlignmentX(LEFT_ALIGNMENT);
     }
     
     private void addGraphicsPanel() {
-//        graphic = new EdgeTriggerGraphic();
         graphic = new EdgeTriggerGraphic();
         add(graphic);
     }

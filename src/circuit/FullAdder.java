@@ -7,7 +7,6 @@ import gui.shapes.GateOr;
 import gui.shapes.GatePin;
 import gui.shapes.GateState;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -23,13 +22,13 @@ public class FullAdder extends Circuit {
     
     private Font font = new Font("Consolas", Font.PLAIN, 10);
 
-    private GateOr gxor =  new GateOr(100, 100, 2);
+    private GateOr gxor  = new GateOr(100, 100, 2);
     private GateOr gxor2 = new GateOr(230, 110, 2);
-    private GateAnd ga =  new GateAnd(100, 190, 2);
-    private GateAnd ga2 = new GateAnd(230, 160, 2);
+    private GateAnd ga    = new GateAnd(100, 190, 2);
+    private GateAnd ga2   = new GateAnd(230, 160, 2);
     private GatePin pin11 = new GatePin(300, 160, 2);
     private GatePin pin12 = new GatePin(300, 170, 2);
-    private GateOr gCarry =new GateOr(320, 180, 2);
+    private GateOr gCarry = new GateOr(320, 180, 2);
     
     private GateInput input1 = new GateInput(30, 90, 2, GateState.ON);
     private GatePin pin2 = new GatePin(80, 90, 2);
@@ -48,9 +47,6 @@ public class FullAdder extends Circuit {
     private GatePin cOut = new GatePin(410, 180, 2);
     
     public FullAdder() {
-        Dimension size = new Dimension(800, 500);
-        setPreferredSize(size);
-        setMaximumSize(size);
 
         gxor.setVariation(GateOr.XOR);
         gxor2.setVariation(GateOr.XOR);
@@ -125,20 +121,6 @@ public class FullAdder extends Circuit {
             gate.drawFill(g);
             gate.drawStroke(g);
         }
-        
-        // Debug text
-        /*
-        g.setColor(Color.BLUE);
-        for(Gate gate : gates) {
-            Point p = gate.getPosition();
-            if (gate.getState() == GateState.ON)
-                g.drawString("1", p.x, p.y - 15);
-            else if (gate.getState() == GateState.OFF)
-                g.drawString("0", p.x, p.y - 15);
-            else if (gate.getState() == GateState.NULL)
-                g.drawString("n/a", p.x, p.y - 15);
-        }
-        */
     }
     
 }

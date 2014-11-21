@@ -10,7 +10,6 @@ import gui.shapes.GateOr;
 import gui.shapes.GatePin;
 import gui.shapes.GateState;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -39,9 +38,6 @@ public class HalfAdder extends Circuit {
     private GatePin pin8 = new GatePin(300, 180, 2);
     
     public HalfAdder() {
-        Dimension size = new Dimension(800, 500);
-        setPreferredSize(size);
-        setMaximumSize(size);
         
         go.setVariation(GateOr.XOR);
         

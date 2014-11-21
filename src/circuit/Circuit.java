@@ -4,7 +4,9 @@
 package circuit;
 
 import gui.shapes.Gate;
+import gui.shapes.GateEdgeTrigger;
 import gui.shapes.GateInput;
+import gui.shapes.GateState;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;
@@ -100,6 +102,7 @@ public class Circuit extends JPanel {
     
     public AffineTransform getTransform() {
         return transform;
+        
     }
     
 
@@ -111,29 +114,57 @@ public class Circuit extends JPanel {
         
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        
-        g.setTransform(getTransform());
+        g.transform(getTransform());
     }
 
     public void calcCircuit() {
-        calcCircuit(10);
+        calcCircuit(20);
     }
     
     public void calcCircuit(int maxIterations) {
+//        System.out.println("=========\n  recalc\n=========");
         //Iterate over circuit
         int iteration = 0;
         int changes = 1;
+        boolean hasEdgeTriggers = false;
         while ((iteration < maxIterations) && (changes > 0)) {
             changes = 0;
             for(Gate g : gates) {
                 if (g instanceof GateInput) {
                     continue;
                 }
+//                System.out.println("Working on " + g.toString());
                 changes += g.calcOut();
+                
+                if (g instanceof GateEdgeTrigger) {
+                    GateEdgeTrigger get = (GateEdgeTrigger) g;
+                    if (get.getInput() == GateState.ON 
+                            && get.getInput() != get.getOldState() 
+                            && get.getInput() != get.getOldInput()) {
+                        get.setState(GateState.ON);
+                        hasEdgeTriggers = true;
+                    }
+                }
             }
             iteration++;
         }
-//        System.out.println("Settling took " + iteration + " iterations.");
+//        if (iteration == maxIterations) {
+//            System.out.println("Settling timed out at " + iteration + " iterations.");
+//        } else {
+//            System.out.println("Settling took " + iteration + " iterations.");
+//        }
+        
+        for(Gate g : gates) {
+            if (g instanceof GateEdgeTrigger) {
+                GateEdgeTrigger get = (GateEdgeTrigger) g;
+                get.setOldState(get.getState());
+                get.setState(GateState.OFF);
+                get.setOldInput(get.getInput());
+            }
+        }
+        if (hasEdgeTriggers) {
+            calcCircuit(maxIterations);
+        }
     }
     
     protected void wire(Graphics2D g, int x1, int y1, int x2, int y2, int thickness) {
@@ -226,6 +257,7 @@ public class Circuit extends JPanel {
         destBR.y += 10;
         
         size = getSize();
+        
         double scaleW = ((double)size.width  / (destBR.x - destTL.x));
         double scaleH = ((double)size.height / (destBR.y - destTL.y));
         if (scaleW < scaleH) {

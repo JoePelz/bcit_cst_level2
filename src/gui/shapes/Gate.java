@@ -25,6 +25,7 @@ public abstract class Gate extends Shape {
     private Color strokeOn = Color.BLACK;
     private Color strokeOff = Color.BLACK;
     private GateState enabled;
+    private String name = "";
 
     protected Link outputPorts[];
     private boolean outputResize;
@@ -48,6 +49,14 @@ public abstract class Gate extends Shape {
         } else {
             throw new IllegalArgumentException("Invalid number of input gates. (must be positive integer or -1)");
         }
+    }
+    
+    public void setName(String n) {
+        name = n;
+    }
+    
+    public String getName() {
+        return name;
     }
     
     public void connectIn(Link in) {

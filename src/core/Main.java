@@ -10,6 +10,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import settheory.SetPanel;
+import circuit.CircuitPanel;
 import edgetrigger.EdgeTriggerPanel;
 
 /**
@@ -39,14 +40,17 @@ public class Main {
         archPanel.add(new HammingPanel());
         archPanel.add(new EdgeTriggerPanel());
         
+      //Put the JComboBox in a JPanel to get a nicer look.
+        CircuitPanel circuits = new CircuitPanel();
+        
         tabbedPane.addTab("Architecture", null, archPanel, "COMP 2721");
         tabbedPane.addTab("Math", null, new SetPanel(), "COMP 2121");
+        tabbedPane.addTab("Circuits", null, circuits, "Math, Arch");
         
-//        JPanel panel = new JPanel();
-//        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         
         frame.add(tabbedPane);
         frame.pack();
+        circuits.focusAll();
         frame.setVisible(true);
     }
 }

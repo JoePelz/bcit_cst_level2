@@ -103,6 +103,7 @@ public class GateAnd extends Gate {
                 out = false;
                 break;
             }
+//            System.out.print("(" + getName() + ") input " + l.getPortIn() + ": " + l.getGateOut().getState() + ",  ");
             if (l.getGateOut().getState() != GateState.ON) {
                 out = false;
                 break;
@@ -110,21 +111,24 @@ public class GateAnd extends Gate {
         }
         if (out) {
             if (getState() != GateState.ON) {
+//                System.out.println(this.toString() + " flipped on!");
                 setState(GateState.ON);
                 return 1;
             }
         } else {
             if (getState() != GateState.OFF) {
+//                System.out.println(this.toString() + " flipped off!");
                 setState(GateState.OFF);
                 return 1;
             }
         }
+//        System.out.println(this.toString() + " didn't change.");
         return 0;
     }
 
     @Override
     public String toString() {
-        return "Gate And: " + super.toString();
+        return "gateAnd (" + ((!getName().equals("")) ? getName() : super.toString()) + ")";
     }
 
     public Rectangle getBounds() {

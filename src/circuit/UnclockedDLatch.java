@@ -10,7 +10,6 @@ import gui.shapes.GateOr;
 import gui.shapes.GatePin;
 import gui.shapes.GateState;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -20,7 +19,7 @@ import java.awt.Graphics2D;
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
-public class DLatch extends Circuit {
+public class UnclockedDLatch extends Circuit {
     private static final long serialVersionUID = 442544548172570492L;
     
     private Font font = new Font("Consolas", Font.PLAIN, 15);
@@ -43,10 +42,7 @@ public class DLatch extends Circuit {
     private GatePin pinNotQ = new GatePin(350, 100, 2);
     private GatePin pinQ = new GatePin(350, 200, 2);
     
-    public DLatch() {
-        Dimension size = new Dimension(800, 500);
-        setPreferredSize(size);
-        setMaximumSize(size);
+    public UnclockedDLatch() {
 
         norTop.setVariation(GateOr.NOR);
         norBottom.setVariation(GateOr.NOR);
@@ -96,7 +92,7 @@ public class DLatch extends Circuit {
         Gate.connect(pin7, -1, pin4, 0);
         Gate.connect(pin4, -1, pin6, 0);
         Gate.connect(pin3, -1, pin5, 0);
-
+        
         calcCircuit(20);
     }
     
@@ -111,20 +107,6 @@ public class DLatch extends Circuit {
             gate.drawFill(g);
             gate.drawStroke(g);
         }
-        
-        // Debug text
-        /*
-        g.setColor(Color.BLUE);
-        for(Gate gate : gates) {
-            Point p = gate.getPosition();
-            if (gate.getState() == GateState.ON)
-                g.drawString("1", p.x, p.y - 15);
-            else if (gate.getState() == GateState.OFF)
-                g.drawString("0", p.x, p.y - 15);
-            else if (gate.getState() == GateState.NULL)
-                g.drawString("n/a", p.x, p.y - 15);
-        }
-        // */
     }
     
 }

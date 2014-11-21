@@ -9,7 +9,6 @@ import gui.shapes.GateOr;
 import gui.shapes.GatePin;
 import gui.shapes.GateState;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -42,9 +41,6 @@ public class SRLatch extends Circuit {
     private GatePin pinQ = new GatePin(310, 200, 2);
     
     public SRLatch() {
-        Dimension size = new Dimension(800, 500);
-        setPreferredSize(size);
-        setMaximumSize(size);
         
         norTop.setVariation(GateOr.NOR);
         norBottom.setVariation(GateOr.NOR);

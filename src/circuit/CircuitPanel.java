@@ -3,37 +3,60 @@
  */
 package circuit;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.TitledBorder;
 
 /**
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
-public class CircuitPanel extends JPanel {
+public class CircuitPanel extends JPanel implements ItemListener {
     private static final long serialVersionUID = -1712387296868793108L;
+    private JPanel circuits = new JPanel(new CardLayout());
 
-//    private EdgeTriggerGraphic graphic;
-    private Circuit circuit;
-    
     public CircuitPanel() {
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setLayout(new BorderLayout());
         
-        //Add an image panel
-        addGraphicsPanel();
+        TitledBorder myBorder = BorderFactory.createTitledBorder("Interactive Circuits");
+        circuits.setBorder(myBorder);
+        
+        circuitPresets circuitList[] = circuitPresets.values();
+        JPanel comboBoxPane = new JPanel(); //use FlowLayout
+        String comboBoxItems[] = new String[circuitList.length];
+        for (int i = 0; i < circuitList.length; i++) {
+            circuits.add(circuitList[i].getCircuit(), circuitList[i].getName());
+            comboBoxItems[i] = circuitList[i].getName();
+        }
+        JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
+        cb.setEditable(false);
+        cb.addItemListener(this);
+        comboBoxPane.add(cb);
+        add(comboBoxPane, BorderLayout.PAGE_START);
+        add(circuits, BorderLayout.CENTER);
     }
     
-    private void addGraphicsPanel() {
-//        circuit = new DLatch();
-//        circuit = new SRLatch();
-//        circuit = new HalfAdder();
-        circuit = new FullAdder();
-//        circuit = new CamTest();
-        add(circuit);
+    public void focusAll() {
+        for (int i = 0; i < circuits.getComponentCount(); i++) {
+            Circuit c = (Circuit) circuits.getComponent(i);
+            c.focusView();
+        }
+    }
+    
+    @Override
+    public void itemStateChanged(ItemEvent evt) {
+        CardLayout cl = (CardLayout)(circuits.getLayout());
+        cl.show(circuits, (String)evt.getItem());
     }
 
     public static void main(String[] args) {
@@ -49,11 +72,39 @@ public class CircuitPanel extends JPanel {
         }
         
         CircuitPanel etp = new CircuitPanel();
-
+        
+        
         frame.add(etp);
         frame.pack();
+        frame.setSize(600, 400);
+        frame.validate();
+        etp.focusAll();
         frame.setVisible(true);
-        etp.circuit.focusView();
     }
 
+    private enum circuitPresets {
+//        C_CT("Cam Test", new CamTest()),
+        C_HA("Half Adder", new HalfAdder()),
+        C_FA("Full Adder", new FullAdder()),
+        C_SRL("SR Latch", new SRLatch()),
+        C_CDL("Clocked D Latch", new ClockedDLatch()),
+        C_UDL("Unclocked D Latch", new UnclockedDLatch()),
+        C_FF("D Flip-Flop", new FlipFlop());
+        
+        private String name;
+        private Circuit circuit;
+        
+        circuitPresets(String name, Circuit circuit) {
+            this.name = name;
+            this.circuit = circuit;
+        }
+
+        public String getName() {
+            return name;
+        }
+        
+        public Circuit getCircuit() {
+            return circuit;
+        }
+    }
 }
