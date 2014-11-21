@@ -27,7 +27,7 @@ public class FlipFlop extends Circuit {
     private GateOr norBottom  = new GateOr(190, 200, 2);
     private GateAnd andTop    = new GateAnd(100, 90, 2);
     private GateAnd andBottom = new GateAnd(100, 210, 2);
-    private GateNot not = new GateNot(10, 220, 2);
+    private GateNot not = new GateNot(30, 220, 2);
     private GateEdgeTrigger get = new GateEdgeTrigger(-90, 140, 2);
 
     private GateInput inputD = new GateInput(-100, 80, 2, GateState.OFF);
@@ -39,8 +39,8 @@ public class FlipFlop extends Circuit {
     private GatePin pin6 = new GatePin(170, 190, 2);
     private GatePin pin7 = new GatePin(280, 130, 2);
     private GatePin pin8 = new GatePin(280, 170, 2);
-    private GatePin pin9 = new GatePin(-10, 80, 2);
-    private GatePin pin10 = new GatePin(-10, 220, 2);
+    private GatePin pin9 = new GatePin(10, 80, 2);
+    private GatePin pin10 = new GatePin(10, 220, 2);
     
     private GatePin pinNotQ = new GatePin(350, 100, 2);
     private GatePin pinQ = new GatePin(350, 200, 2);
