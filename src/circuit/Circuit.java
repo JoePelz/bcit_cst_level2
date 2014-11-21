@@ -15,6 +15,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -25,6 +27,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 /**
  * 
@@ -41,6 +44,8 @@ public class Circuit extends JPanel {
     private Point mouseStart = new Point();
     private double scale = 1.0;
     private AffineTransform transform = new AffineTransform();
+    
+    private Timer EdgeTriggerDelay;
     
     public Circuit() {
         //add keyboard listener that will let you press F and 
@@ -93,6 +98,16 @@ public class Circuit extends JPanel {
                 repaint();
             }
         });
+        
+        EdgeTriggerDelay = new Timer(500, new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcCircuit(20);
+                repaint();
+            }
+        });
+        EdgeTriggerDelay.setRepeats(false);
     }
 
     private void updateTransform() {
@@ -163,7 +178,14 @@ public class Circuit extends JPanel {
             }
         }
         if (hasEdgeTriggers) {
-            calcCircuit(maxIterations);
+            repaint();
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
+//                System.out.println("oops.");
+//            }
+//            calcCircuit(maxIterations);
+            EdgeTriggerDelay.start();
         }
     }
     
