@@ -21,7 +21,6 @@ public class GateEdgeTrigger extends Gate {
     private GateInput p2;
     private GatePin p3;
 
-    private GateState oldState = GateState.UNKNOWN;
     private GateState input = GateState.UNKNOWN;
     private GateState oldInput = GateState.UNKNOWN;
 
@@ -113,14 +112,6 @@ public class GateEdgeTrigger extends Gate {
         
         setInput(input);
         return 1;
-    }
-
-    public GateState getOldState() {
-        return oldState;
-    }
-
-    public void setOldState(GateState oldState) {
-        this.oldState = oldState;
     }
 
     public GateState getInput() {

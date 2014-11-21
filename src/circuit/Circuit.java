@@ -45,6 +45,8 @@ public class Circuit extends JPanel {
     private double scale = 1.0;
     private AffineTransform transform = new AffineTransform();
     
+    private boolean isCalculated;
+    
     private Timer EdgeTriggerDelay;
     
     public Circuit() {
@@ -99,11 +101,11 @@ public class Circuit extends JPanel {
             }
         });
         
-        EdgeTriggerDelay = new Timer(500, new ActionListener(){
+        EdgeTriggerDelay = new Timer(250, new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                calcCircuit(20);
+                setCalculated(false);
                 repaint();
             }
         });
@@ -124,6 +126,9 @@ public class Circuit extends JPanel {
     @Override
     protected void paintComponent(Graphics g1) {
         super.paintComponent(g1);
+        if (!isCalculated()) {
+            calcCircuit(20);
+        }
         
         Graphics2D g = (Graphics2D) g1;
         
@@ -153,11 +158,13 @@ public class Circuit extends JPanel {
                 
                 if (g instanceof GateEdgeTrigger) {
                     GateEdgeTrigger get = (GateEdgeTrigger) g;
-                    if (get.getInput() == GateState.ON 
-                            && get.getInput() != get.getOldState() 
+                    if (get.getInput() == GateState.ON  
                             && get.getInput() != get.getOldInput()) {
                         get.setState(GateState.ON);
                         hasEdgeTriggers = true;
+                    } else if (get.getInput() == get.getOldInput()) {
+                        get.setState(GateState.OFF);
+                        hasEdgeTriggers = false;
                     }
                 }
             }
@@ -172,21 +179,15 @@ public class Circuit extends JPanel {
         for(Gate g : gates) {
             if (g instanceof GateEdgeTrigger) {
                 GateEdgeTrigger get = (GateEdgeTrigger) g;
-                get.setOldState(get.getState());
-                get.setState(GateState.OFF);
                 get.setOldInput(get.getInput());
             }
         }
         if (hasEdgeTriggers) {
-            repaint();
-//            try {
-//                Thread.sleep(5000);
-//            } catch (InterruptedException e) {
-//                System.out.println("oops.");
-//            }
-//            calcCircuit(maxIterations);
             EdgeTriggerDelay.start();
         }
+        
+        setCalculated(true);
+        
     }
     
     protected void wire(Graphics2D g, int x1, int y1, int x2, int y2, int thickness) {
@@ -233,7 +234,7 @@ public class Circuit extends JPanel {
         }
 //        System.out.printf("Clicked at {%d, %d} near a %s\n", click.x, click.y, closest);
         closest.perform(x, y);
-        calcCircuit();
+        setCalculated(false);
         repaint();
     }
     
@@ -299,5 +300,13 @@ public class Circuit extends JPanel {
         
         updateTransform();
         repaint();
+    }
+
+    public boolean isCalculated() {
+        return isCalculated;
+    }
+
+    public void setCalculated(boolean isCalculated) {
+        this.isCalculated = isCalculated;
     }
 }
