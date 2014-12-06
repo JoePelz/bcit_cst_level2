@@ -170,6 +170,45 @@ public abstract class Gate extends Shape {
         if (!valid) 
             updatePoints();
 
+        
+        
+        //Draw input connections. (links)
+        g.setStroke(new BasicStroke((float) (thickness * getTransform().getScaleY())));
+        for (Link link : inputPorts) {
+            if (link != null) {
+                Point a = link.getGateOut().getOutput(link.getPortOut());
+                AffineTransform a_at = link.getGateOut().getTransform();
+                Point b = getInput(link.getPortIn());
+                AffineTransform b_at = getTransform();
+                
+                a_at.transform(a, a);
+                b_at.transform(b, b);
+                
+                if (link.getGateOut().getState() == GateState.ON) {
+                    g.setColor(backgroundOn);
+                } else {
+                    g.setColor(strokeOff);
+                }
+                if (link.getStyle() == Link.HVH && a.y != b.y) {
+                    g.drawLine(a.x, a.y, (b.x + a.x) / 2, a.y);
+                    g.drawLine((b.x + a.x) / 2, a.y, (b.x + a.x) / 2, b.y);
+                    g.drawLine((b.x + a.x) / 2, b.y, b.x, b.y);
+                } else if (link.getStyle() == Link.VHV && a.x != b.x) {
+                    g.drawLine(a.x, a.y, a.x, (a.y + b.y) / 2);
+                    g.drawLine(a.x, (a.y + b.y) / 2, b.x, (a.y + b.y) / 2);
+                    g.drawLine(b.x, (a.y + b.y) / 2, b.x, b.y);
+                } else if (link.getStyle() == Link.HV) {
+                    g.drawLine(a.x, a.y, b.x, a.y);
+                    g.drawLine(b.x, a.y, b.x, b.y);
+                } else if (link.getStyle() == Link.VH) {
+                    g.drawLine(a.x, a.y, a.x, b.y);
+                    g.drawLine(a.x, b.y, b.x, b.y);
+                } else {
+                    g.drawLine(a.x, a.y, b.x, b.y);
+                }
+            }
+        }
+        
         //color by state
         if (enabled == GateState.ON) { 
             g.setColor(strokeOn);
@@ -187,28 +226,6 @@ public abstract class Gate extends Shape {
             g.drawPolyline(p.xpoints, p.ypoints, p.npoints);
         }
         g.setTransform(at_old);
-        
-        //draw input connections.
-
-        g.setStroke(new BasicStroke((float) (thickness * getTransform().getScaleY())));
-        for (Link link : inputPorts) {
-            if (link != null) {
-                Point a = link.getGateOut().getOutput(link.getPortOut());
-                AffineTransform a_at = link.getGateOut().getTransform();
-                Point b = getInput(link.getPortIn());
-                AffineTransform b_at = getTransform();
-                
-                a_at.transform(a, a);
-                b_at.transform(b, b);
-                
-                if (link.getGateOut().getState() == GateState.ON) {
-                    g.setColor(backgroundOn);
-                } else {
-                    g.setColor(strokeOff);
-                }
-                g.drawLine(a.x, a.y, b.x, b.y);
-            }
-        }
     }
 
     @Override
@@ -266,11 +283,18 @@ public abstract class Gate extends Shape {
     public void setStrokeOff(Color strokeOff) {
         this.strokeOff = strokeOff;
     }
-    
+
     public static void connect(Gate gateOut, int portOut, Gate gateIn, int portIn) {
         Link link = new Link(gateOut, portOut, gateIn, portIn);
         gateOut.connectOut(link);
         gateIn.connectIn(link);
+    }
+    
+    public static void connect(Gate gateOut, int portOut, Gate gateIn, int portIn, int style) {
+        Link link = new Link(gateOut, portOut, gateIn, portIn);
+        gateOut.connectOut(link);
+        gateIn.connectIn(link);
+        link.setStyle(style);
     }
 
     /**

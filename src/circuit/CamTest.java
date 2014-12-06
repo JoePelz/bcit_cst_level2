@@ -40,15 +40,4 @@ public class CamTest extends Circuit {
         gates.add((Gate)circle3);
         gates.add((Gate)circle4);
     }
-    
-    @Override
-    public void paintComponent(Graphics g1) {
-        super.paintComponent(g1);
-        Graphics2D g = (Graphics2D) g1;
-        
-        circle1.drawStroke(g);
-        circle2.drawStroke(g);
-        circle3.drawStroke(g);
-        circle4.drawStroke(g);
-    }
 }

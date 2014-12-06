@@ -5,6 +5,8 @@ package circuit;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -44,6 +46,13 @@ public class CircuitPanel extends JPanel implements ItemListener {
         comboBoxPane.add(cb);
         add(comboBoxPane, BorderLayout.PAGE_START);
         add(circuits, BorderLayout.CENTER);
+        
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                focusAll();
+            }
+        });
     }
     
     public void focusAll() {
@@ -57,6 +66,7 @@ public class CircuitPanel extends JPanel implements ItemListener {
     public void itemStateChanged(ItemEvent evt) {
         CardLayout cl = (CardLayout)(circuits.getLayout());
         cl.show(circuits, (String)evt.getItem());
+        
     }
 
     public static void main(String[] args) {
@@ -76,7 +86,7 @@ public class CircuitPanel extends JPanel implements ItemListener {
         
         frame.add(etp);
         frame.pack();
-        frame.setSize(600, 400);
+        frame.setSize(1200, 800);
         frame.validate();
         etp.focusAll();
         frame.setVisible(true);
@@ -86,6 +96,8 @@ public class CircuitPanel extends JPanel implements ItemListener {
 //        C_CT("Cam Test", new CamTest()),
         C_HA("Half Adder", new HalfAdder()),
         C_FA("Full Adder", new FullAdder()),
+        C_DEC("Decoder", new Decoder()),
+        C_ALU("Arithmetic Logic Unit", new SimpleALU()),
         C_SRL("SR Latch", new SRLatch()),
         C_CDL("Clocked D Latch", new ClockedDLatch()),
         C_UDL("Unclocked D Latch", new UnclockedDLatch()),

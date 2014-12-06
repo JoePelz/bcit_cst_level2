@@ -9,10 +9,7 @@ import gui.shapes.GateNot;
 import gui.shapes.GateOr;
 import gui.shapes.GatePin;
 import gui.shapes.GateState;
-
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import gui.shapes.Link;
 
 /**
  * 
@@ -22,8 +19,6 @@ import java.awt.Graphics2D;
 public class UnclockedDLatch extends Circuit {
     private static final long serialVersionUID = 442544548172570492L;
     
-    private Font font = new Font("Consolas", Font.PLAIN, 15);
-
     private GateOr norTop    = new GateOr(190, 100, 2);
     private GateOr norBottom = new GateOr(190, 200, 2);
     private GateNot not = new GateNot(90, 210, 2);
@@ -38,7 +33,6 @@ public class UnclockedDLatch extends Circuit {
     private GatePin pin7 = new GatePin(280, 130, 2);
     private GatePin pin8 = new GatePin(280, 170, 2);
     private GatePin pin9 = new GatePin(50, 90, 2);
-    private GatePin pin10 = new GatePin(50, 210, 2);
     private GatePin pinNotQ = new GatePin(350, 100, 2);
     private GatePin pinQ = new GatePin(350, 200, 2);
     
@@ -60,7 +54,6 @@ public class UnclockedDLatch extends Circuit {
         gates.add(pin7);
         gates.add(pin8);
         gates.add(pin9);
-        gates.add(pin10);
         gates.add(pinNotQ);
         gates.add(pinQ);
         
@@ -75,8 +68,7 @@ public class UnclockedDLatch extends Circuit {
         Gate.connect(inputD, -1, pin9, 0);
         Gate.connect(pin9, -1, norTop, 0);
         Gate.connect(pin5, -1, norTop, 1);
-        Gate.connect(pin9, -1, pin10, 0);
-        Gate.connect(pin10, -1, not, 0);
+        Gate.connect(pin9, -1, not, 0, Link.VH);
 
         Gate.connect(pin6, -1, norBottom, 0);
         Gate.connect(not, -1, norBottom, 1);
@@ -88,25 +80,11 @@ public class UnclockedDLatch extends Circuit {
 
         Gate.connect(pin1, -1, pin7, 0);
         Gate.connect(pin2, -1, pin8, 0);
-        Gate.connect(pin8, -1, pin3, 0);
-        Gate.connect(pin7, -1, pin4, 0);
+        Gate.connect(pin8, -1, pin3, 0, Link.STRAIGHT);
+        Gate.connect(pin7, -1, pin4, 0, Link.STRAIGHT);
         Gate.connect(pin4, -1, pin6, 0);
         Gate.connect(pin3, -1, pin5, 0);
         
         calcCircuit(20);
     }
-    
-    @Override
-    public void paintComponent(Graphics g1) {
-        super.paintComponent(g1);
-        Graphics2D g = (Graphics2D) g1;
-        
-        g.setFont(font);
-        //draw stuff.
-        for (Gate gate : gates) {
-            gate.drawFill(g);
-            gate.drawStroke(g);
-        }
-    }
-    
 }

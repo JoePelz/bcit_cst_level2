@@ -1,6 +1,3 @@
-/**
- * 
- */
 package circuit;
 
 import gui.shapes.Gate;
@@ -10,6 +7,7 @@ import gui.shapes.GateState;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -36,6 +34,8 @@ import javax.swing.Timer;
  */
 public class Circuit extends JPanel {
     private static final long serialVersionUID = 8065048015230286579L;
+
+    private static Font font = new Font("Consolas", Font.PLAIN, 15);
     
     protected ArrayList<Gate> gates = new ArrayList<Gate>();
 
@@ -135,6 +135,13 @@ public class Circuit extends JPanel {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g.transform(getTransform());
+        
+        g.setFont(font);
+        //draw stuff.
+        for (Gate gate : gates) {
+            gate.drawFill(g);
+            gate.drawStroke(g);
+        }
     }
 
     public void calcCircuit() {
