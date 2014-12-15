@@ -14,6 +14,9 @@ import circuit.CircuitPanel;
 import edgetrigger.EdgeTriggerPanel;
 
 /**
+ * This class is the entry point for the full program. 
+ * It creates a window frame, with tabs, 
+ * and puts appropriate panels into those tabs.
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
@@ -46,9 +49,8 @@ public class Main {
         tabbedPane.addTab("Architecture", null, archPanel, "COMP 2721");
         tabbedPane.addTab("Math", null, new SetPanel(), "COMP 2121");
         tabbedPane.addTab("Circuits", null, circuits, "Math, Arch");
-        
-        
         frame.add(tabbedPane);
+        
         frame.pack();
         circuits.focusAll();
         frame.setVisible(true);

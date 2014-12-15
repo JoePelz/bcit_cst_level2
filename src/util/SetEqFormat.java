@@ -1,6 +1,3 @@
-/**
- * 
- */
 package util;
 
 import java.text.FieldPosition;
@@ -10,20 +7,28 @@ import java.text.ParsePosition;
 import settheory.SetsEquation;
 
 /**
- * 
+ * This class 
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
 public class SetEqFormat extends Format{
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = -3159208893249662145L;
 
-    public boolean isValidChar(char c) {
+    /**
+     * Check if a given character is a valid charcter 
+     * in a Set equation string.
+     * 
+     * @param c the character to check
+     * @return true if the character is valid. false otherwise.
+     */
+    public static boolean isValidChar(char c) {
         if (c == ' ' 
                 || c == '(' 
                 || c == ')' 
                 || (c >= 'A' && c <= 'D') 
                 || c == '+' 
-                || c == '∪' 
+                || c == '∪'
                 || c == '-' 
                 || c == '*' 
                 || c == '∩' 
@@ -34,9 +39,6 @@ public class SetEqFormat extends Format{
         return false;
     }
     
-    /* (non-Javadoc)
-     * @see java.text.Format#format(java.lang.Object, java.lang.StringBuffer, java.text.FieldPosition)
-     */
     @Override
     public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
         String src = obj.toString();
@@ -56,9 +58,6 @@ public class SetEqFormat extends Format{
         return toAppendTo;
     }
 
-    /* (non-Javadoc)
-     * @see java.text.Format#parseObject(java.lang.String, java.text.ParsePosition)
-     */
     @Override
     public Object parseObject(String source, ParsePosition pos) {
         if (pos == null || source == null) {
@@ -78,12 +77,6 @@ public class SetEqFormat extends Format{
             pos.setErrorIndex(source.length());
         }
         
-        /*
-        if (source.length() == 0)
-            return null;
-        else
-            return source;
-        */
         return source;
     }
 

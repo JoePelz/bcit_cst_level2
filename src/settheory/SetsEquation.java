@@ -7,23 +7,33 @@ import java.util.HashMap;
 
 
 /**
+ * This class holds a String equation 
+ * and the calculated result of computing that equation.
+ * 
+ * 
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
 public class SetsEquation {
-    private static final String[] CBNS = {"U", "A", "B", "C", "D", 
-        "AB", "AC", "AD", "BC", "BD", "CD", 
-        "ABC", "ABD", "ACD", "BCD", "ABCD"};
+    /** The equation itself, stored as a string */
     private final String givenEquation;
+    /** The computed result of <code>givenEquation</code>. */
     private SetsState results;
+    /** Internal reference associating letters with SetsStates. */
     private HashMap<Character, SetsState> refs = new HashMap<Character, SetsState>();
+    /** The next available index in the above internal reference. */
     private char refs_i = 'A';
     
+    /**
+     * Constructor, gets rid of spaces and 
+     * replaces all weird symbols with a more consistent 
+     * set of symbols: + / * / ^  
+     * @param eq The string holding the equation.
+     */
     public SetsEquation(final String eq) {
         String transform = eq.replaceAll(" ", "");
         transform = transform.replaceAll("∪", "+");
-        transform = transform.replaceAll("∩", "*");
         transform = transform.replaceAll("∩", "*");
         transform = transform.replaceAll("∆", "^");
         givenEquation = transform;
@@ -32,10 +42,23 @@ public class SetsEquation {
         results = parseEquation(substituteSets(givenEquation));
     }
 
+    /**
+     * Get the original String equation for this object.
+     * 
+     * @return The source String for the object.
+     */
     public String getEquation() {
         return givenEquation;
     }
     
+    /**
+     * Check if a given character is one of the reserved 
+     * operation characters or not. 
+     * <p>Chars include: <code>(, ), +, -, \, *, ^</code></p>
+     * 
+     * @param c The character to check.
+     * @return true if the character is part of the reserved set.
+     */
     private boolean reserved(char c) {
         if (c == '(' 
                 || c == ')'
@@ -49,6 +72,13 @@ public class SetsEquation {
         return false;
     }
     
+    /**
+     * Replaces constants (A, B, ...) in the equation
+     * with SetsState instances holding the state of the diagram.
+     * 
+     * @param eq The equation string to operate on.
+     * @return The equation string, with constants replaced by references to SetsStates (using <code>refs</code>)
+     */
     private String substituteSets(final String eq) {
         String output;
         StringBuffer newString = new StringBuffer(eq.length());
@@ -67,6 +97,15 @@ public class SetsEquation {
         return output;
     }
     
+    /**
+     * <p>Calculate the final result of the givenEquation.</p>
+     * <p>Use order of operations and parse the inner-most 
+     * operation until only the final value</p>
+     * 
+     * @param eq The equation to parse, that has 
+     *      already had each constant substituted via substituteSets
+     * @return The final SetsState, parsed from the equation.
+     */
     private SetsState parseEquation(String eq) {
         if (eq.length() == 0) {
             return new SetsState();
@@ -215,26 +254,12 @@ public class SetsEquation {
         
         return refs.get(eq.charAt(0));
     }
-
-    public static HashMap<String, Boolean> getSimpleMap(final String SetLetter) {
-        return getSimpleMap(SetLetter.charAt(0));
-    }
-
-    public static HashMap<String, Boolean> getSimpleMap(final char SetLetter) {
-        HashMap<String, Boolean> map = new HashMap<String, Boolean>();
-        for (String s : CBNS) {
-            if (s.indexOf(SetLetter) != -1) {
-                map.put(s, true);
-            } else {
-                map.put(s, false);
-            }
-        }
-        return map;
-    }
     
     /**
+     * Get the state of a particular region in the resulting Venn diagram. 
      * 
-     * @param target the venn section you want, boolean eg: A, CD, CDB, U 
+     * @param target the Venn region you want, boolean eg: A, CD, CDB, U 
+     * @return True if the venn region is 'on'.
      */
     public boolean getVennSection(String target) {
         return results.get(target);

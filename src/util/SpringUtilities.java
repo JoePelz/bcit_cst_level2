@@ -45,6 +45,8 @@ public class SpringUtilities {
     /**
      * A debugging utility that prints to stdout the component's
      * minimum, preferred, and maximum sizes.
+     * 
+     * @param c The component to analyze
      */
     public static void printSizes(Component c) {
         System.out.println("minimumSize = " + c.getMinimumSize());
@@ -59,6 +61,7 @@ public class SpringUtilities {
      * preferred width and height of the components.
      * The parent is made just big enough to fit them all.
      *
+     * @param parent parent container
      * @param rows number of rows
      * @param cols number of columns
      * @param initialX x location to start the grid at
@@ -145,6 +148,15 @@ public class SpringUtilities {
     }
 
     /* Used by makeCompactGrid. */
+    /**
+     * Used by makeCompactGrid.
+     * 
+     * @param row the row of the target cell
+     * @param col the column of the target cell
+     * @param parent the parent component to search
+     * @param cols the number of columns in the grid
+     * @return The constraints associated with the given cell
+     */
     private static SpringLayout.Constraints getConstraintsForCell(
                                                 int row, int col,
                                                 Container parent,
@@ -162,6 +174,7 @@ public class SpringUtilities {
      * height is similarly determined for each row.
      * The parent is made just big enough to fit them all.
      *
+     * @param parent the component to analyze
      * @param rows number of rows
      * @param cols number of columns
      * @param initialX x location to start the grid at

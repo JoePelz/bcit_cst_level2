@@ -9,32 +9,62 @@ import javax.swing.ImageIcon;
 
 import util.Utils;
 
+/**
+ * A Venn diagram with four overlapping circles, 
+ * 
+ * @author Joe Pelz - A00893517
+ * @version 1.0
+ */
 public class Venn4 extends Venn {
 
     /** Random generated serial id. */
     private static final long serialVersionUID = 1773275490065175902L;
+    /** The image of the outlines of the shapes. 
+     * (a quartet of black overlapping circle) */
     private BufferedImage iOutline;
+    /** An image of the A region, shaded. */
+    /** An image of the A region, shaded. */
     private BufferedImage iA;
+    /** An image of the B region, shaded. */
     private BufferedImage iB;
+    /** An image of the C region, shaded. */
     private BufferedImage iC;
+    /** An image of the C region, shaded. */
     private BufferedImage iD;
+    /** An image of the AB region, shaded. */
     private BufferedImage iAB;
+    /** An image of the AC region, shaded. */
     private BufferedImage iAC;
-    private BufferedImage iAD;
+    /** An image of the BC region, shaded. */
     private BufferedImage iBC;
+    /** An image of the AD region, shaded. */
+    private BufferedImage iAD;
+    /** An image of the BD region, shaded. */
     private BufferedImage iBD;
+    /** An image of the CD region, shaded. */
     private BufferedImage iCD;
+    /** An image of the ABC region, shaded. */
     private BufferedImage iABC;
+    /** An image of the ABD region, shaded. */
     private BufferedImage iABD;
+    /** An image of the ACD region, shaded. */
     private BufferedImage iACD;
+    /** An image of the BCD region, shaded. */
     private BufferedImage iBCD;
+    /** An image of the ABCD region, shaded. */
     private BufferedImage iABCD;
+    /** An image of the universe, shaded. */
     private BufferedImage iU;
+    /** A construction object for loading images. */
     @SuppressWarnings("unused")
     private ImageIcon image;
     
+    /** The current state of the diagram. */
     SetsEquation map;
 
+    /**
+     * Construct a Venn diagram with three circles.
+     */
     public Venn4() {
         Toolkit defToolkit = Toolkit.getDefaultToolkit();
         String base = "/images/";
@@ -159,6 +189,8 @@ public class Venn4 extends Venn {
                 g.drawImage(iABCD, 0, 0, null);
         }
     }
+    
+    @Override
     public void setMap(SetsEquation calc) {
         map = calc;
     }

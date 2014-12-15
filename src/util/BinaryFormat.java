@@ -1,6 +1,3 @@
-/**
- * 
- */
 package util;
 
 import java.text.FieldPosition;
@@ -8,16 +5,16 @@ import java.text.Format;
 import java.text.ParsePosition;
 
 /**
+ * Format class, to parse a string 
+ * and check if it's valid as binary or not. 
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
 public class BinaryFormat extends Format{
+    /** Unique id for serialization. */
     private static final long serialVersionUID = -3159208893249662145L;
 
-    /* (non-Javadoc)
-     * @see java.text.Format#format(java.lang.Object, java.lang.StringBuffer, java.text.FieldPosition)
-     */
     @Override
     public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
         String src = obj.toString();
@@ -37,9 +34,6 @@ public class BinaryFormat extends Format{
         return toAppendTo;
     }
 
-    /* (non-Javadoc)
-     * @see java.text.Format#parseObject(java.lang.String, java.text.ParsePosition)
-     */
     @Override
     public Object parseObject(String source, ParsePosition pos) {
         if (pos == null || source == null) {

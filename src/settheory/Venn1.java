@@ -9,18 +9,34 @@ import javax.swing.ImageIcon;
 
 import util.Utils;
 
+/**
+ * One-region venn diagram. 
+ * Not very useful, but included for completeness.
+ * 
+ * @author Joe Pelz
+ * @version 1.0
+ */
 public class Venn1 extends Venn {
 
     /** Random generated serial id. */
     private static final long serialVersionUID = 1773275490065175902L;
+    /** The image of the outline of the shapes. (a black circle) */
     private BufferedImage iOutline;
+    /** The image of A region, filled in. */
     private BufferedImage iA;
+    /** The image of the universe outside of any shapes. */
     private BufferedImage iU;
+    /** A construction object for loading images. */
     @SuppressWarnings("unused")
     private ImageIcon image;
     
+    /** The current state of the diagram. */
     SetsEquation map;
 
+    /**
+     * Construct a venn diagram with 1 circle.
+     * Not particularly useful, but included for completeness.
+     */
     public Venn1() {
         Toolkit defToolkit = Toolkit.getDefaultToolkit();
         String base = "/images/";
@@ -58,6 +74,7 @@ public class Venn1 extends Venn {
         }
     }
 
+    @Override
     public void setMap(SetsEquation calc) {
         map = calc;
     }

@@ -9,24 +9,45 @@ import javax.swing.ImageIcon;
 
 import util.Utils;
 
+/**
+ * A Venn diagram with three overlapping circles, 
+ * 
+ * @author Joe Pelz - A00893517
+ * @version 1.0
+ */
 public class Venn3 extends Venn {
 
     /** Random generated serial id. */
     private static final long serialVersionUID = 1773275490065175902L;
+    /** The image of the outlines of the shapes. 
+     * (a trio of black overlapping circle) */
     private BufferedImage iOutline;
+    /** An image of the A region, shaded. */
     private BufferedImage iA;
+    /** An image of the B region, shaded. */
     private BufferedImage iB;
+    /** An image of the C region, shaded. */
     private BufferedImage iC;
+    /** An image of the AB region, shaded. */
     private BufferedImage iAB;
+    /** An image of the AC region, shaded. */
     private BufferedImage iAC;
+    /** An image of the BC region, shaded. */
     private BufferedImage iBC;
+    /** An image of the ABC region, shaded. */
     private BufferedImage iABC;
+    /** An image of the Universe region, shaded. */
     private BufferedImage iU;
+    /** A construction object for loading images. */
     @SuppressWarnings("unused")
     private ImageIcon image;
     
+    /** The current state of the diagram. */
     SetsEquation map;
 
+    /**
+     * Construct a Venn diagram with three circles.
+     */
     public Venn3() {
         Toolkit defToolkit = Toolkit.getDefaultToolkit();
         String base = "/images/";
@@ -100,6 +121,7 @@ public class Venn3 extends Venn {
         }
     }
 
+    @Override
     public void setMap(SetsEquation calc) {
         map = calc;
     }

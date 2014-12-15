@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 /**
+ * Useful reusable static methods can be placed in here. 
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0

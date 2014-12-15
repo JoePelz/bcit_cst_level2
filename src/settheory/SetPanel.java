@@ -1,6 +1,3 @@
-/**
- * 
- */
 package settheory;
 
 import gui.EquationField;
@@ -29,18 +26,24 @@ import javax.swing.border.TitledBorder;
 import util.SetEqFormat;
 
 /**
- * 
- * @author Joe Pelz - A00893517
+ * This class represents the UI panel that displays the set theory calculator.
+ * @author Joe Pelz
  * @version 1.0
  */
 public class SetPanel extends JPanel {
     /**  Unique generated identifier. */
     private static final long serialVersionUID = -6895003958115345068L;
+    // Text identifiers to indicate the number of sets to display.
+    /** The text for only 1 set. */
     private static final String varsOne = "Sets: A only";
+    /** The text for 2 sets. */
     private static final String varsTwo = "Sets: A, B";
+    /** The text for 3 sets. */
     private static final String varsThree = "Sets: A, B, C";
+    /** The text for 4 sets. */
     private static final String varsFour = "Sets: A, B, C, D";
     
+    //Buttons on the calculator pad.
     private JButton addA = new JButton("A");
     private JButton addB = new JButton("B");
     private JButton addC = new JButton("C");
@@ -53,18 +56,30 @@ public class SetPanel extends JPanel {
     private JButton addOPEN = new JButton("(");
     private JButton addCLOSE = new JButton(")");
     private JButton clear = new JButton("Clear");
+    
+    /** Equation entry box. */
     private EquationField eqBox;
     
+    /** The image of the current Venn diagram displayed. */ 
     private Venn image;
     
+    /** The calculator to store the equation and compute the result. */
     private SetsEquation calc;
     
+    /**
+     * Construct a new SetPanel, including:
+     * <ul>
+     * <li>variables selector, </li>
+     * <li>formula entry, </li>
+     * <li>calculator buttons, </li>
+     * <li>and dynamic illustration.</li>
+     * </ul> 
+     */
     public SetPanel() {
         //needs drop-down on top to choose number of variables (1, 2, 3 or 4)
         //left side has text field
         //left side has buttons for UNION / INTERSECTION / NOT
         //right side is dynamic illustration
-        //will need to be able to parse the content of the text field.
 
         setLayout(new GridBagLayout());
         
@@ -87,6 +102,7 @@ public class SetPanel extends JPanel {
         setBorder(myBorder);
     }
 
+    /** Adds a spacer to the UI; 30 pixels tall, 10 pixels wide. */
     private void addSpacer() {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
@@ -98,6 +114,7 @@ public class SetPanel extends JPanel {
         add(Spacer.Horizontal(10), c);
     }
 
+    /** Add the equation / formula text entry box. */
     private void addEquationField() {
         eqBox = new EquationField(new SetEqFormat());
         eqBox.setColumns(20);
@@ -130,8 +147,20 @@ public class SetPanel extends JPanel {
         add(eqBox, c);
     }
 
+    /**
+     * Action Listener for button clicks. This class will 
+     * add a character to the formula box when triggered.
+     * 
+     * @author Joe Pelz
+     * @version 1.0
+     */
     private class AddToEquation implements ActionListener {
+        /** The character(s) to add to the formula when triggered. */
         private final String token;
+        /**
+         * Constructor, to define the token added by this Listener.
+         * @param textToAdd The character(s) to add.
+         */
         private AddToEquation(String textToAdd) {
             token = textToAdd;
         }
@@ -151,6 +180,9 @@ public class SetPanel extends JPanel {
         }
     }
     
+    /**
+     * Add all the calculator buttons to the panel.
+     */
     private void addButtons() {
         JPanel jpButtons = new JPanel(new GridLayout(3, 4));
 
@@ -202,7 +234,12 @@ public class SetPanel extends JPanel {
         add(jpButtons, c);
     }
 
-    
+    /**
+     * Replace the dynamic image with a new image.
+     * Use the given size to determine which image to display.
+     * 
+     * @param size Which image to display.
+     */
     private void changeVenn(int size) {
         if (image != null) {
             remove(image);
@@ -235,11 +272,15 @@ public class SetPanel extends JPanel {
         add(image, c);
     }
     
+    /** Update the Venn diagram to display the current equation. */
     private void updateVenn() {
         image.setMap(calc);
         image.repaint();
     }
 
+    /** Add the selector box, to choose what Venn diagram to display,
+     * or how many variables to work with.
+     */
     private void addComboBox() {
         String comboBoxItems[] = { varsOne, varsTwo, varsThree, varsFour };
         JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
@@ -271,6 +312,12 @@ public class SetPanel extends JPanel {
         add(cb, c);
     }
     
+    /**
+     * Testing function, to run this module independently.
+     * Creates a frame that displays the venn application.
+     * 
+     * @param args unused.
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Set Theory Venn Diagrams, by Joe Pelz");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

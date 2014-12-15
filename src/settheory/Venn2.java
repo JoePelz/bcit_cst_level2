@@ -9,20 +9,38 @@ import javax.swing.ImageIcon;
 
 import util.Utils;
 
+/**
+ * A Venn diagram with two overlapping circles, 
+ * 
+ * @author Joe Pelz - A00893517
+ * @version 1.0
+ */
 public class Venn2 extends Venn {
 
     /** Random generated serial id. */
     private static final long serialVersionUID = 1773275490065175902L;
+    /** The image of the outline of the shapes. 
+     * (a pair of black overlapping circle) */
     private BufferedImage iOutline;
+    /** An image of the A region of the Venn diagram, filled in. */
     private BufferedImage iA;
+    /** An image of the AB region of the Venn diagram, filled in. */
     private BufferedImage iAB;
+    /** An image of the B region of the Venn diagram, filled in. */
     private BufferedImage iB;
+    /** An image of the Outside region of the Venn diagram,
+     *  filled in. */
     private BufferedImage iU;
+    /** A construction object for loading images. */
     @SuppressWarnings("unused")
     private ImageIcon image;
     
+    /** The current state of the diagram. */
     SetsEquation map;
 
+    /**
+     * Construct a Venn diagram with two circles.
+     */
     public Venn2() {
         Toolkit defToolkit = Toolkit.getDefaultToolkit();
         String base = "/images/";
@@ -72,6 +90,7 @@ public class Venn2 extends Venn {
         }
     }
 
+    @Override
     public void setMap(SetsEquation calc) {
         map = calc;
     }
