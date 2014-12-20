@@ -4,38 +4,53 @@ import gui.shapes.Gate;
 import gui.shapes.GateAnd;
 import gui.shapes.GateNot;
 import gui.shapes.GatePin;
-import gui.shapes.Shape;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
 /**
+ * This class represents a graphic of an Edge Trigger that
+ * can be animated by controlling the phase variable.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class EdgeTriggerGraphic extends JPanel {
+    /** unique ID for serialization. */
     private static final long serialVersionUID = -7578879378352051486L;
+    /** The current phase of the hard-coded animation. */
     private double phase = 0;
     
+    /** Rectangle to hold the clipping bounds of the panel. */
     private Rectangle r;
+    /** AND gate. */
     private GateAnd ga = new GateAnd(50, 50, 2);
+    /** AND gate. (yellow filling) */
     private GateAnd gaFILL = new GateAnd(50, 50, 2);
+    /** NOT gate. */
     private GateNot gn = new GateNot(100, 100, 2);
+    /** NOT gate. (yellow filling) */
     private GateNot gnFILL = new GateNot(100, 100, 2);
+    /** The higher of the two joints in the wires. */
     private GatePin n1 = new GatePin(0, 0, 2);
+    /** The lower of the two joints in the wires. */
     private GatePin n2 = new GatePin(0, 0, 2);
+    /** The input pin. */
     private GatePin nStart = new GatePin(0, 0, 2);
+    /** The output pin. */
     private GatePin nEnd = new GatePin(0, 0, 2);
     
+    /**
+     * Constructor, Sets some default colors. 
+     *
+     */
     public EdgeTriggerGraphic() {
         gnFILL.setBackgroundOff(Color.YELLOW);
         gaFILL.setBackgroundOff(Color.YELLOW);
@@ -89,6 +104,12 @@ public class EdgeTriggerGraphic extends JPanel {
         drawLabels(g2);
     }
     
+    /**
+     * Draw labels onto the diagram, 
+     * including 1s, 0s, and a clock icon.
+     * 
+     * @param g The graphics context to draw into.
+     */
     private void drawLabels(Graphics2D g) {
         setFont(new Font("Tahoma", Font.BOLD, w(0.05)));
         //input bit
@@ -125,6 +146,11 @@ public class EdgeTriggerGraphic extends JPanel {
         g.drawPolyline(xPoints, yPoints, 6);
     }
 
+    /**
+     * Draw the yellow glow of activated wires and gates. This varies with the value of {@code phase}.
+     * 
+     * @param g The graphics context to draw into.
+     */
     private void drawGlow(Graphics2D g) {
         double start;
         double end;
@@ -195,6 +221,11 @@ public class EdgeTriggerGraphic extends JPanel {
         wire(g, w(start), h(0.52), w(end), h(0.52), p(0.05));        
     }
 
+    /**
+     * Draw the entire circuit, all black and grey.
+     * 
+     * @param g The graphics context to draw into.
+     */
     private void drawCircuit(Graphics2D g) {
         //T wire
         //T splits
@@ -212,87 +243,130 @@ public class EdgeTriggerGraphic extends JPanel {
         n2.setThickness(thickness);
         nEnd.setThickness(thickness);
 
-//        l1.setThickness(wireThickness);
-//        l2.setThickness(wireThickness);
-//        l3.setThickness(wireThickness);
-//        l4.setThickness(wireThickness);
-//        l5.setThickness(wireThickness);
-//        l6.setThickness(wireThickness);
-
         gn.drawStroke(g);
         ga.drawStroke(g);
         nStart.drawStroke(g);
         n1.drawStroke(g);
         n2.drawStroke(g);
         nEnd.drawStroke(g);
-//        l1.drawStroke(g);
-//        l2.drawStroke(g);
-//        l3.drawStroke(g);
-//        l4.drawStroke(g);
-//        l5.drawStroke(g);
-//        l6.drawStroke(g);
     }
 
+    /**
+     * Draw a wire. (a rectangle line.)
+     * 
+     * @param g The graphics context to draw into.
+     * @param x1 The starting x position
+     * @param y1 The starting y position
+     * @param x2 The ending x position
+     * @param y2 The ending y position
+     * @param thickness The thickness of the wire to draw
+     */
     private void wire(Graphics2D g, int x1, int y1, int x2, int y2, int thickness) {
         g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
         g.drawLine(x1, y1, x2, y2);
-    }
-
-    public void sketchShape(Shape shape, Graphics2D g, int size) {
-        Polygon p = shape.getPolygon();
-        g.setColor(Color.BLACK);
-        for (int i = 0; i < p.npoints; i++) {
-            System.out.printf("point [ %d\t%d ]\n", p.xpoints[i], p.ypoints[i]);
-            g.fillOval(p.xpoints[i] - size, p.ypoints[i] - size, size * 2, size * 2);
-        }
-    }
+    }    
     
-    public void sketchShape(Gate shape, Graphics2D g, int size) {
-        g.setColor(Color.BLACK);
-        for (Polygon p : shape.getPolygons()) {
-            for (int i = 0; i < p.npoints; i++) {
-                System.out.printf("point [ %d\t%d ]\n", p.xpoints[i], p.ypoints[i]);
-                g.fillOval(p.xpoints[i] - size, p.ypoints[i] - size, size * 2, size * 2);
-            }
-        }
-    }
-    
+    /**
+     * Get a double, proportional to the diagonal of the canvas.
+     * 
+     * @param d The value to interpret proportionally (generally between 0 and 1)
+     * @return The input value, proportional to the diagonal length of the canvas.
+     */
     private double pd(double d) {
         return (Math.sqrt(r.getWidth() * r.getHeight()) * d);
     }
+    /**
+     * Get a integer, proportional to the diagonal of the canvas.
+     * 
+     * @param d The value to interpret proportionally (generally between 0 and 1)
+     * @return The input value, proportional to the diagonal length of the canvas.
+     */
     private int p(double d) {
         return (int) pd(d);
     }
+    /**
+     * Get a double, proportional to the width of the canvas.
+     * 
+     * @param p The value to interpret proportionally (generally between 0 and 1)
+     * @return The input value, proportional to the width of the canvas.
+     */
     private double wd(double p) {
         return (r.getWidth() * p);
     }
+    /**
+     * Get a double, proportional to the height of the canvas.
+     * 
+     * @param p The value to interpret proportionally (generally between 0 and 1)
+     * @return The input value, proportional to the height of the canvas.
+     */
     private double hd(double p) {
         return (r.getHeight() * p);
     }
+    /**
+     * Get an integer, proportional to the width of the canvas.
+     * 
+     * @param p The value to interpret proportionally (generally between 0 and 1)
+     * @return The input value, proportional to the width of the canvas.
+     */
     private int w(double p) {
         return (int) wd(p);
     }
+    /**
+     * Get an integer, proportional to the width of the canvas.
+     * 
+     * @param p The value to interpret proportionally (generally between 0 and 1)
+     * @return The input value, proportional to the height of the canvas.
+     */
     private int h(double p) {
         return (int) hd(p);
     }
+    /**
+     * Clamp a given value within the given ranges.
+     * 
+     * @param d The value to clamp
+     * @param min The minimum value for d to take on.
+     * @param max The maximum value for d to take on.
+     * @return The value of d within the given min/max range.
+     */
     private double clamp(double d, double min, double max) {
         return (d < min ? min : d > max ? max : d);
     }
     
+    /**
+     * Convert a value proportionally from one min/max 
+     * to another min/max.
+     * 
+     * @param d
+     *            The value to reinterpret.
+     * @param oldMin
+     *            The old minimum for d
+     * @param oldMax
+     *            The old maximum for d
+     * @param newMin
+     *            The new minimum for d
+     * @param newMax
+     *            The new maximum for d
+     * @return The reinterpreted value of d, proportionally 
+     *         transfered from the old range to the new range.
+     */
     private double remap(double d, double oldMin, double oldMax, double newMin, double newMax) {
         double result = (d - oldMin) / (oldMax - oldMin);
         result *= (newMax - newMin);
         result += newMin;
         return clamp(result, Math.min(newMin, newMax), Math.max(newMin, newMax));
     }
+    
     /**
+     * Get the current value of the phase.
      * @return the phase
      */
     public double getPhase() {
         return phase;
     }
+    
     /**
-     * @param phase the phase to set
+     * Set the phase (between 0 and 1 inclusive)
+     * @param phase the phase to set (0 to 1 inclusive)
      */
     public void setPhase(double phase) {
         if (phase >= 0.0 && phase <= 1.0) {

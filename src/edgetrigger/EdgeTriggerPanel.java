@@ -1,6 +1,3 @@
-/**
- * 
- */
 package edgetrigger;
 
 import java.awt.Dimension;
@@ -17,15 +14,21 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
+ * This class displays an visual, interactive Edge Trigger.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class EdgeTriggerPanel extends JPanel {
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = -1712387296868793108L;
 
+    /** The graphic that shows the EdgeTrigger visual. */
     private EdgeTriggerGraphic graphic;
     
+    /**
+     * Constructor, lays out the graphic above and a slider panel below.  
+     */
     public EdgeTriggerPanel() {
         //needs drop-down on top to choose number of variables (1, 2, 3 or 4)
         //left side has text field
@@ -50,11 +53,17 @@ public class EdgeTriggerPanel extends JPanel {
         setAlignmentX(LEFT_ALIGNMENT);
     }
     
+    /**
+     * Add the EdgeTrigger graphic to the panel.
+     */
     private void addGraphicsPanel() {
         graphic = new EdgeTriggerGraphic();
         add(graphic);
     }
 
+    /**
+     * Add the slider bar to the panel.
+     */
     private void addSliderbar() {
         JSlider bar = new JSlider(JSlider.HORIZONTAL, 0, 1000, 0);
         bar.addChangeListener(new ChangeListener() {
@@ -68,6 +77,11 @@ public class EdgeTriggerPanel extends JPanel {
         add(bar);
     }
 
+    /**
+     * Testing method, for independently running this applet. 
+     * 
+     * @param args unused.
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Flip-flop Edge Trigger, by Joe Pelz, Fall 2014");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
