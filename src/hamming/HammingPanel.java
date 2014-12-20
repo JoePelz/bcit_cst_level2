@@ -1,6 +1,3 @@
-/**
- * 
- */
 package hamming;
 
 import gui.Spacer;
@@ -19,24 +16,33 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
 /**
+ * This panel builds and lays out the Hamming panels 
+ * for encoding and decoding.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class HammingPanel extends JPanel {
     /**  Generated serial ID. */
     private static final long serialVersionUID = 1089393901520809383L;
-    
-    private Font fixed = new Font("Consolas", Font.PLAIN, 14);
-    private Font fixedBold = new Font("Consolas", Font.BOLD, 14);
-    
+    /** A nice fixed-width font to use. */
+    public static Font font = new Font("Consolas", Font.PLAIN, 14);
+
+    /** Parity choice button group. */
     private ButtonGroup group = new ButtonGroup();
+    /** Radiobutton to choose even parity. */
     private JRadioButton rbEven = new JRadioButton("Even parity");
+    /** Radiobutton to choose odd parity. */
     private JRadioButton rbOdd = new JRadioButton("Odd parity");
-    
+
+    /** Hamming encoding panel. */
     HammingEncodePanel hep;
+    /** Hamming decoding panel. */
     HammingDecodePanel hdp; 
     
+    /**
+     * Constructor to build the panel and components.
+     */
     public HammingPanel() {
         super();
         
@@ -77,22 +83,20 @@ public class HammingPanel extends JPanel {
         add(Spacer.Vertical(5));
 
         hep = new HammingEncodePanel();
-        hep.setFont(fixed);
+        hep.setFont(font);
         hep.setAlignmentX(LEFT_ALIGNMENT);
         add(hep);
         add(Spacer.Vertical(10));
 
         hdp = new HammingDecodePanel();
-        hdp.setFont(fixed);
+        hdp.setFont(font);
         hdp.setAlignmentX(LEFT_ALIGNMENT);
         add(hdp);
         add(Spacer.VerticalStretch(10));
 
         
-        setFont(fixedBold);
         setMinimumSize(new Dimension(900, 0));
         TitledBorder myBorder = BorderFactory.createTitledBorder("Hamming Code");
-        myBorder.setTitleFont(fixedBold);
         setBorder(myBorder);
         setAlignmentX(LEFT_ALIGNMENT);
     }

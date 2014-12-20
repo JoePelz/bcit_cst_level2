@@ -18,18 +18,26 @@ import javax.swing.JPanel;
 import util.BinaryFormat;
 
 /**
+ * This panel provides functionality to input a binary data word 
+ * and have it be encoded using Hamming Code.   
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class HammingEncodePanel extends JPanel {
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = 7579549903973444096L;
 
+    /** The label for this panel's input box. */
     private JLabel dWord = new JLabel("Data Word");
+    /** The input text box for the data word. */
     private ImprovedFormattedTextField dwField;
+    /** The resulting Hamming-code. */
     private HammingCode dwResult = new HammingCode();
-    private Font fixed = new Font("Consolas", Font.PLAIN, 14);
 
+    /**
+     * Constructor, to build the UI for the encode panel.
+     */
     public HammingEncodePanel() {
         BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
         setLayout(layout);
@@ -41,9 +49,6 @@ public class HammingEncodePanel extends JPanel {
         dWord.setAlignmentY(CENTER_ALIGNMENT);
         dwField.setAlignmentY(CENTER_ALIGNMENT);
         
-        dWord.setFont(fixed);
-        dwField.setFont(fixed);
-        dwResult.setFont(fixed);        
         dwResult.setDataWord("110010010011");
 
         add(Spacer.Horizontal(10));
@@ -55,10 +60,22 @@ public class HammingEncodePanel extends JPanel {
         //add(Box.createHorizontalGlue());
         add(Spacer.HorizontalStretch(1));
     }
+    
+    @Override
+    public void setFont(Font font) {
+        super.setFont(font);
+        //On construction, this function is called 
+        //prior to initializing some fields. 
+        if (font != null && dWord != null && dwField != null && dwResult != null) {
+            dWord.setFont(font);
+            dwField.setFont(font);
+            dwResult.setFont(font);
+        }
+    }
 
     /**
-     * 
-     * @return
+     * UI helper function, that builds the input 
+     * field for the encode panel.
      */
     private void createInputField() {
         BinaryFormat bf = new BinaryFormat();
@@ -79,6 +96,11 @@ public class HammingEncodePanel extends JPanel {
         });
     }
 
+    /**
+     * Set the parity used to be even parity or odd parity.
+     * 
+     * @param parityEven True if parity should be even. False if odd.
+     */
     public void setParityEven(boolean parityEven) {
         dwResult.setParityEven(parityEven);
         if (dwField.isEditValid()) {

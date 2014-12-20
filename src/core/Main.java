@@ -18,7 +18,7 @@ import edgetrigger.EdgeTriggerPanel;
  * It creates a window frame, with tabs, 
  * and puts appropriate panels into those tabs.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class Main {

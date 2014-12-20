@@ -14,18 +14,34 @@ import java.awt.RenderingHints;
 import javax.swing.JPanel;
 
 /**
- * 
+ * This class draws a picture of a single Hamming Code digit,
+ * with the value on top and the constituent powers of two below.
+ *  
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
 public class HCodeDigit extends JPanel {
+    /** Unique id for serialization. */
     private static final long serialVersionUID = 3427769338112327838L;
+    /** The height of a character. */
     private int CH;
+    /** The width of a 0 in this font. */
     private int CW;
+    /** The width the char string, with a margin. */
     private int MW;
+    /** Code-Array. The first array element is the actual binary value. 
+     * subsequent array elements are the constituent powers of two that
+     * make up the value. */
     private int[] CA;
     
-    public HCodeDigit(int index) {
+    /**
+     * Constructor to take the index and initialize the code array for drawing.
+     * 
+     * @param index
+     *            the position of this number in the final bit string. (e.g.
+     *            first bit or ninth bit)
+     */
+    public HCodeDigit(final int index) {
         super();
 
         /*  CA should equal the number, 
@@ -58,7 +74,12 @@ public class HCodeDigit extends JPanel {
         setAlignmentY(Component.TOP_ALIGNMENT);
     }
     
-    public void setBitValue(char c) {
+    /**
+     * Set the value of this particular bit.
+     * 
+     * @param c the state to set the bit to. 1 or 0.
+     */
+    public void setBitValue(final char c) {
         if (c == '0' || c == 0) {
             CA[0] = 0;
         }  else {
@@ -66,11 +87,23 @@ public class HCodeDigit extends JPanel {
         }
     }
     
+    /**
+     * Access the value of the bit.
+     * 
+     * @return numeric 1 if the bit is on, 0 if the bit is off.
+     */
     public int getBitValue() {
         return CA[0];
     }
     
-    public boolean uses(int i) {
+    /**
+     * Test if this digit uses the given power of two. 
+     * (e.g. test if this bit (bit 13) is checked by parity bit 4)
+     * 
+     * @param i The parity bit to test this digit against. 
+     * @return True if this digit is checked by the given parity bit.
+     */
+    public boolean uses(final int i) {
         for (int n = 1; n < CA.length; n++) {
             if (CA[n]==i) {
                 return true;
@@ -79,7 +112,17 @@ public class HCodeDigit extends JPanel {
         return false;
     }
     
-    public int[] getCodeArray(int index) {
+    /**
+     * Take a given index, and convert it to an array of 1s and 0s 
+     * representing the number in binary. 
+     * The first digit in the resulting array will be 0 
+     * and the rest will the powers of two that the index
+     * comprises.
+     * 
+     * @param index The number to convert to binary
+     * @return The array of bits
+     */
+    public int[] getCodeArray(final int index) {
         char binaryString[] = Integer.toBinaryString(index).toCharArray();
         
         int rLen = 1;
@@ -128,7 +171,11 @@ public class HCodeDigit extends JPanel {
         }
     }
 
-    
+    /**
+     * Test if this bit itself is a parity bit.
+     * 
+     * @return True if this is a parity bit.
+     */
     public final boolean isParity() {
         return CA.length == 2;
     }

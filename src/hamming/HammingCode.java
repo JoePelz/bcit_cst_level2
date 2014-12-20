@@ -10,21 +10,31 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
+ * This class displays hamming code, 
+ * based on a given code or data word and parity.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class HammingCode extends JPanel {
-
+    /**  Unique id for serialization. */ 
     private static final long serialVersionUID = -1052654251262164181L;
 
+    /** A panel to hold the Hamming code digits. */
     private JPanel pHamming;
+    /** A panel to hold the decoded result word. */
     private JPanel pResults;
 
+    /** Array of HCodeDigits holding the actual hamming code. */
     private HCodeDigit bits[];
+    /** if each bit is valid. i.e. no parity error on this bit. */
     private boolean vBits[];
+    /** Track whether parity is even or odd. */
     private boolean parityEven = true;
     
+    /**
+     * Constructor to initialize variables and layout.
+     */
     public HammingCode() {
         BoxLayout page = new BoxLayout(this, BoxLayout.PAGE_AXIS);
         
@@ -44,6 +54,12 @@ public class HammingCode extends JPanel {
         add(pResults);
     }
 
+    /**
+     * Calculate the Hamming codeword for a given dataword. 
+     * 
+     * @param dword The dataword to encode.
+     * @return The encoded Hamming codeword.
+     */
     private StringBuffer encode(String dword) {
         StringBuffer result = new StringBuffer();
         int power = 1;
@@ -87,6 +103,11 @@ public class HammingCode extends JPanel {
         return result;
     }
     
+    /**
+     * Set the data word to be displayed. 
+     * 
+     * @param dword he dataword to be encoded.
+     */
     public void setDataWord(String dword) {
         StringBuffer cword = encode(dword);
 
@@ -105,6 +126,11 @@ public class HammingCode extends JPanel {
         }
     }
     
+    /**
+     * The original data word, decoded with parity errors fixed.
+     * 
+     * @return The original data word.
+     */
     public String getDataWord() {
         StringBuffer dword = new StringBuffer();
 
@@ -119,6 +145,11 @@ public class HammingCode extends JPanel {
         return dword.toString();
     }
     
+    /**
+     * Set the code word, to be encoded.
+     * 
+     * @param cword The new (binary) codeword to set
+     */
     public void setCodeWord(String cword) {
 
         //Empty the panel of all digits
@@ -193,7 +224,9 @@ public class HammingCode extends JPanel {
     }
 
     /**
-     * @param parityEven the parityEven to set
+     * Set the parity used to be even or odd. 
+     * 
+     * @param parityEven True to use even parity, false to use odd.
      */
     public void setParityEven(boolean parityEven) {
         this.parityEven = parityEven;
