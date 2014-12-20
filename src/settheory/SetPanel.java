@@ -44,17 +44,30 @@ public class SetPanel extends JPanel {
     private static final String varsFour = "Sets: A, B, C, D";
     
     //Buttons on the calculator pad.
+    /** Button to add an A to the equation. */
     private JButton addA = new JButton("A");
+    /** Button to add an B to the equation. */
     private JButton addB = new JButton("B");
+    /** Button to add an C to the equation. */
     private JButton addC = new JButton("C");
+    /** Button to add an D to the equation. */
     private JButton addD = new JButton("D");
+
+    /** Button to add a union operaton to the equation. */
     private JButton addUNION = new JButton("∪");
+    /** Button to add an intersection operaton to the equation. */
     private JButton addINTERSECTION = new JButton("∩");
+    /** Button to add a difference operaton to the equation. */
     private JButton addMINUS = new JButton("-");
+    /** Button to add a NOT operaton to the equation. */
     private JButton addNOT = new JButton("'");
+    /** Button to add an XOR operation to the equation. */
     private JButton addXOR = new JButton("∆");
+    /** Button to add an opening parenthesis to the equation. */
     private JButton addOPEN = new JButton("(");
+    /** Button to add a closing parenthesis to the equation. */
     private JButton addCLOSE = new JButton(")");
+    /** Button to clear the equation. */
     private JButton clear = new JButton("Clear");
     
     /** Equation entry box. */

@@ -5,19 +5,37 @@ import java.awt.Rectangle;
 
 import javax.swing.JLabel;
 
+/**
+ * Special label to display underlined characters.
+ * 
+ * @author Joe Pelz
+ * @version 1.0
+ */
 public class UnderlinedChars extends JLabel {
-
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = -3089351308056853205L;
+    /** Double this value is the space between 
+     * underlines of consecutive characters. */
     private int spacing = 2;
 
+    /**
+     * Constructor, default empty string.
+     *
+     */
     public UnderlinedChars() {
-        this("");
+        super("");
     }
 
+    /**
+     * Constructor, build a JLabel with the given string. 
+     * 
+     * @param text The text to display.
+     */
     public UnderlinedChars(String text) {
         super(text);
     }
 
+    @Override
     public void paint(Graphics g) {
         Rectangle r;
         super.paint(g);
