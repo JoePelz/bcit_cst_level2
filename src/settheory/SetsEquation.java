@@ -16,19 +16,19 @@ import java.util.HashMap;
  * @version 1.0
  */
 public class SetsEquation {
-    /** The equation itself, stored as a string */
+    /** The equation itself, stored as a string. */
     private final String givenEquation;
     /** The computed result of <code>givenEquation</code>. */
     private SetsState results;
     /** Internal reference associating letters with SetsStates. */
     private HashMap<Character, SetsState> refs = new HashMap<Character, SetsState>();
     /** The next available index in the above internal reference. */
-    private char refs_i = 'A';
+    private char refsI = 'A';
     
     /**
      * Constructor, gets rid of spaces and 
      * replaces all weird symbols with a more consistent 
-     * set of symbols: + / * / ^  
+     * set of symbols. Symbols include: +, *, ^, -, etc  
      * @param eq The string holding the equation.
      */
     public SetsEquation(final String eq) {
@@ -73,21 +73,23 @@ public class SetsEquation {
     }
     
     /**
-     * Replaces constants (A, B, ...) in the equation
-     * with SetsState instances holding the state of the diagram.
+     * Replaces constants (A, B, ...) in the equation with SetsState instances
+     * holding the state of the diagram.
      * 
-     * @param eq The equation string to operate on.
-     * @return The equation string, with constants replaced by references to SetsStates (using <code>refs</code>)
+     * @param eq
+     *            The equation string to operate on.
+     * @return The equation string, with constants replaced by references to
+     *         SetsStates (using <code>refs</code>)
      */
     private String substituteSets(final String eq) {
         String output;
         StringBuffer newString = new StringBuffer(eq.length());
         for (char c : eq.toCharArray()) {
             if (c >= 'A' && c <= 'D') {
-                refs.put(refs_i, new SetsState(c));
-                newString.append(refs_i);
-                refs_i++;
-            } else if (reserved(c)){
+                refs.put(refsI, new SetsState(c));
+                newString.append(refsI);
+                refsI++;
+            } else if (reserved(c)) {
                 newString.append(c);
             } else {
                 throw new IllegalArgumentException("Invalid Equation");
@@ -110,20 +112,35 @@ public class SetsEquation {
         if (eq.length() == 0) {
             return new SetsState();
         }
+//        System.out.println("Starting " + eq);
+
+        eq = resolveParens(eq);
+        eq = resolveNot(eq);
+        eq = resolveAnd(eq);
+        eq = resolveXor(eq);
+        eq = resolveOrMinus(eq);
+
+        // Should be done now.
+        if (eq.length() != 1) {
+            throw new IllegalArgumentException("Invalid Equation");
+        }
+        
+        return refs.get(eq.charAt(0));
+    }
+    
+    /**
+     * resolve all parentheses in the equation recursively.
+     * 
+     * @param eq The equation to resolve
+     * @return The reduced equation
+     */
+    private String resolveParens(String eq) {
         int opPos;
-        int opPos2;
         int opParen;
         SetsState op1;
-        SetsState op2;
         
-//        System.out.println("Starting " + eq);
-        //=============================
-        //while there is a )
-        //  find the ( before it
-        //  save before(...)after
-        //  evaluate (...) (recursively) 
-        //  and substitute.
         opPos = eq.indexOf(')');
+
         while (opPos != -1) {
             //find the matching parenthesis.
             opParen = eq.lastIndexOf('(', opPos);
@@ -141,19 +158,38 @@ public class SetsEquation {
             op1 = parseEquation(middle); 
             
             //add middle to refs
-            refs.put(refs_i,  op1);
+            refs.put(refsI,  op1);
             
             //concatenate middle with ends
-            eq = start + refs_i + end;
-            refs_i++;
+            eq = start + refsI + end;
+            refsI++;
             
             opPos = eq.indexOf(')');
         }
         
-        //=============================
-        //while there is a NOT operator
-        //  invert the preceding set
+//        if there's a '(' and no ')', fail.
+        if (opPos == -1 && eq.indexOf('(') != -1) {
+            throw new IllegalArgumentException("InvalidEquation");
+        }
+        
+        return eq;
+    }
+    
+    /**
+     * resolve all NOT operations in the given equation.
+     * 
+     * @param eq The equation to resolve.
+     * @return A reduced equation.
+     */
+    private String resolveNot(String eq) {
+        int opPos;
+        SetsState op1;
+        
         opPos = eq.indexOf('\'');
+        
+        if (opPos == 0) {
+            throw new IllegalArgumentException("Invalid Equation");
+        }
         while (opPos != -1) {
 //            System.out.println(eq + ": Not.");
             op1 = refs.get(eq.charAt(opPos - 1));
@@ -163,12 +199,20 @@ public class SetsEquation {
             eq = eq.substring(0, opPos) + eq.substring(opPos + 1);
             opPos = eq.indexOf('\'');
         }
-
-        //=============================
-        //while there is a AND operator
-        //  connect the sets
-        //  save the results as op1
-        //  sub the results back in.
+        return eq;
+    }
+    
+    /**
+     * resolve all AND operations in the equation.
+     * 
+     * @param eq The equation to resolve
+     * @return The reduced equation
+     */
+    private String resolveAnd(String eq) {
+        int opPos;
+        SetsState op1;
+        SetsState op2;
+        
         opPos = eq.indexOf('*');
         while (opPos != -1) {
 //            System.out.println(eq + ": And.");
@@ -184,12 +228,20 @@ public class SetsEquation {
             eq = eq.substring(0, opPos) + eq.substring(opPos + 2);
             opPos = eq.indexOf('*');
         }
-
-        //=============================
-        //while there is a XOR operator
-        //  connect the sets
-        //  save the results as op1
-        //  sub the results back in.
+        return eq;
+    }
+    
+    /**
+     * resolve all XOR operations in the equation.
+     * 
+     * @param eq The equation to resolve
+     * @return The reduced equation
+     */
+    private String resolveXor(String eq) {
+        int opPos;
+        SetsState op1;
+        SetsState op2;
+        
         opPos = eq.indexOf('^');
         while (opPos != -1) {
 //            System.out.println(eq + ": Xor.");
@@ -205,18 +257,29 @@ public class SetsEquation {
             eq = eq.substring(0, opPos) + eq.substring(opPos + 2);
             opPos = eq.indexOf('^');
         }
+        return eq;
+    }
+    
+    /**
+     * resolve all OR and MINUS operations in the equation.
+     * 
+     * @param eq The equation to resolve
+     * @return The reduced equation
+     */
+    private String resolveOrMinus(String eq) {
+        int opPos;
+        int opPos2;
+        SetsState op1;
+        SetsState op2;
         
-        //=============================
-        //while there is an OR or MINUS operator
-        //  connect the sets
-        //  save the results as op1
-        //  sub the results back in.
         opPos = eq.indexOf('+');
         opPos2 = eq.indexOf('-');
-        if (opPos == -1)
+        if (opPos == -1) {
             opPos = opPos2;
-        if (opPos2 == -1)
+        }
+        if (opPos2 == -1) {
             opPos2 = opPos;
+        }
         opPos = Math.min(opPos, opPos2);
 
         while (opPos != -1) {
@@ -240,20 +303,15 @@ public class SetsEquation {
             //find the next one
             opPos = eq.indexOf('+');
             opPos2 = eq.indexOf('-');
-            if (opPos == -1)
+            if (opPos == -1) {
                 opPos = opPos2;
-            else if (opPos2 == -1)
+            } else if (opPos2 == -1) {
                 opPos2 = opPos;
+            }
         }
-        
-        //=============================
-        // Should be done now.
-        if (eq.length() != 1) {
-            throw new IllegalArgumentException("Invalid Equation");
-        }
-        
-        return refs.get(eq.charAt(0));
+        return eq;
     }
+    
     
     /**
      * Get the state of a particular region in the resulting Venn diagram. 

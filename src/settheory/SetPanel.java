@@ -35,13 +35,13 @@ public class SetPanel extends JPanel {
     private static final long serialVersionUID = -6895003958115345068L;
     // Text identifiers to indicate the number of sets to display.
     /** The text for only 1 set. */
-    private static final String varsOne = "Sets: A only";
+    private static final String VARS_ONE = "Sets: A only";
     /** The text for 2 sets. */
-    private static final String varsTwo = "Sets: A, B";
+    private static final String VARS_TWO = "Sets: A, B";
     /** The text for 3 sets. */
-    private static final String varsThree = "Sets: A, B, C";
+    private static final String VARS_THREE = "Sets: A, B, C";
     /** The text for 4 sets. */
-    private static final String varsFour = "Sets: A, B, C, D";
+    private static final String VARS_FOUR = "Sets: A, B, C, D";
     
     //Buttons on the calculator pad.
     /** Button to add an A to the equation. */
@@ -89,6 +89,7 @@ public class SetPanel extends JPanel {
      * </ul> 
      */
     public SetPanel() {
+        final int initialPanel = 3;
         //needs drop-down on top to choose number of variables (1, 2, 3 or 4)
         //left side has text field
         //left side has buttons for UNION / INTERSECTION / NOT
@@ -109,7 +110,7 @@ public class SetPanel extends JPanel {
         addButtons();
         
         //Add an image panel
-        changeVenn(3);
+        changeVenn(initialPanel);
         
         TitledBorder myBorder = BorderFactory.createTitledBorder("Set Theory");
         setBorder(myBorder);
@@ -117,20 +118,26 @@ public class SetPanel extends JPanel {
 
     /** Adds a spacer to the UI; 30 pixels tall, 10 pixels wide. */
     private void addSpacer() {
+        final int verticalSpacing = 30;
+        final int horizontalSpacing = 10;
+        
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 1;        
-        add(Spacer.Vertical(30), c);
+        add(Spacer.Vertical(verticalSpacing), c);
         
         c.gridx = 0;
         c.gridy = 0;
-        add(Spacer.Horizontal(10), c);
+        add(Spacer.Horizontal(horizontalSpacing), c);
     }
 
     /** Add the equation / formula text entry box. */
     private void addEquationField() {
+        final int textFieldWidth = 20; 
+        final int fontSize = 16;
+        
         eqBox = new EquationField(new SetEqFormat());
-        eqBox.setColumns(20);
+        eqBox.setColumns(textFieldWidth);
         eqBox.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent arg0) {
@@ -147,8 +154,7 @@ public class SetPanel extends JPanel {
         });
         
         Font font = eqBox.getFont();
-        font = font.deriveFont(19);
-        font = new Font("Deja Vu Sans", Font.PLAIN, 16);
+        font = new Font("Deja Vu Sans", Font.PLAIN, fontSize);
         eqBox.setFont(font);
         
         GridBagConstraints c = new GridBagConstraints();
@@ -167,14 +173,14 @@ public class SetPanel extends JPanel {
      * @author Joe Pelz
      * @version 1.0
      */
-    private class AddToEquation implements ActionListener {
+    private final class AddToEquation implements ActionListener {
         /** The character(s) to add to the formula when triggered. */
         private final String token;
         /**
          * Constructor, to define the token added by this Listener.
          * @param textToAdd The character(s) to add.
          */
-        private AddToEquation(String textToAdd) {
+        private AddToEquation(final String textToAdd) {
             token = textToAdd;
         }
         
@@ -197,7 +203,12 @@ public class SetPanel extends JPanel {
      * Add all the calculator buttons to the panel.
      */
     private void addButtons() {
-        JPanel jpButtons = new JPanel(new GridLayout(3, 4));
+        final int calcBtnsX = 4;
+        final int calcBtnsY = 3;
+        final int layoutGridX = 1;
+        final int layoutGridY = 3;
+        
+        JPanel jpButtons = new JPanel(new GridLayout(calcBtnsY, calcBtnsX));
 
         addA.addActionListener(new AddToEquation("A"));
         addB.addActionListener(new AddToEquation("B"));
@@ -240,8 +251,8 @@ public class SetPanel extends JPanel {
         jpButtons.add(clear);
         
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 1;
-        c.gridy = 3;
+        c.gridx = layoutGridX;
+        c.gridy = layoutGridY;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         
         add(jpButtons, c);
@@ -254,20 +265,29 @@ public class SetPanel extends JPanel {
      * @param size Which image to display.
      */
     private void changeVenn(int size) {
+        final int vennA = 1;
+        final int vennAB = 2;
+        final int vennABC = 3;
+        final int vennABCD = 4;
+        final int layoutGridX = 2;
+        final int layoutGridY = 0;
+        final int layoutGridHeight = 5;
+        
+        
         if (image != null) {
             remove(image);
         }
         switch (size) {
-        case 1:
+        case vennA:
             image = new Venn1();
             break;
-        case 2:
+        case vennAB:
             image = new Venn2();
             break;
-        case 3:
+        case vennABC:
             image = new Venn3();
             break;
-        case 4:
+        case vennABCD:
             image = new Venn4();
             break;
         default:
@@ -276,9 +296,9 @@ public class SetPanel extends JPanel {
         }
         
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 2;
-        c.gridy = 0;
-        c.gridheight = 5;
+        c.gridx = layoutGridX;
+        c.gridy = layoutGridY;
+        c.gridheight = layoutGridHeight;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         
         updateVenn();
@@ -295,22 +315,27 @@ public class SetPanel extends JPanel {
      * or how many variables to work with.
      */
     private void addComboBox() {
-        String comboBoxItems[] = { varsOne, varsTwo, varsThree, varsFour };
+        final int vennA = 1;
+        final int vennAB = 2;
+        final int vennABC = 3;
+        final int vennABCD = 4;
+        
+        String[] comboBoxItems = {VARS_ONE, VARS_TWO, VARS_THREE, VARS_FOUR};
         JComboBox<String> cb = new JComboBox<String>(comboBoxItems);
         cb.setEditable(false);
-        cb.setSelectedItem(varsThree);
+        cb.setSelectedItem(VARS_THREE);
         cb.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent evt) {
                 if (evt.getStateChange() == ItemEvent.SELECTED) {
                     Object trigger = evt.getItem();
-                    if (trigger.equals(varsOne)) {
-                        changeVenn(1);
-                    } else if (trigger.equals(varsTwo)){
-                        changeVenn(2);
-                    } else if (trigger.equals(varsThree)){
-                        changeVenn(3);
-                    } else if (trigger.equals(varsFour)){
-                        changeVenn(4);
+                    if (trigger.equals(VARS_ONE)) {
+                        changeVenn(vennA);
+                    } else if (trigger.equals(VARS_TWO)) {
+                        changeVenn(vennAB);
+                    } else if (trigger.equals(VARS_THREE)) {
+                        changeVenn(vennABC);
+                    } else if (trigger.equals(VARS_FOUR)) {
+                        changeVenn(vennABCD);
                     }
                     revalidate();
                 }

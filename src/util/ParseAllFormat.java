@@ -19,6 +19,9 @@ import java.text.ParsePosition;
  * completely parsed by the delegate format. If the value can only be partially
  * parsed, the decorator will refuse to parse the value.
  * </p>
+ * 
+ * @author Unknown
+ * @version 1.0
  */
 public class ParseAllFormat extends Format {
     /** Unique id for serialization. */
@@ -28,7 +31,7 @@ public class ParseAllFormat extends Format {
 
     /**
      * Decorate <code>aDelegate</code> to make sure if parser everything or
-     * nothing
+     * nothing.
      *
      * @param aDelegate
      *            The delegate format

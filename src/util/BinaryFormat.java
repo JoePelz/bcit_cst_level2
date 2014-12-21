@@ -11,7 +11,7 @@ import java.text.ParsePosition;
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
-public class BinaryFormat extends Format{
+public class BinaryFormat extends Format {
     /** Unique id for serialization. */
     private static final long serialVersionUID = -3159208893249662145L;
 
@@ -53,12 +53,14 @@ public class BinaryFormat extends Format{
             index++;
         }
         pos.setIndex(index);
-        if (index > 0)
+        if (index > 0) {
             pos.setErrorIndex(-1);
-        if (result.length() == 0)
+        }
+        if (result.length() == 0) {
             return null;
-        else
+        } else {
             return result.toString();
+        }
     }
 
 }

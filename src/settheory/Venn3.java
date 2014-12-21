@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import util.Utils;
 
 /**
- * A Venn diagram with three overlapping circles, 
+ * A Venn diagram with three overlapping circles.
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
@@ -43,7 +43,7 @@ public class Venn3 extends Venn {
     private ImageIcon image;
     
     /** The current state of the diagram. */
-    SetsEquation map;
+    private SetsEquation map;
 
     /**
      * Construct a Venn diagram with three circles.
@@ -102,22 +102,30 @@ public class Venn3 extends Venn {
         g.drawImage(iOutline, 0, 0, null);
         
         if (map != null) {
-            if (map.getVennSection("A"))
-                g.drawImage(iA, 0, 0, null); 
-            if (map.getVennSection("AB"))
+            if (map.getVennSection("A")) {
+                g.drawImage(iA, 0, 0, null);
+            } 
+            if (map.getVennSection("AB")) {
                 g.drawImage(iAB, 0, 0, null);
-            if (map.getVennSection("B")) 
+            }
+            if (map.getVennSection("B")) {
                 g.drawImage(iB, 0, 0, null);
-            if (map.getVennSection("AC")) 
+            }
+            if (map.getVennSection("AC")) {
                 g.drawImage(iAC, 0, 0, null);
-            if (map.getVennSection("ABC")) 
+            }
+            if (map.getVennSection("ABC")) {
                 g.drawImage(iABC, 0, 0, null);
-            if (map.getVennSection("BC")) 
+            }
+            if (map.getVennSection("BC")) {
                 g.drawImage(iBC, 0, 0, null);
-            if (map.getVennSection("C")) 
+            }
+            if (map.getVennSection("C")) {
                 g.drawImage(iC, 0, 0, null);
-            if (map.getVennSection("U")) 
-                g.drawImage(iU, 0, 0, null); 
+            }
+            if (map.getVennSection("U")) {
+                g.drawImage(iU, 0, 0, null);
+            } 
         }
     }
 

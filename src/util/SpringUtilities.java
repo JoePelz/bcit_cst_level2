@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,20 @@
 
 package util;
 
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.Container;
+
+import javax.swing.Spring;
 import javax.swing.SpringLayout;
-import java.awt.*;
 
 /**
  * A 1.4 file that provides utility methods for
  * creating form- or grid-style layouts with SpringLayout.
  * These utilities are used by several programs, such as
  * SpringBox and SpringCompactGrid.
+ * 
+ * @author Oracle
+ * @version 1.0
  */
 public class SpringUtilities {
     /**
@@ -75,7 +80,7 @@ public class SpringUtilities {
                                 int xPad, int yPad) {
         SpringLayout layout;
         try {
-            layout = (SpringLayout)parent.getLayout();
+            layout = (SpringLayout) parent.getLayout();
         } catch (ClassCastException exc) {
             System.err.println("The first argument to makeGrid must use SpringLayout.");
             return;
@@ -188,7 +193,7 @@ public class SpringUtilities {
                                        int xPad, int yPad) {
         SpringLayout layout;
         try {
-            layout = (SpringLayout)parent.getLayout();
+            layout = (SpringLayout) parent.getLayout();
         } catch (ClassCastException exc) {
             System.err.println("The first argument to makeCompactGrid must use SpringLayout.");
             return;
@@ -236,3 +241,4 @@ public class SpringUtilities {
         pCons.setConstraint(SpringLayout.EAST, x);
     }
 }
+

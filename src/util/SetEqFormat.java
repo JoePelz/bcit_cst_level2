@@ -7,11 +7,14 @@ import java.text.ParsePosition;
 import settheory.SetsEquation;
 
 /**
- * This class 
+ * This class represents a formatter for strings 
+ * that represent valid set theory equations 
+ * using sets A, B, C, D, and U for the universe. 
+ * 
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
-public class SetEqFormat extends Format{
+public class SetEqFormat extends Format {
     /** Unique ID for serialization. */
     private static final long serialVersionUID = -3159208893249662145L;
 
@@ -28,19 +31,22 @@ public class SetEqFormat extends Format{
                 || c == ')' 
                 || (c >= 'A' && c <= 'D') 
                 || c == '+' 
-                || c == '∪'
+                || c == '\u222A'
                 || c == '-' 
                 || c == '*' 
-                || c == '∩' 
-                || c == '∆' 
+                || c == '\u2229' 
+                || c == '\u2206' 
                 || c == '^'
-                || c == '\'')
+                || c == '\'') {
             return true;
+        }
         return false;
     }
     
     @Override
-    public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+    public StringBuffer format(Object obj, 
+            StringBuffer toAppendTo, 
+            FieldPosition pos) {
         String src = obj.toString();
         
         pos.setBeginIndex(pos.getEndIndex());
@@ -73,7 +79,7 @@ public class SetEqFormat extends Format{
             @SuppressWarnings("unused")
             SetsEquation test = new SetsEquation(source);
             pos.setIndex(source.length());
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             pos.setErrorIndex(source.length());
         }
         

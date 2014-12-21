@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import util.Utils;
 
 /**
- * A Venn diagram with two overlapping circles, 
+ * A Venn diagram with two overlapping circles.
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
@@ -36,7 +36,7 @@ public class Venn2 extends Venn {
     private ImageIcon image;
     
     /** The current state of the diagram. */
-    SetsEquation map;
+    private SetsEquation map;
 
     /**
      * Construct a Venn diagram with two circles.
@@ -79,14 +79,18 @@ public class Venn2 extends Venn {
         g.drawImage(iOutline, 0, 0, null);
         
         if (map != null) {
-            if (map.getVennSection("A"))
-                g.drawImage(iA, 0, 0, null); 
-            if (map.getVennSection("AB"))
+            if (map.getVennSection("A")) {
+                g.drawImage(iA, 0, 0, null);
+            } 
+            if (map.getVennSection("AB")) {
                 g.drawImage(iAB, 0, 0, null);
-            if (map.getVennSection("B")) 
+            }
+            if (map.getVennSection("B")) {
                 g.drawImage(iB, 0, 0, null);
-            if (map.getVennSection("U")) 
-                g.drawImage(iU, 0, 0, null); 
+            }
+            if (map.getVennSection("U")) {
+                g.drawImage(iU, 0, 0, null);
+            } 
         }
     }
 

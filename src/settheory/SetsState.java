@@ -17,7 +17,7 @@ public class SetsState {
     private static final String[] CBNS = {"U", "A", "B", "C", "D", 
         "AB", "AC", "AD", "BC", "BD", "CD", 
         "ABC", "ABD", "ACD", "BCD", "ABCD"};
-    /** A map associating each region with on or off */
+    /** A map associating each region with on or off. */
     private HashMap<String, Boolean> map;
     
     /** The region this state represented when constructed. */
@@ -68,24 +68,24 @@ public class SetsState {
      * Construct a state with the given region (A, B, C, D, or U)
      * being set to on.
      * 
-     * @param SetLetter The region to turn on.
+     * @param setLetter The region to turn on.
      * @return The newly constructed state.
      */
-    public static HashMap<String, Boolean> getSimpleMap(final String SetLetter) {
-        return getSimpleMap(SetLetter.charAt(0));
+    public static HashMap<String, Boolean> getSimpleMap(final String setLetter) {
+        return getSimpleMap(setLetter.charAt(0));
     }
 
     /**
      * Construct a state with the given region (A, B, C, D, or U)
      * being set to on.
      * 
-     * @param SetLetter The region to turn on.
+     * @param setLetter The region to turn on.
      * @return The newly constructed state.
      */
-    public static HashMap<String, Boolean> getSimpleMap(final char SetLetter) {
+    public static HashMap<String, Boolean> getSimpleMap(final char setLetter) {
         HashMap<String, Boolean> map = new HashMap<String, Boolean>();
         for (String s : CBNS) {
-            if (s.indexOf(SetLetter) != -1) {
+            if (s.indexOf(setLetter) != -1) {
                 map.put(s, true);
             } else {
                 map.put(s, false);
@@ -113,8 +113,9 @@ public class SetsState {
      */
     public boolean get(final String s) {
         Boolean b = map.get(s);
-        if (b != null) 
+        if (b != null) {
             return b;
+        }
         return false;
     }
 

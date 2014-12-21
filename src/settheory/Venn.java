@@ -1,20 +1,16 @@
-/**
- * 
- */
 package settheory;
 
 import javax.swing.JPanel;
 
 /**
  * Base class for venn diagrams, 
- * to indicate the methods required 
- * and to allow polymorphism.
+ * for indicating the methods required 
+ * and allowing polymorphism.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
-@SuppressWarnings("serial")
-public abstract class Venn extends JPanel{
+public abstract class Venn extends JPanel {
     /**
      * Update the panel to match the given SetsEquation. 
      * i.e. set shading to match the regions 

@@ -31,7 +31,7 @@ public class Venn1 extends Venn {
     private ImageIcon image;
     
     /** The current state of the diagram. */
-    SetsEquation map;
+    private SetsEquation map;
 
     /**
      * Construct a venn diagram with 1 circle.
@@ -67,10 +67,12 @@ public class Venn1 extends Venn {
         g.drawImage(iOutline, 0, 0, null);
         
         if (map != null) {
-            if (map.getVennSection("A"))
+            if (map.getVennSection("A")) {
                 g.drawImage(iA, 0, 0, null);
-            if (map.getVennSection("U")) 
-                g.drawImage(iU, 0, 0, null); 
+            }
+            if (map.getVennSection("U")) { 
+                g.drawImage(iU, 0, 0, null);
+            }
         }
     }
 

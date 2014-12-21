@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import util.Utils;
 
 /**
- * A Venn diagram with four overlapping circles, 
+ * A Venn diagram with four overlapping circles.
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
@@ -60,7 +60,7 @@ public class Venn4 extends Venn {
     private ImageIcon image;
     
     /** The current state of the diagram. */
-    SetsEquation map;
+    private SetsEquation map;
 
     /**
      * Construct a Venn diagram with three circles.
@@ -151,42 +151,58 @@ public class Venn4 extends Venn {
         g.drawImage(iOutline, 0, 0, null);
         
         if (map != null) {
-            if (map.getVennSection("U")) 
-                g.drawImage(iU, 0, 0, null); 
+            if (map.getVennSection("U")) {
+                g.drawImage(iU, 0, 0, null);
+            } 
 
-            if (map.getVennSection("A"))
-                g.drawImage(iA, 0, 0, null); 
-            if (map.getVennSection("B")) 
+            if (map.getVennSection("A")) {
+                g.drawImage(iA, 0, 0, null);
+            } 
+            if (map.getVennSection("B")) {
                 g.drawImage(iB, 0, 0, null);
-            if (map.getVennSection("C")) 
+            }
+            if (map.getVennSection("C")) {
                 g.drawImage(iC, 0, 0, null);
-            if (map.getVennSection("D")) 
+            }
+            if (map.getVennSection("D")) {
                 g.drawImage(iD, 0, 0, null);
+            }
 
-            if (map.getVennSection("AB"))
+            if (map.getVennSection("AB")) {
                 g.drawImage(iAB, 0, 0, null);
-            if (map.getVennSection("AC")) 
+            }
+            if (map.getVennSection("AC")) {
                 g.drawImage(iAC, 0, 0, null);
-            if (map.getVennSection("AD")) 
+            }
+            if (map.getVennSection("AD")) {
                 g.drawImage(iAD, 0, 0, null);
-            if (map.getVennSection("BC")) 
+            }
+            if (map.getVennSection("BC")) {
                 g.drawImage(iBC, 0, 0, null);
-            if (map.getVennSection("BD")) 
+            }
+            if (map.getVennSection("BD")) {
                 g.drawImage(iBD, 0, 0, null);
-            if (map.getVennSection("CD")) 
+            }
+            if (map.getVennSection("CD")) {
                 g.drawImage(iCD, 0, 0, null);
+            }
 
-            if (map.getVennSection("ABC")) 
+            if (map.getVennSection("ABC")) {
                 g.drawImage(iABC, 0, 0, null);
-            if (map.getVennSection("ABD")) 
+            }
+            if (map.getVennSection("ABD")) {
                 g.drawImage(iABD, 0, 0, null);
-            if (map.getVennSection("ACD")) 
+            }
+            if (map.getVennSection("ACD")) {
                 g.drawImage(iACD, 0, 0, null);
-            if (map.getVennSection("BCD")) 
+            }
+            if (map.getVennSection("BCD")) {
                 g.drawImage(iBCD, 0, 0, null);
+            }
 
-            if (map.getVennSection("ABCD")) 
+            if (map.getVennSection("ABCD")) {
                 g.drawImage(iABCD, 0, 0, null);
+            }
         }
     }
     
