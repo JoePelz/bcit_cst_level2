@@ -22,6 +22,13 @@ import javax.swing.event.ChangeListener;
 public class EdgeTriggerPanel extends JPanel {
     /** Unique ID for serialization. */
     private static final long serialVersionUID = -1712387296868793108L;
+    /** Number of steps in the slider bar. */
+    private static final int STEPS = 1000;
+
+    /** Default panel width. */
+    private static final int DEF_WIDTH = 600;
+    /** Default panel height. */
+    private static final int DEF_HEIGHT = 250;
 
     /** The graphic that shows the EdgeTrigger visual. */
     private EdgeTriggerGraphic graphic;
@@ -46,7 +53,7 @@ public class EdgeTriggerPanel extends JPanel {
         
         TitledBorder myBorder = BorderFactory.createTitledBorder("Edge Trigger circuit");
         setBorder(myBorder);
-        Dimension size = new Dimension(600, 250);
+        Dimension size = new Dimension(DEF_WIDTH, DEF_HEIGHT);
 //        Dimension size = new Dimension(1200, 400);
         setPreferredSize(size);
         setMaximumSize(size);
@@ -65,12 +72,12 @@ public class EdgeTriggerPanel extends JPanel {
      * Add the slider bar to the panel.
      */
     private void addSliderbar() {
-        JSlider bar = new JSlider(JSlider.HORIZONTAL, 0, 1000, 0);
+        JSlider bar = new JSlider(JSlider.HORIZONTAL, 0, STEPS, 0);
         bar.addChangeListener(new ChangeListener() {
             
             @Override
             public void stateChanged(ChangeEvent e) {
-                graphic.setPhase(((JSlider)(e.getSource())).getValue() / 1000.0);
+                graphic.setPhase(((double) ((JSlider) (e.getSource())).getValue()) / STEPS);
                 graphic.repaint();
             }
         });

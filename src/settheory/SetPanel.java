@@ -124,11 +124,11 @@ public class SetPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 1;        
-        add(Spacer.Vertical(verticalSpacing), c);
+        add(Spacer.vertical(verticalSpacing), c);
         
         c.gridx = 0;
         c.gridy = 0;
-        add(Spacer.Horizontal(horizontalSpacing), c);
+        add(Spacer.horizontal(horizontalSpacing), c);
     }
 
     /** Add the equation / formula text entry box. */

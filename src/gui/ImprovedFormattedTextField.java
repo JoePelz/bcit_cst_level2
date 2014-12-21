@@ -19,7 +19,7 @@ import util.ParseAllFormat;
 /**
  * <p>
  * Extension of {@code JFormattedTextField} which solves some of the usability
- * issues
+ * issues.
  * </p>
  * 
  * @author unknown
@@ -33,8 +33,10 @@ public class ImprovedFormattedTextField extends JFormattedTextField {
     /** Color of the foreground if an error occurs. */
     private static final Color ERROR_FOREGROUND_COLOR = null;
 
-    /** The normal error-free colors to be. */
-    private Color fBackground, fForeground;
+    /** The normal error-free color to be. */
+    private Color fBackground;
+    /** The normal error-free color to be. */
+    private Color fForeground;
 
     /**
      * Create a new {@code ImprovedFormattedTextField} instance which will use
@@ -148,9 +150,9 @@ public class ImprovedFormattedTextField extends JFormattedTextField {
         }
         // only set the value when valid
         if (validValue) {
-            int old_caret_position = getCaretPosition();
+            int oldCaretPosition = getCaretPosition();
             super.setValue(value);
-            setCaretPosition(Math.min(old_caret_position, getText().length()));
+            setCaretPosition(Math.min(oldCaretPosition, getText().length()));
         }
     }
 

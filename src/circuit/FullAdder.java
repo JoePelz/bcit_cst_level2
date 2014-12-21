@@ -86,7 +86,5 @@ public class FullAdder extends Circuit {
         Gate.connect(fa_ga2,   -1, fa_gCarry, -1);
         Gate.connect(fa_ga,    -1, fa_gCarry, -1);
         Gate.connect(fa_gCarry, 0, fa_cOut, 0);
-
-        calcCircuit(20);
     }
 }

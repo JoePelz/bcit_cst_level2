@@ -36,9 +36,12 @@ import javax.swing.Timer;
 public abstract class Circuit extends JPanel {
     /** Unique ID for serialization. */
     private static final long serialVersionUID = 8065048015230286579L;
-
     /** Nice fixed-width font to use. */
-    private static Font font = new Font("Consolas", Font.PLAIN, 15);
+    private static final Font FONT = new Font("Consolas", Font.PLAIN, 15);
+    /** factor to use when zooming in and out. */
+    private static final double ZOOM_FACTOR = 1.2;
+    /** delay of the edge trigger effect in milliseconds. */
+    private static final int EDGE_TRIGGER_DELAY = 250;
     
     /** List of all gates in the circuit. */
     protected ArrayList<Gate> gates = new ArrayList<Gate>();
@@ -58,7 +61,7 @@ public abstract class Circuit extends JPanel {
     private boolean isCalculated;
     
     /** Special timer to show the action of an Edge Trigger. */
-    private Timer EdgeTriggerDelay;
+    private Timer edgeTriggerDelay;
     
     /**
      * Constructor, to add listeners for the mouse, 
@@ -92,7 +95,9 @@ public abstract class Circuit extends JPanel {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                translate = new Point(oldTranslate.x + e.getX() - mouseStart.x, oldTranslate.y + e.getY() - mouseStart.y);
+                translate = new Point(
+                        oldTranslate.x + e.getX() - mouseStart.x, 
+                        oldTranslate.y + e.getY() - mouseStart.y);
                 updateTransform();
                 repaint();
             }
@@ -102,13 +107,13 @@ public abstract class Circuit extends JPanel {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getWheelRotation() > 0) {
-                    translate.x = (int)((translate.x - e.getX()) * 0.8) + e.getX();
-                    translate.y = (int)((translate.y - e.getY()) * 0.8) + e.getY();
-                    scale *= 0.8; 
+                    translate.x = (int) ((translate.x - e.getX()) / ZOOM_FACTOR) + e.getX();
+                    translate.y = (int) ((translate.y - e.getY()) * ZOOM_FACTOR) + e.getY();
+                    scale /= ZOOM_FACTOR; 
                 } else if (e.getWheelRotation() < 0) {
-                    translate.x = (int)((translate.x - e.getX()) * 1.2) + e.getX();
-                    translate.y = (int)((translate.y - e.getY()) * 1.2) + e.getY();
-                    scale *= 1.2;
+                    translate.x = (int) ((translate.x - e.getX()) * ZOOM_FACTOR) + e.getX();
+                    translate.y = (int) ((translate.y - e.getY()) * ZOOM_FACTOR) + e.getY();
+                    scale *= ZOOM_FACTOR;
                 }
                 oldTranslate = new Point(translate);
                 updateTransform();
@@ -116,7 +121,7 @@ public abstract class Circuit extends JPanel {
             }
         });
         
-        EdgeTriggerDelay = new Timer(250, new ActionListener(){
+        edgeTriggerDelay = new Timer(EDGE_TRIGGER_DELAY, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,7 +129,7 @@ public abstract class Circuit extends JPanel {
                 repaint();
             }
         });
-        EdgeTriggerDelay.setRepeats(false);
+        edgeTriggerDelay.setRepeats(false);
     }
 
     /**
@@ -151,7 +156,7 @@ public abstract class Circuit extends JPanel {
     protected void paintComponent(Graphics g1) {
         super.paintComponent(g1);
         if (!isCalculated()) {
-            calcCircuit(20);
+            calcCircuit();
         }
         
         Graphics2D g = (Graphics2D) g1;
@@ -160,7 +165,7 @@ public abstract class Circuit extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g.transform(getTransform());
         
-        g.setFont(font);
+        g.setFont(FONT);
         //draw stuff.
         for (Gate gate : gates) {
             gate.drawFill(g);
@@ -172,7 +177,8 @@ public abstract class Circuit extends JPanel {
      * Calculate the circuit over a default maximum of 20 iterations.
      */
     public void calcCircuit() {
-        calcCircuit(20);
+        final int defaultIterations = 20;
+        calcCircuit(defaultIterations);
     }
     
     /**
@@ -191,7 +197,7 @@ public abstract class Circuit extends JPanel {
         boolean hasEdgeTriggers = false;
         while ((iteration < maxIterations) && (changes > 0)) {
             changes = 0;
-            for(Gate g : gates) {
+            for (Gate g : gates) {
                 if (g instanceof GateInput) {
                     continue;
                 }
@@ -218,14 +224,14 @@ public abstract class Circuit extends JPanel {
 //            System.out.println("Settling took " + iteration + " iterations.");
 //        }
         
-        for(Gate g : gates) {
+        for (Gate g : gates) {
             if (g instanceof GateEdgeTrigger) {
                 GateEdgeTrigger get = (GateEdgeTrigger) g;
                 get.setOldInput(get.getInput());
             }
         }
         if (hasEdgeTriggers) {
-            EdgeTriggerDelay.start();
+            edgeTriggerDelay.start();
         }
         
         setCalculated(true);
@@ -255,12 +261,14 @@ public abstract class Circuit extends JPanel {
             return;
         }
         at.transform(click, click);
-        long dist = (gPos.x - click.x) * (gPos.x - click.x) + (gPos.y - click.y) * (gPos.y - click.y);
+        long dist = (gPos.x - click.x) * (gPos.x - click.x) 
+                  + (gPos.y - click.y) * (gPos.y - click.y);
         long closestDist = dist; 
         
         for (Gate g : gates) {
             gPos = g.getPosition();
-            dist = (gPos.x - click.x) * (gPos.x - click.x) + (gPos.y - click.y) * (gPos.y - click.y);
+            dist = (gPos.x - click.x) * (gPos.x - click.x)
+                 + (gPos.y - click.y) * (gPos.y - click.y);
             if (dist < closestDist) {
                 closestDist = dist;
                 closest = g;
@@ -277,6 +285,7 @@ public abstract class Circuit extends JPanel {
      * neatly fits inside the panel.
      */
     public void focusView() {
+        final int margin = 10;
         Dimension size;
         Rectangle bounds;
         AffineTransform at;
@@ -305,33 +314,31 @@ public abstract class Circuit extends JPanel {
             at.transform(gateTL, gateTL);
             at.transform(gateBR, gateBR);
             
-//            System.out.printf("The gate bounds are LEFT %3d,\tTOP %3d,\tRIGHT %3d,\tBOTTOM %3d\n", gateTL.x, gateTL.y, gateBR.x, gateBR.y);
             destTL.setLocation(Math.min(gateTL.x, destTL.x), Math.min(gateTL.y, destTL.y));
             destBR.setLocation(Math.max(gateBR.x, destBR.x), Math.max(gateBR.y, destBR.y));
         }
-//        System.out.printf("The Final Bounds\n are LEFT %3d,\tTOP %3d,\tRIGHT %3d,\tBOTTOM %3d\n", destTL.x, destTL.y, destBR.x, destBR.y);
         
         //Add a margin for visual niceness.
-        destTL.x -= 10;
-        destTL.y -= 10;
-        destBR.x += 10;
-        destBR.y += 10;
+        destTL.x -= margin;
+        destTL.y -= margin;
+        destBR.x += margin;
+        destBR.y += margin;
         
         size = getSize();
         
-        double scaleW = ((double)size.width  / (destBR.x - destTL.x));
-        double scaleH = ((double)size.height / (destBR.y - destTL.y));
+        double scaleW = ((double) size.width  / (destBR.x - destTL.x));
+        double scaleH = ((double) size.height / (destBR.y - destTL.y));
         if (scaleW < scaleH) {
             scale = scaleW;
             translate = new Point(
-                    (int)(-destTL.x * scale), 
-                    ((int)(-destTL.y * scale) + (int)(-destBR.y * scale) + size.height) / 2);
+                    (int) (-destTL.x * scale), 
+                    ((int) (-destTL.y * scale) + (int) (-destBR.y * scale) + size.height) / 2);
             oldTranslate = new Point(translate);
         } else {
             scale = scaleH;
             translate = new Point(
-                    ((int)(-destTL.x * scale) + (int)(-destBR.x * scale) + size.width) / 2,
-                    (int)(-destTL.y * scale)); 
+                    ((int) (-destTL.x * scale) + (int) (-destBR.x * scale) + size.width) / 2,
+                    (int) (-destTL.y * scale)); 
             oldTranslate = new Point(translate);
             
         }
@@ -352,10 +359,10 @@ public abstract class Circuit extends JPanel {
     /**
      * Tell the circuit that it hasn't or is already calculated.
      * 
-     * @param isCalculated False if the circuit 
+     * @param calculated False if the circuit 
      *                     needs to be recalculated
      */
-    public void setCalculated(boolean isCalculated) {
-        this.isCalculated = isCalculated;
+    public void setCalculated(boolean calculated) {
+        isCalculated = calculated;
     }
 }

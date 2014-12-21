@@ -26,7 +26,7 @@ public class EdgeTriggerGraphic extends JPanel {
     /** unique ID for serialization. */
     private static final long serialVersionUID = -7578879378352051486L;
     /** The current phase of the hard-coded animation. */
-    private double phase = 0;
+    private double phase;
     
     /** Rectangle to hold the clipping bounds of the panel. */
     private Rectangle r;
@@ -123,8 +123,8 @@ public class EdgeTriggerGraphic extends JPanel {
 
         //draw clock label
         int thickness = p(0.01);
-        int xPoints[] = new int[6];
-        int yPoints[] = new int[6];
+        int[] xPoints = new int[6];
+        int[] yPoints = new int[6];
         xPoints[0] = w(0.005);
         yPoints[0] = h(0.55);
 
@@ -147,7 +147,8 @@ public class EdgeTriggerGraphic extends JPanel {
     }
 
     /**
-     * Draw the yellow glow of activated wires and gates. This varies with the value of {@code phase}.
+     * Draw the yellow glow of activated wires and gates. 
+     * This varies with the value of {@code phase}.
      * 
      * @param g The graphics context to draw into.
      */
@@ -365,7 +366,7 @@ public class EdgeTriggerGraphic extends JPanel {
     }
     
     /**
-     * Set the phase (between 0 and 1 inclusive)
+     * Set the phase (between 0 and 1 inclusive).
      * @param phase the phase to set (0 to 1 inclusive)
      */
     public void setPhase(double phase) {

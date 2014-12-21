@@ -26,8 +26,10 @@ public class EquationField extends JTextField {
     /** The color of the forground if an error is detected. */
     private static final Color ERROR_FOREGROUND_COLOR = null;
 
-    /** The normal colors of the background and foreground. */
-    private Color fBackground, fForeground;
+    /** The normal colors for the background. */
+    private Color fBackground;
+    /** The normal colors for the foreground. */
+    private Color fForeground;
 
     /** The formatter to use for validation. */
     private Format formatter;
@@ -48,6 +50,21 @@ public class EquationField extends JTextField {
         updateBackgroundOnEachUpdate();
         formatter = aFormat;
         preserveSelection();
+    }
+
+    /**
+     * Create a new {@code ImprovedFormattedTextField} instance which will use
+     * {@code aFormat} for the validation of the user input. The field will be
+     * initialized with {@code aValue}.
+     *
+     * @param aFormat
+     *            The format. May not be {@code null}
+     * @param aValue
+     *            The initial value
+     */
+    public EquationField(Format aFormat, String aValue) {
+        this(aFormat);
+        setText(aValue);
     }
 
     /**
@@ -80,21 +97,6 @@ public class EquationField extends JTextField {
         // Restore caret position
         Caret c = getCaret();
         c.setDot(savedEnd + push.length());
-    }
-
-    /**
-     * Create a new {@code ImprovedFormattedTextField} instance which will use
-     * {@code aFormat} for the validation of the user input. The field will be
-     * initialized with {@code aValue}.
-     *
-     * @param aFormat
-     *            The format. May not be {@code null}
-     * @param aValue
-     *            The initial value
-     */
-    public EquationField(Format aFormat, String aValue) {
-        this(aFormat);
-        setText(aValue);
     }
 
     /**
@@ -150,12 +152,12 @@ public class EquationField extends JTextField {
         ParsePosition pp = new ParsePosition(0);
         if (formatter != null) {
             formatter.parseObject(getText(), pp);
-            if (pp.getErrorIndex() != -1)
+            if (pp.getErrorIndex() != -1) {
                 return false;
+            }
             return true;
         }
-        System.out
-                .println("Something went wrong in validContent of EquationField.");
+        System.out.println("Something went wrong in validContent of EquationField.");
         return true;
     }
 }

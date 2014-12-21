@@ -1,6 +1,3 @@
-/**
- * 
- */
 package circuit;
 
 import gui.shapes.Gate;
@@ -109,7 +106,5 @@ public class ClockedDLatch extends Circuit {
         Gate.connect(inputClock, -1, pinClock1, -1);
         Gate.connect(pinClock1, -1, andTop, -1, Link.VH);
         Gate.connect(pinClock1, -1, andBottom, -1, Link.VH);
-        
-        calcCircuit(20);
     }
 }

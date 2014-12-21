@@ -81,19 +81,19 @@ public class HammingPanel extends JPanel {
         radioRow.setAlignmentX(LEFT_ALIGNMENT);
         radioRow.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         add(radioRow);
-        add(Spacer.Vertical(vMargin / 2));
+        add(Spacer.vertical(vMargin / 2));
 
         hep = new HammingEncodePanel();
         hep.setFont(FONT);
         hep.setAlignmentX(LEFT_ALIGNMENT);
         add(hep);
-        add(Spacer.Vertical(vMargin));
+        add(Spacer.vertical(vMargin));
 
         hdp = new HammingDecodePanel();
         hdp.setFont(FONT);
         hdp.setAlignmentX(LEFT_ALIGNMENT);
         add(hdp);
-        add(Spacer.VerticalStretch(vMargin));
+        add(Spacer.verticalStretch(vMargin));
 
         
         setMinimumSize(new Dimension(minWidth, 0));

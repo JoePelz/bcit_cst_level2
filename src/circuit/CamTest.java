@@ -1,11 +1,11 @@
 package circuit;
 
 
-import gui.shapes.*;
-
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import gui.shapes.Gate;
+import gui.shapes.GateAnd;
+import gui.shapes.GateEdgeTrigger;
+import gui.shapes.GateInput;
+import gui.shapes.GateState;
 
 /**
  * This class is for testing gate and circuit constructions.
@@ -13,7 +13,6 @@ import java.awt.Graphics2D;
  * @author Joe Pelz
  * @version 1.0
  */
-@SuppressWarnings("unused")
 public class CamTest extends Circuit {
     /** unique id for serialization. */
     private static final long serialVersionUID = 442544548172569392L;
@@ -39,9 +38,9 @@ public class CamTest extends Circuit {
         Gate.connect(circle2, -1, circle3, -1);
         Gate.connect(circle3, -1, circle4, -1);
         
-        gates.add((Gate)circle1);
-        gates.add((Gate)circle2);
-        gates.add((Gate)circle3);
-        gates.add((Gate)circle4);
+        gates.add((Gate) circle1);
+        gates.add((Gate) circle2);
+        gates.add((Gate) circle3);
+        gates.add((Gate) circle4);
     }
 }

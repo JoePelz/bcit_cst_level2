@@ -1,6 +1,3 @@
-/**
- * 
- */
 package circuit;
 
 import gui.shapes.Gate;
@@ -95,7 +92,5 @@ public class SRLatch extends Circuit {
         Gate.connect(pin7, -1, pin4, 0, Link.STRAIGHT);
         Gate.connect(pin4, -1, pin6, 0);
         Gate.connect(pin3, -1, pin5, 0);
-
-        calcCircuit(20);
     }
 }

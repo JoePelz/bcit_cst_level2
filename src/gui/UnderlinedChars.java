@@ -44,19 +44,20 @@ public class UnderlinedChars extends JLabel {
         int prelength = 0;
         int length = 0;
         for (int i = 0; i < getText().length(); i++) {
-            if (getText().charAt(i) == ' ')
+            if (getText().charAt(i) == ' ') {
                 continue;
+            }
             
             if (getHorizontalAlignment() == RIGHT) {
-                prelength = getFontMetrics(getFont()).stringWidth(getText().substring(i+1));
-                length = getFontMetrics(getFont()).stringWidth(getText().substring(i, i+1));
+                prelength = getFontMetrics(getFont()).stringWidth(getText().substring(i + 1));
+                length = getFontMetrics(getFont()).stringWidth(getText().substring(i, i + 1));
                 g.drawLine(r.width - prelength - length + 1,
                         r.height - getFontMetrics(getFont()).getDescent(),
                         r.width - prelength - 2,
                         r.height - getFontMetrics(getFont()).getDescent());
             } else {
                 prelength = getFontMetrics(getFont()).stringWidth(getText().substring(0, i));
-                length = getFontMetrics(getFont()).stringWidth(getText().substring(i, i+1));
+                length = getFontMetrics(getFont()).stringWidth(getText().substring(i, i + 1));
                 g.drawLine(prelength + spacing,
                         r.height - getFontMetrics(getFont()).getDescent(),
                         prelength + length - spacing,

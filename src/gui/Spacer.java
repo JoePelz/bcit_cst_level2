@@ -21,7 +21,7 @@ public class Spacer {
      * @param space The minimum width for the spacer.
      * @return A horizontally stretching spacing component.
      */
-    public static Box.Filler HorizontalStretch(int space) {
+    public static Box.Filler horizontalStretch(int space) {
         Dimension minSize = new Dimension(space, 0);
         Dimension prefSize = new Dimension(space, 0);
         Dimension maxSize = new Dimension(Short.MAX_VALUE, 0);
@@ -36,7 +36,7 @@ public class Spacer {
      * @param space The width of the component.
      * @return A horizontal spacing component.
      */
-    public static Box.Filler Horizontal(int space) {
+    public static Box.Filler horizontal(int space) {
         Dimension minSize = new Dimension(space, 0);
         Dimension prefSize = new Dimension(space, 0);
         Dimension maxSize = new Dimension(space, 0);
@@ -52,7 +52,7 @@ public class Spacer {
      * @param space The minimum height to use.
      * @return A vertically stretching spacing component.
      */
-    public static Box.Filler VerticalStretch(int space) {
+    public static Box.Filler verticalStretch(int space) {
         Dimension minSize = new Dimension(0, space);
         Dimension prefSize = new Dimension(0, space);
         Dimension maxSize = new Dimension(0, Short.MAX_VALUE);
@@ -67,7 +67,7 @@ public class Spacer {
      * @param space The height of this component.
      * @return A vertical spacing component.
      */
-    public static Box.Filler Vertical(int space) {
+    public static Box.Filler vertical(int space) {
         Dimension minSize = new Dimension(0, space);
         Dimension prefSize = new Dimension(0, space);
         Dimension maxSize = new Dimension(0, space);

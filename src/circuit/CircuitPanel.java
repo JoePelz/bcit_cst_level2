@@ -39,9 +39,9 @@ public class CircuitPanel extends JPanel implements ItemListener {
         TitledBorder myBorder = BorderFactory.createTitledBorder("Interactive Circuits");
         circuits.setBorder(myBorder);
         
-        circuitPresets circuitList[] = circuitPresets.values();
+        circuitPresets[] circuitList = circuitPresets.values();
         JPanel comboBoxPane = new JPanel(); //use FlowLayout
-        String comboBoxItems[] = new String[circuitList.length];
+        String[] comboBoxItems = new String[circuitList.length];
         for (int i = 0; i < circuitList.length; i++) {
             circuits.add(circuitList[i].getCircuit(), circuitList[i].getName());
             comboBoxItems[i] = circuitList[i].getName();
@@ -73,37 +73,9 @@ public class CircuitPanel extends JPanel implements ItemListener {
     
     @Override
     public void itemStateChanged(ItemEvent evt) {
-        CardLayout cl = (CardLayout)(circuits.getLayout());
-        cl.show(circuits, (String)evt.getItem());
+        CardLayout cl = (CardLayout) (circuits.getLayout());
+        cl.show(circuits, (String) evt.getItem());
         
-    }
-
-    /**
-     * Test the circuits panel independently in a simple JFrame.
-     * 
-     * @param args unused
-     */
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Circuits, by Joe Pelz, Fall 2014");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (ClassNotFoundException 
-                | InstantiationException
-                | IllegalAccessException 
-                | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-        
-        CircuitPanel etp = new CircuitPanel();
-        
-        
-        frame.add(etp);
-        frame.pack();
-        frame.setSize(1200, 800);
-        frame.validate();
-        etp.focusAll();
-        frame.setVisible(true);
     }
 
     /**
@@ -120,7 +92,7 @@ public class CircuitPanel extends JPanel implements ItemListener {
         C_FA("Full Adder", new FullAdder()),
         /** Decodes a 2-bit signal into 4 outputs. */
         C_DEC("Decoder", new Decoder()),
-        /** ALU does 1-bit AND, OR, NOT, ADD operations */
+        /** ALU does 1-bit AND, OR, NOT, ADD operations. */
         C_ALU("Arithmetic Logic Unit", new SimpleALU()),
         /** SR Latch tries to be memory. */
         C_SRL("SR Latch", new SRLatch()),
@@ -137,7 +109,7 @@ public class CircuitPanel extends JPanel implements ItemListener {
         private Circuit circuit;
         
         /**
-         * Constructor, stores a name and circuit 
+         * Constructor, stores a name and circuit.
          * 
          * @param name The name of the circuit.
          * @param circuit The circuit object itself.
@@ -164,5 +136,36 @@ public class CircuitPanel extends JPanel implements ItemListener {
         public Circuit getCircuit() {
             return circuit;
         }
+    }
+
+
+    /**
+     * Test the circuits panel independently in a simple JFrame.
+     * 
+     * @param args unused
+     */
+    public static void main(String[] args) {
+        final int defaultWidth = 1200;
+        final int defaultHeight = 800;
+        JFrame frame = new JFrame("Circuits, by Joe Pelz, Fall 2014");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (ClassNotFoundException 
+                | InstantiationException
+                | IllegalAccessException 
+                | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+        
+        CircuitPanel etp = new CircuitPanel();
+        
+        
+        frame.add(etp);
+        frame.pack();
+        frame.setSize(defaultWidth, defaultHeight);
+        frame.validate();
+        etp.focusAll();
+        frame.setVisible(true);
     }
 }

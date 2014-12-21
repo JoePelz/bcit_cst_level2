@@ -1,6 +1,3 @@
-/**
- * 
- */
 package circuit;
 
 import gui.shapes.Gate;
@@ -14,7 +11,7 @@ import gui.shapes.Link;
 
 /**
  * This class creates a half adder circuit, 
- * capable of adding 1-bit without any carry-in,
+ * capable of adding 1-bit without any carry-in.
  * 
  * @author Joe Pelz
  * @version 1.0
@@ -67,7 +64,5 @@ public class HalfAdder extends Circuit {
         Gate.connect(pin5, -1, go, -1);
         Gate.connect(go, 0, pin7, 0);
         Gate.connect(ga, 0, pin8, 0);
-
-        calcCircuit(20);
     }
 }

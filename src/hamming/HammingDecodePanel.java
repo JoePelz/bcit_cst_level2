@@ -52,14 +52,14 @@ public class HammingDecodePanel extends JPanel {
         
         dwResult.setCodeWord("0111000");
 
-        add(Spacer.Horizontal(hSpacing));
+        add(Spacer.horizontal(hSpacing));
         add(dWord);
-        add(Spacer.Horizontal(hSpacing));
+        add(Spacer.horizontal(hSpacing));
         add(dwField);
-        add(Spacer.Horizontal(hSpacing));
+        add(Spacer.horizontal(hSpacing));
         add(dwResult);
         //add(Box.createHorizontalGlue());
-        add(Spacer.HorizontalStretch(1));
+        add(Spacer.horizontalStretch(1));
     }
     
     @Override

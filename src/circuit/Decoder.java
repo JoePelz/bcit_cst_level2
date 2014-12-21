@@ -1,6 +1,3 @@
-/**
- * 
- */
 package circuit;
 
 import gui.shapes.Gate;
@@ -99,11 +96,5 @@ public class Decoder extends Circuit {
         Gate.connect(inputA, 0, nodeA0, 0);
         Gate.connect(inputB, 0, nodeB0, 0);
 
-//        Gate.connect(nodeA0, -1, nodeA1, -1);
-//        Gate.connect(nodeB0, -1, nodeB1, -1);
-//        Gate.connect(nodeA1, -1, nodeA2, -1);
-//        Gate.connect(nodeB1, -1, nodeB2, -1);
-//        Gate.connect(nodeA2, -1, nodeA3, -1);
-//        Gate.connect(nodeB2, -1, nodeB3, -1);
     }
 }
