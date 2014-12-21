@@ -1,6 +1,3 @@
-/**
- * 
- */
 package gui.shapes;
 
 import java.awt.BasicStroke;
@@ -17,8 +14,6 @@ import java.awt.geom.AffineTransform;
  * @version 1.0
  */
 public abstract class Shape {
-    /** The transform of the shape. */
-    private AffineTransform transform = new AffineTransform();
     /** How thick the shape's outline should be. */
     protected int thickness;
     /** Whether the internal polygon is correct or not. */
@@ -35,7 +30,9 @@ public abstract class Shape {
     
     /** The internal polygon representing this shape. */
     protected Polygon p = new Polygon();
-    
+
+    /** The transform of the shape. */
+    private AffineTransform transform = new AffineTransform();
     /** The stroke to outline this shape with. */
     private BasicStroke stroke;
     
@@ -83,8 +80,8 @@ public abstract class Shape {
      */
     public void setTransform(double sclX, double sclY, double centerX, double centerY) {
         transform.setTransform(sclX, 0, 0, sclY, centerX, centerY);
-        posX = (int)centerX;
-        posY = (int)centerY;
+        posX = (int) centerX;
+        posY = (int) centerY;
         scaleX = sclX;
         scaleY = sclY;
     }
@@ -100,26 +97,28 @@ public abstract class Shape {
      * @param g Graphics context to draw into
      */
     public void drawStroke(Graphics2D g) {
-        if (!valid) 
+        if (!valid) {
             updatePoints();
+        }
         
-        AffineTransform at_old = g.getTransform();
+        AffineTransform atOld = g.getTransform();
         g.transform(getTransform());
         g.setStroke(stroke);
         g.drawPolygon(p);
-        g.setTransform(at_old);
+        g.setTransform(atOld);
     }
     /**
      * Fill the given gate onto the graphics context.
      * @param g Graphics context to draw into
      */
     public void drawFill(Graphics2D g) {
-        if (!valid) 
+        if (!valid) {
             updatePoints();
-        AffineTransform at_old = g.getTransform();
+        }
+        AffineTransform atOld = g.getTransform();
         g.transform(getTransform());
         g.fillPolygon(p);
-        g.setTransform(at_old);
+        g.setTransform(atOld);
     }
     
     /**
@@ -206,6 +205,6 @@ public abstract class Shape {
      * @return The current center position of this shape.
      */
     public Point getPosition() {
-        return new Point((int)transform.getTranslateX(), (int)transform.getTranslateY());
+        return new Point((int) transform.getTranslateX(), (int) transform.getTranslateY());
     }
 }

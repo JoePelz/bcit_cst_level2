@@ -30,7 +30,7 @@ public class Link {
     private int portIn;
 
     /** The draw style of the link. */
-    private int style = 0;
+    private int style;
     
     /**
      * Constructor, create a connection 
@@ -50,7 +50,7 @@ public class Link {
     }
 
     /**
-     * Get the output gate, at the start of the link
+     * Get the output gate, at the start of the link.
      * 
      * @return The output gate
      */

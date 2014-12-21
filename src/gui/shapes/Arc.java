@@ -41,11 +41,13 @@ public class Arc extends Shape {
      */
     public Arc(int x, int y, double radius, double start, double stop, int thickness) {
         super(x, y, thickness);
+        final int defaultSubdivisions = 8;
+        
         this.radius = radius;
         this.start = start;
         this.stop = stop;
         
-        subdivisions = 8;
+        subdivisions = defaultSubdivisions;
     }
     
     /**
@@ -55,8 +57,14 @@ public class Arc extends Shape {
      * @param num The number of subdivisions in the arc path.
      */
     public void setSubdivisions(int num) {
-        if (num < 3 || num > 100) {
-            throw new IllegalArgumentException("Subdivisions must be between 3 and 100.\nNumber given was " + num + ".");
+        // maximum reasonable subdivisions
+        final int max = 100;
+        // minimum reasonable subdivisions
+        final int min = 3;
+        
+        if (num < min || num > max) {
+            throw new IllegalArgumentException("Subdivisions must be between "
+                    + "3 and 100.\nNumber given was " + num + ".");
         }
         subdivisions = num;
         valid = false;
@@ -76,7 +84,7 @@ public class Arc extends Shape {
         //clear the polygon first.
         p.reset();
         //add points
-        for(i = 0; i <= points; i++) {
+        for (i = 0; i <= points; i++) {
             px = (int) (Math.sin(i * factor + offset) * radius);
             py = (int) (Math.cos(i * factor + offset) * radius);
             p.addPoint(px, py);

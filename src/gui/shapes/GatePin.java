@@ -24,6 +24,8 @@ public class GatePin extends Gate {
     /** Indicates a label should be placed below and to the left. */
     public static final int SW = 3;
 
+    /** internal scale used for drawing the ball. */
+    private static final int SCALE = 3;
     /** A label to draw next to the pin. */
     private String label = new String();
     /** Which side of the pin to draw the label. */
@@ -74,28 +76,32 @@ public class GatePin extends Gate {
     public void drawStroke(Graphics2D g) {
         super.drawStroke(g);
 
-        AffineTransform at_old = g.getTransform();
+        AffineTransform atOld = g.getTransform();
         g.transform(getTransform());
         g.setColor(this.getBackground());
-        g.fillOval((int)(-1.5 * thickness), (int)(-1.5 * thickness), 3 * thickness, 3 * thickness);
+        g.fillOval(
+                (int) ((double) -SCALE / 2 * thickness), 
+                (int) ((double) -SCALE / 2 * thickness), 
+                SCALE * thickness, 
+                SCALE * thickness);
         g.setColor(Color.BLACK);
         FontMetrics fm = g.getFontMetrics();
         switch(labelSide) {
-        case NE:
-        default:
-            g.drawString(label, thickness, -thickness);
-            break;
-        case NW:
+        case SW:
             g.drawString(label, -thickness - fm.stringWidth(label), -thickness);
             break;
         case SE:
             g.drawString(label, thickness, thickness + fm.getHeight());
             break;
-        case SW:
+        case NW:
             g.drawString(label, -thickness - fm.stringWidth(label), thickness + fm.getAscent());
             break;
+        case NE:
+        default:
+            g.drawString(label, thickness, -thickness);
+            break;
         }
-        g.setTransform(at_old);
+        g.setTransform(atOld);
     }
 
     @Override
@@ -115,6 +121,10 @@ public class GatePin extends Gate {
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle((int)(-1.5 * thickness), (int)(-1.5 * thickness), 3 * thickness, 3 * thickness);
+        return new Rectangle(
+                (int) ((double) -SCALE / 2 * thickness), 
+                (int) ((double) -SCALE / 2 * thickness), 
+                SCALE * thickness, 
+                SCALE * thickness);
     }
 }

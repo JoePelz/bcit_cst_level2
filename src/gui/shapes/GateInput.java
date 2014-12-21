@@ -12,7 +12,7 @@ public class GateInput extends GatePin {
     
     /**
      * Constructor, makes a new GateInput at the given position 
-     * and state (ON/OFF)
+     * and state (ON/OFF).
      * 
      * @param x The x position for the gate
      * @param y The y position for the gate
@@ -35,7 +35,7 @@ public class GateInput extends GatePin {
      * @param clickX The mouse X position on click.
      * @param clickY The mouse Y position on click.
      */
-    public void perform( int clickX, int clickY) {
+    public void perform(int clickX, int clickY) {
         if (getState() == GateState.ON) {
             setState(GateState.OFF);
         } else {

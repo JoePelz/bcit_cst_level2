@@ -27,9 +27,11 @@ public class Circle extends Shape {
      */
     public Circle(int x, int y, double radius, int thickness) {
         super(x, y, thickness);
+        final int defaultSubdivisions = 8;
+        
         this.radius = radius;
         
-        subdivisions = 8;
+        subdivisions = defaultSubdivisions;
     }
     
     /**
@@ -39,8 +41,14 @@ public class Circle extends Shape {
      * @param num The number of edges in the polygon circle.
      */
     public void setSubdivisions(int num) {
-        if (num < 3 || num > 100) {
-            throw new IllegalArgumentException("Subdivisions must be between 3 and 100.\nNumber given was " + num + ".");
+        // maximum reasonable subdivisions
+        final int max = 100;
+        // minimum reasonable subdivisions
+        final int min = 3;
+        
+        if (num < min || num > max) {
+            throw new IllegalArgumentException("Subdivisions must be between "
+                    + "3 and 100.\nNumber given was " + num + ".");
         }
         subdivisions = num;
         valid = false;
@@ -60,9 +68,9 @@ public class Circle extends Shape {
         //clear the polygon first.
         p.reset();
         //add points
-        rX = (int)(radius);
-        rY = (int)(radius);
-        for(int i = 0; i < points; i++) {
+        rX = (int) (radius);
+        rY = (int) (radius);
+        for (int i = 0; i < points; i++) {
             px = (int) (Math.sin(i * factor) * rX);
             py = (int) (Math.cos(i * factor) * rY);
             p.addPoint(px, py);

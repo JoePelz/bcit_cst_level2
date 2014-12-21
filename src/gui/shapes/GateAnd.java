@@ -16,7 +16,7 @@ public class GateAnd extends Gate {
     /** NAND gate. Off when all inputs are 1. */
     public static final int NAND = 1;
     /** The radius of the curve at the front of the AND gate. */
-    private static final int radius = 200;
+    private static final int RADIUS = 200;
     /** The polygon representation of the AND gate shape. */
     private Polygon poly = new Polygon();
     /** The curved arc at the front of the AND gate. */
@@ -36,15 +36,15 @@ public class GateAnd extends Gate {
      */
     public GateAnd(int x, int y, int thickness) {
         super(x, y, thickness * 10, 2, -1);
-        arc = new Arc((int)(radius * 1.6), 0, radius, 0, Math.PI, thickness);
+        arc = new Arc((int)(RADIUS * 1.6), 0, RADIUS, 0, Math.PI, thickness);
         arc.setSubdivisions(16);
         arc.setPie(false);
         arc.updatePoints();
 
-        inverter = new Circle((int)(
-                2.8 * radius), 
+        inverter = new Circle((int) (
+                2.8 * RADIUS), 
                 0, 
-                (int)(radius * 0.2), 
+                (int)(0.2 * RADIUS), 
                 thickness * 10);
         inverter.setSubdivisions(32);
         inverter.updatePoints();
@@ -72,10 +72,10 @@ public class GateAnd extends Gate {
         poly = arc.getTransformedPolygon();
         
         //top left
-        poly.addPoint(0, -radius);
+        poly.addPoint(0, -RADIUS);
         
         //bottom left
-        poly.addPoint(0, radius);
+        poly.addPoint(0, RADIUS);
 
         clearShapes();
         addShape(poly);
@@ -89,16 +89,16 @@ public class GateAnd extends Gate {
 
     @Override
     public Point getOutput(int i) {
-        int width = (int) (2.6 * radius);
+        int width = (int) (2.6 * RADIUS);
         if ((type & NAND) > 0) {
-            width += (int)(radius * 0.4); 
+            width += (int) (0.4 * RADIUS); 
         }
         return new Point(width, 0);
     }
 
     @Override
     public Point getInput(int i) {
-        int rY = radius >> 1;
+        int rY = RADIUS >> 1;
         if (i == 0) {
             return new Point(0, -rY);
         } else if (i == 1) {
@@ -112,7 +112,7 @@ public class GateAnd extends Gate {
     public int calcOut() {
         //TODO: add nand functionality.
         boolean out = true;
-        for(Link l : inputPorts) {
+        for (Link l : inputPorts) {
             if (l == null) {
                 out = false;
                 break;
@@ -143,17 +143,18 @@ public class GateAnd extends Gate {
 
     @Override
     public Rectangle getBounds() {
-        if (type == NAND)
+        if (type == NAND) {
             return new Rectangle(
                     0 - (thickness >> 1), 
-                    -radius - (thickness >> 1), 
-                    (int)(3 * radius) + thickness, 
-                    (radius << 1) + thickness);
-        else
+                    -RADIUS - (thickness >> 1), 
+                    (int) (3 * RADIUS) + thickness, 
+                    (RADIUS << 1) + thickness);
+        } else {
             return new Rectangle(
                     0 - (thickness >> 1), 
-                    -radius - (thickness >> 1), 
-                    (int)(2.6 * radius) + thickness, 
-                    (radius << 1) + thickness);
+                    -RADIUS - (thickness >> 1), 
+                    (int) (2.6 * RADIUS) + thickness, 
+                    (RADIUS << 1) + thickness);
+        }
     }
 }

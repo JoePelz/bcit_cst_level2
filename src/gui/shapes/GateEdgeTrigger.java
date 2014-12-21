@@ -44,10 +44,10 @@ public class GateEdgeTrigger extends Gate {
     public GateEdgeTrigger(int x, int y, int thickness) {
         super(x, y, thickness, 1, 1);
 
-        p2 = new GateInput(x+0, y+0, thickness, GateState.UNKNOWN);
-        p3 = new GatePin(x+0, y+20, thickness);
-        gn = new GateNot(x+20, y+20, thickness);
-        ga = new GateAnd(x+80, y+10, thickness);
+        p2 = new GateInput(x + 0,  y + 0,  thickness, GateState.UNKNOWN);
+        p3 = new   GatePin(x + 0,  y + 20, thickness);
+        gn = new   GateNot(x + 20, y + 20, thickness);
+        ga = new   GateAnd(x + 80, y + 10, thickness);
         ga.setName("EdgeTrigger");
 
         innerGates.add(p2);
@@ -80,7 +80,7 @@ public class GateEdgeTrigger extends Gate {
         super.drawStroke(g);
 
         // draw stuff.
-        for (Gate gate : innerGates ) {
+        for (Gate gate : innerGates) {
             gate.drawStroke(g);
         }
     }
@@ -90,7 +90,7 @@ public class GateEdgeTrigger extends Gate {
         super.drawFill(g);
 
         // draw stuff.
-        for (Gate gate : innerGates ) {
+        for (Gate gate : innerGates) {
             gate.drawFill(g);
         }
     }
@@ -101,14 +101,14 @@ public class GateEdgeTrigger extends Gate {
         if (linkIn == null) {
             return 0;
         }
-        GateState input = linkIn.getGateOut().getState();
-        p2.setState(input);
+        GateState tempIn = linkIn.getGateOut().getState();
+        p2.setState(tempIn);
         //Iterate over circuit
         int iteration = 0;
         int changes = 1;
         while ((iteration < 5) && (changes > 0)) {
             changes = 0;
-            for(Gate g : innerGates) {
+            for (Gate g : innerGates) {
                 if (g instanceof GateInput) {
                     continue;
                 }
@@ -116,10 +116,10 @@ public class GateEdgeTrigger extends Gate {
             }
             iteration++;
         }
-        if (iteration == 5)
+        if (iteration == 5) {
             System.out.println("Max iterations reached in GateEdgeTrigger");
-        
-        setInput(input);
+        }
+        setInput(tempIn);
         return 1;
     }
 
@@ -134,11 +134,10 @@ public class GateEdgeTrigger extends Gate {
 
     /**
      * Set the current input state of this gate.
-     * TODO: should this be public? maybe private?
      * 
      * @param input The input state to set.
      */
-    public void setInput(GateState input) {
+    private void setInput(GateState input) {
         this.input = input;
     }
 

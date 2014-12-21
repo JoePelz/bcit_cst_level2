@@ -19,6 +19,11 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public abstract class Gate extends Shape {
+    /** Outbound connections to other gates. */
+    protected Link[] outputPorts;
+    /** Inbound connections to the gate. */
+    protected Link[] inputPorts;
+    
     /** The collection of closed polygons involved in drawing this gate. */
     private ArrayList<Polygon> polygons = new ArrayList<Polygon>();
     /** The collection of poly lines involved in drawing this gate. */
@@ -36,14 +41,10 @@ public abstract class Gate extends Shape {
     /** The name of the gate, for debugging mostly. */
     private String name = "";
 
-    /** Outbound connections to other gates. */
-    protected Link outputPorts[];
-    /** True if the output can support infinite connections. */
-    private boolean outputResize;
-    /** Inbound connections to the gate. */
-    protected Link inputPorts[];
     /** True if the input can support infinite connections. */
     private boolean inputResize;
+    /** True if the output can support infinite connections. */
+    private boolean outputResize;
     
     /**
      * Constructor, to make a gate and place it in a particular place.  
@@ -55,14 +56,15 @@ public abstract class Gate extends Shape {
      * @param out The number of output connections permitted.
      * @throws IllegalArgumentException When {@code in} or {@code out} are 0 or <-1.
      */
-    public Gate(int x, int y, int thickness, int in, int out) throws IllegalArgumentException {
+    public Gate(int x, int y, int thickness, int in, int out) {
         super(x, y, thickness);
         if (out == -1) {
             outputPorts = new Link[1];
         } else if (out > 0) {
             outputPorts = new Link[out];
         } else {
-            throw new IllegalArgumentException("Invalid number of output gates. (must be positive integer or -1)");
+            throw new IllegalArgumentException("Invalid number of "
+                    + "output gates. (must be positive integer or -1)");
         }
         
         if (in == -1) {
@@ -70,7 +72,8 @@ public abstract class Gate extends Shape {
         } else if (in > 0) {
             inputPorts = new Link[in];
         } else {
-            throw new IllegalArgumentException("Invalid number of input gates. (must be positive integer or -1)");
+            throw new IllegalArgumentException("Invalid number of "
+                    + "input gates. (must be positive integer or -1)");
         }
     }
     
@@ -109,7 +112,7 @@ public abstract class Gate extends Shape {
                 }
             }
             if (inputResize) {
-                Link temp[] = new Link[inputPorts.length + 1];
+                Link[] temp = new Link[inputPorts.length + 1];
                 for (int i = 0; i < inputPorts.length; i++) {
                     temp[i] = inputPorts[i];
                 }
@@ -150,7 +153,7 @@ public abstract class Gate extends Shape {
                 }
             }
             if (outputResize) {
-                Link temp[] = new Link[outputPorts.length + 1];
+                Link[] temp = new Link[outputPorts.length + 1];
                 for (int i = 0; i < outputPorts.length; i++) {
                     temp[i] = outputPorts[i];
                 }
@@ -180,7 +183,7 @@ public abstract class Gate extends Shape {
      * @param port The out-bound connection to disconnect.
      * @throws IndexOutOfBoundsException if the port doesn't exist.
      */
-    public void disconnectOut(int port) throws IndexOutOfBoundsException {
+    public void disconnectOut(int port) {
         outputPorts[port] = null;
     }
     
@@ -190,7 +193,7 @@ public abstract class Gate extends Shape {
      * @param port The out-bound connection to disconnect.
      * @throws IndexOutOfBoundsException if the port doesn't exist.
      */
-    public void disconnectIn(int port) throws IndexOutOfBoundsException {
+    public void disconnectIn(int port) {
         inputPorts[port] = null;
     }
 
@@ -230,7 +233,6 @@ public abstract class Gate extends Shape {
      * @param state the gate state. true for enabled.
      */
     public void setState(GateState state) {
-        //TODO: should this be public? maybe not...
         enabled = state;
     }
 
@@ -262,8 +264,9 @@ public abstract class Gate extends Shape {
     
     @Override
     public void drawStroke(Graphics2D g) {
-        if (!valid) 
+        if (!valid) {
             updatePoints();
+        }
 
         
         
@@ -272,12 +275,12 @@ public abstract class Gate extends Shape {
         for (Link link : inputPorts) {
             if (link != null) {
                 Point a = link.getGateOut().getOutput(link.getPortOut());
-                AffineTransform a_at = link.getGateOut().getTransform();
+                AffineTransform aAT = link.getGateOut().getTransform();
                 Point b = getInput(link.getPortIn());
-                AffineTransform b_at = getTransform();
+                AffineTransform bAT = getTransform();
                 
-                a_at.transform(a, a);
-                b_at.transform(b, b);
+                aAT.transform(a, a);
+                bAT.transform(b, b);
                 
                 if (link.getGateOut().getState() == GateState.ON) {
                     g.setColor(backgroundOn);
@@ -312,7 +315,7 @@ public abstract class Gate extends Shape {
         }
         //Stroke all shapes
         g.setStroke(getStroke());
-        AffineTransform at_old = g.getTransform();
+        AffineTransform atOld = g.getTransform();
         g.transform(getTransform());
         for (Polygon p : polygons) {
             g.drawPolygon(p);
@@ -320,13 +323,14 @@ public abstract class Gate extends Shape {
         for (Polygon p : lines) {
             g.drawPolyline(p.xpoints, p.ypoints, p.npoints);
         }
-        g.setTransform(at_old);
+        g.setTransform(atOld);
     }
 
     @Override
     public void drawFill(Graphics2D g) {
-        if (!valid) 
+        if (!valid) {
             updatePoints();
+        }
 
         //color by state
         if (enabled == GateState.ON) { 
@@ -335,12 +339,12 @@ public abstract class Gate extends Shape {
             g.setColor(backgroundOff);
         }
         //Fill all shapes
-        AffineTransform at_old = g.getTransform();
+        AffineTransform atOld = g.getTransform();
         g.transform(getTransform());
         for (Polygon p : polygons) {
             g.fillPolygon(p);
         }
-        g.setTransform(at_old);
+        g.setTransform(atOld);
     }
     
     /**
@@ -368,10 +372,11 @@ public abstract class Gate extends Shape {
      * @return The color the gate should be filled with.
      */
     public Color getBackground() {
-        if (enabled == GateState.ON)
+        if (enabled == GateState.ON) {
             return backgroundOn;
-        else
+        } else {
             return backgroundOff;
+        }
     }
 
     /**
@@ -381,10 +386,11 @@ public abstract class Gate extends Shape {
      * @return The stroke color for this gate.
      */
     public Color getStrokeOn() {
-        if (enabled == GateState.ON)
+        if (enabled == GateState.ON) {
             return strokeOn;
-        else
+        } else {
             return strokeOff;
+        }
     }
 
     /**
@@ -450,6 +456,7 @@ public abstract class Gate extends Shape {
      * the middle to connect the two ends) </li>
      * <li> Link.VHV (draw vertically, but with a horizontal line in 
      * the middle to connect the two ends) </li>
+     * </ul>
      * 
      * @param gateOut The source gate
      * @param portOut The output port on the source gate
@@ -477,7 +484,7 @@ public abstract class Gate extends Shape {
      */
     public int calcOut() {
         boolean out = false;
-        for(Link l : inputPorts) {
+        for (Link l : inputPorts) {
             if (l == null) {
                 continue;
             }
@@ -517,6 +524,7 @@ public abstract class Gate extends Shape {
      * @return The bounding rectangle of the gate.
      */
     public Rectangle getBounds() {
-        return new Rectangle(-10, -10, 10, 10);
+        final int size = 10;
+        return new Rectangle(-size, -size, size, size);
     }
 }
