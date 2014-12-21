@@ -5,7 +5,6 @@ import gui.shapes.GateEdgeTrigger;
 import gui.shapes.GateInput;
 import gui.shapes.GateState;
 
-import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -28,27 +27,43 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
+ * This class is the base class for all circuits. 
+ * It calculates the circuit state and handles mouse interaction. 
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
-public class Circuit extends JPanel {
+public abstract class Circuit extends JPanel {
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = 8065048015230286579L;
 
+    /** Nice fixed-width font to use. */
     private static Font font = new Font("Consolas", Font.PLAIN, 15);
     
+    /** List of all gates in the circuit. */
     protected ArrayList<Gate> gates = new ArrayList<Gate>();
 
+    /** The positioning of the circuit in the window. */
     private Point translate = new Point();
+    /** The previous positioning of the circuit in the window. */
     private Point oldTranslate = new Point();
+    /** The position where the mouse was pressed down. */
     private Point mouseStart = new Point();
+    /** The zoom level of the circuit. */
     private double scale = 1.0;
+    /** The transform of circuit to emulate a camera panning and zooming. */
     private AffineTransform transform = new AffineTransform();
     
+    /** Indicates if the circuit is done calculating and is updated. */
     private boolean isCalculated;
     
+    /** Special timer to show the action of an Edge Trigger. */
     private Timer EdgeTriggerDelay;
     
+    /**
+     * Constructor, to add listeners for the mouse, 
+     * and to setup the timer for EdgeTrigger gates.  
+     */
     public Circuit() {
         //add keyboard listener that will let you press F and 
         //center the view on the shapes 
@@ -112,11 +127,20 @@ public class Circuit extends JPanel {
         EdgeTriggerDelay.setRepeats(false);
     }
 
+    /**
+     * update the transform to reflect the current zoom and position.
+     */
     private void updateTransform() {
         //transform is xScale, xShear, yShear, yScale, xPos, yPos
         transform.setTransform(scale, 0, 0, scale, translate.x, translate.y);
     }
     
+    /**
+     * Get the transform of the circuit, 
+     * to emulate camera movement and zoom.
+     * 
+     * @return The circuit's transform.
+     */
     public AffineTransform getTransform() {
         return transform;
         
@@ -144,10 +168,21 @@ public class Circuit extends JPanel {
         }
     }
 
+    /**
+     * Calculate the circuit over a default maximum of 20 iterations.
+     */
     public void calcCircuit() {
         calcCircuit(20);
     }
     
+    /**
+     * Calculate the circuit state.  
+     * This method iterates over every node in the circuit and 
+     * attempts to calculate what its state should be. 
+     * maxIterations is a safety precaution for infinite loops.
+     * 
+     * @param maxIterations How many times to try and calculate the circuit before giving up.
+     */
     public void calcCircuit(int maxIterations) {
 //        System.out.println("=========\n  recalc\n=========");
         //Iterate over circuit
@@ -197,22 +232,14 @@ public class Circuit extends JPanel {
         
     }
     
-    protected void wire(Graphics2D g, int x1, int y1, int x2, int y2, int thickness) {
-        g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
-        g.drawLine(x1, y1, x2, y2);
-    }
-    
-    public static double clamp(double d, double min, double max) {
-        return (d < min ? min : d > max ? max : d);
-    }
-    
-    public static double remap(double d, double oldMin, double oldMax, double newMin, double newMax) {
-        double result = (d - oldMin) / (oldMax - oldMin);
-        result *= (newMax - newMin);
-        result += newMin;
-        return clamp(result, Math.min(newMin, newMax), Math.max(newMin, newMax));
-    }
-    
+    /**
+     * Handle a click at the given coordinates.  
+     * The click is passed forward to the gate 
+     * nearest to the click location.
+     * 
+     * @param x The mouse x position, world space.
+     * @param y The mouse y position, world space.
+     */
     public void click(int x, int y) {
         Point click = new Point(x, y);
         if (gates.size() == 0) {
@@ -245,6 +272,10 @@ public class Circuit extends JPanel {
         repaint();
     }
     
+    /**
+     * Focus the view on the circuit so that it 
+     * neatly fits inside the panel.
+     */
     public void focusView() {
         Dimension size;
         Rectangle bounds;
@@ -309,10 +340,21 @@ public class Circuit extends JPanel {
         repaint();
     }
 
+    /**
+     * Check if the circuit is in a fully calculated state.
+     * 
+     * @return true if the circuit is calculated.
+     */
     public boolean isCalculated() {
         return isCalculated;
     }
 
+    /**
+     * Tell the circuit that it hasn't or is already calculated.
+     * 
+     * @param isCalculated False if the circuit 
+     *                     needs to be recalculated
+     */
     public void setCalculated(boolean isCalculated) {
         this.isCalculated = isCalculated;
     }

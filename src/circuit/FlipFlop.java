@@ -11,11 +11,13 @@ import gui.shapes.GateState;
 import gui.shapes.Link;
 
 /**
+ * This is a D Flip Flop memory circuit.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class FlipFlop extends Circuit {
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = 442544548172570492L;
 
     private GateOr norTop     = new GateOr(190, 100, 2);
@@ -41,7 +43,11 @@ public class FlipFlop extends Circuit {
 
     private GateInput inputClock = new GateInput(-110, 140, 2, GateState.OFF);
     private GatePin pinClock1 = new GatePin(80, 150, 2);
-    
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public FlipFlop() {
 
         norTop.setVariation(GateOr.NOR);

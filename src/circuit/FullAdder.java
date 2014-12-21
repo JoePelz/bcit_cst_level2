@@ -10,11 +10,13 @@ import gui.shapes.Link;
 
 
 /**
+ * This is a Full Adder, performing a 1-bit addition with carry-in.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class FullAdder extends Circuit {
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = 442544548172570492L;
     
     private GateOr    fa_gxor   = new GateOr(100, 100, 2);
@@ -33,7 +35,11 @@ public class FullAdder extends Circuit {
     private GatePin   fa_pin9   = new GatePin(180, 100, 2);
     private GatePin   fa_sum    = new GatePin(410, 110, 2);
     private GatePin   fa_cOut   = new GatePin(410, 180, 2);
-    
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public FullAdder() {
 
         fa_gxor.setVariation(GateOr.XOR);

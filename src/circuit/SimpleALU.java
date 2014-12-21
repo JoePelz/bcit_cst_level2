@@ -1,6 +1,3 @@
-/**
- * 
- */
 package circuit;
 
 import gui.shapes.Gate;
@@ -13,11 +10,15 @@ import gui.shapes.GateState;
 import gui.shapes.Link;
 
 /**
+ * This class is a Simple ALU, 
+ * capable of AND, OR, NOT, and ADD on 1 bit.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class SimpleALU extends Circuit {
+    /** unique id for serialization. */
+    private static final long serialVersionUID = 442533548172570492L;
 
     //==================================================
     //Decoder
@@ -100,7 +101,11 @@ public class SimpleALU extends Circuit {
     private GateAnd   lu_enOr    = new GateAnd  (400, -50, 2);
     private GateAnd   lu_enNot   = new GateAnd  (400, 0, 2);
     
-    
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public SimpleALU() {
         
         //Add decoder

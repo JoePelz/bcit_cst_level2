@@ -12,11 +12,13 @@ import gui.shapes.Link;
 
 
 /**
+ * This class is an SR latch, a simple memory circuit.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class SRLatch extends Circuit {
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = 442544548172570492L;
     
     private GateOr norTop    = new GateOr(150, 100, 2);
@@ -34,7 +36,11 @@ public class SRLatch extends Circuit {
     private GatePin pin6 = new GatePin(100, 190, 2);
     private GatePin pinNotQ = new GatePin(310, 100, 2);
     private GatePin pinQ = new GatePin(310, 200, 2);
-    
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public SRLatch() {
         
         norTop.setVariation(GateOr.NOR);

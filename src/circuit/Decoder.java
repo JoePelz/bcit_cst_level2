@@ -12,11 +12,15 @@ import gui.shapes.GateState;
 import gui.shapes.Link;
 
 /**
+ * This is a Decoder, translating 2 bits into 2^2 signal wires.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class Decoder extends Circuit {
+    /** unique id for serialization. */
+    private static final long serialVersionUID = 442511548172570492L;
+    
     private GateAnd and00 = new GateAnd(200,  50, 2);
     private GateAnd and01 = new GateAnd(200, 100, 2);
     private GateAnd and10 = new GateAnd(200, 150, 2);
@@ -37,7 +41,11 @@ public class Decoder extends Circuit {
 
     private GateInput inputA = new GateInput(-50, 40, 2, GateState.ON);
     private GateInput inputB = new GateInput(-50, 60, 2, GateState.OFF);
-    
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public Decoder() {
         gates.add(and00);
         gates.add(and01);

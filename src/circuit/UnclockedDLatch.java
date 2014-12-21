@@ -1,6 +1,3 @@
-/**
- * 
- */
 package circuit;
 
 import gui.shapes.Gate;
@@ -12,11 +9,14 @@ import gui.shapes.GateState;
 import gui.shapes.Link;
 
 /**
+ * This is an Unclcoked D Latch.  An interim step 
+ * in the development of a memory circuit.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class UnclockedDLatch extends Circuit {
+    /** Unique ID for serialization. */
     private static final long serialVersionUID = 442544548172570492L;
     
     private GateOr norTop    = new GateOr(190, 100, 2);
@@ -35,7 +35,11 @@ public class UnclockedDLatch extends Circuit {
     private GatePin pin9 = new GatePin(50, 90, 2);
     private GatePin pinNotQ = new GatePin(350, 100, 2);
     private GatePin pinQ = new GatePin(350, 200, 2);
-    
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public UnclockedDLatch() {
 
         norTop.setVariation(GateOr.NOR);

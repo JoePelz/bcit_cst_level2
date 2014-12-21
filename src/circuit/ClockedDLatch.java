@@ -13,11 +13,13 @@ import gui.shapes.GateState;
 import gui.shapes.Link;
 
 /**
+ * This is a Clocked D Latch, nearly a usable memory circuit.
  * 
  * @author Joe Pelz - A00893517
  * @version 1.0
  */
 public class ClockedDLatch extends Circuit {
+    /** Unique id for serialization. */
     private static final long serialVersionUID = 442544548172570492L;
     
     private GateOr norTop     = new GateOr(190, 100, 2);
@@ -43,6 +45,11 @@ public class ClockedDLatch extends Circuit {
     private GateInput inputClock = new GateInput(-60, 150, 2, GateState.OFF);
     private GatePin pinClock1 = new GatePin(80, 150, 2);
     
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public ClockedDLatch() {
 
         norTop.setVariation(GateOr.NOR);

@@ -8,22 +8,26 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 /**
+ * This class is for testing gate and circuit constructions.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 @SuppressWarnings("unused")
 public class CamTest extends Circuit {
+    /** unique id for serialization. */
+    private static final long serialVersionUID = 442544548172569392L;
+    
     private GateInput circle1;
     private GateInput circle2;
     private GateEdgeTrigger circle3;
     private GateAnd circle4;
-    
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public CamTest() {
-//        Dimension size = new Dimension(800, 500);
-//        setPreferredSize(size);
-//        setMaximumSize(size);
-        
         
         circle1 = new GateInput(0,   0, 3, GateState.OFF);
         circle2 = new GateInput(0, 50, 3, GateState.OFF);

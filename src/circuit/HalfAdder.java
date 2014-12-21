@@ -13,11 +13,14 @@ import gui.shapes.Link;
 
 
 /**
+ * This class creates a half adder circuit, 
+ * capable of adding 1-bit without any carry-in,
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class HalfAdder extends Circuit {
+    /** unique id for serialization. */
     private static final long serialVersionUID = 442544548172570492L;
 
     private GateOr go = new GateOr(170, 100, 2);
@@ -29,7 +32,11 @@ public class HalfAdder extends Circuit {
     private GatePin pin5 = new GatePin(90, 110, 2);
     private GatePin pin7 = new GatePin(300, 100, 2);
     private GatePin pin8 = new GatePin(300, 180, 2);
-    
+
+    /**
+     * Constructor, set default values for gates  
+     * and make connections.
+     */
     public HalfAdder() {
         
         go.setVariation(GateOr.XOR);
