@@ -8,26 +8,38 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 /**
+ * This is an Edge Trigger, as used in a flip-flop memory circuit.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class GateEdgeTrigger extends Gate {
-    
+    /** List of gates used in the circuit. */
     private ArrayList<Gate> innerGates = new ArrayList<Gate>();
-    
+
+    /** NOT Gate used in Edge Trigger circuit. */
     private GateNot gn;
+    /** AND Gate used in Edge Trigger circuit. */
     private GateAnd ga;
+    /** Input wire used in Edge Trigger circuit. */
     private GateInput p2;
+    /** Wire junction used in Edge Trigger circuit. */
     private GatePin p3;
 
+    /** The current state of the input to this gate. 
+     * One of ON, OFF, UNKNOWN. */
     private GateState input = GateState.UNKNOWN;
+    /** The previous state of the input from this gate. 
+     * One of ON, OFF, UNKNOWN. */
     private GateState oldInput = GateState.UNKNOWN;
 
     /**
-     * @param x
-     * @param y
-     * @param thickness
+     * Constructor, to create an Edge Trigger at the given location. 
+     * 
+     * @param x The x position for this gate.
+     * @param y The y position for this gate.
+     * @param thickness The thickness of the stroke 
+     * used to draw this shape.
      */
     public GateEdgeTrigger(int x, int y, int thickness) {
         super(x, y, thickness, 1, 1);
@@ -49,9 +61,6 @@ public class GateEdgeTrigger extends Gate {
         Gate.connect(gn, -1, ga, -1);
     }
 
-    /* (non-Javadoc)
-     * @see gui.shapes.Gate#getOutput(int)
-     */
     @Override
     public Point getOutput(int i) {
         return new Point(130, 10);
@@ -114,18 +123,39 @@ public class GateEdgeTrigger extends Gate {
         return 1;
     }
 
+    /**
+     * Get the current input state. One of ON, OFF, UNKNOWN.
+     * 
+     * @return The state of the input wire for this gate.
+     */
     public GateState getInput() {
         return input;
     }
 
+    /**
+     * Set the current input state of this gate.
+     * TODO: should this be public? maybe private?
+     * 
+     * @param input The input state to set.
+     */
     public void setInput(GateState input) {
         this.input = input;
     }
 
+    /**
+     * Get the previous input state.
+     * 
+     * @return The previous input state.
+     */
     public GateState getOldInput() {
         return oldInput;
     }
 
+    /**
+     * Set the previous input state.
+     * 
+     * @param oldInput the previous input state
+     */
     public void setOldInput(GateState oldInput) {
         this.oldInput = oldInput;
     }

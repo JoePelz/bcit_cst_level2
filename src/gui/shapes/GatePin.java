@@ -1,6 +1,3 @@
-/**
- * 
- */
 package gui.shapes;
 
 import java.awt.Color;
@@ -11,23 +8,33 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
 /**
+ * This class is a joint in the wires. 
+ * It can fork a wire, or just be a corner.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class GatePin extends Gate {
+    /** Indicates a label should be placed above and to the right. */
     public static final int NE = 0;
+    /** Indicates a label should be placed above and to the left. */
     public static final int NW = 1;
+    /** Indicates a label should be placed below and to the right. */
     public static final int SE = 2;
+    /** Indicates a label should be placed below and to the left. */
     public static final int SW = 3;
 
+    /** A label to draw next to the pin. */
     private String label = new String();
+    /** Which side of the pin to draw the label. */
     private int labelSide;
     
     /**
-     * @param x
-     * @param y
-     * @param thickness
+     * Constructor, to place a pin at a particular position. 
+     * 
+     * @param x The x position.
+     * @param y The y position.
+     * @param thickness The thickness of the stroke to draw this pin.
      */
     public GatePin(int x, int y, int thickness) {
         super(x, y, thickness, 1, -1);
@@ -35,9 +42,21 @@ public class GatePin extends Gate {
         addShape(p);
     }
 
+    /**
+     * Set the label to draw next to this pin.
+     * 
+     * @param label The label text for this pin.
+     */
     public void setLabel(String label) {
         this.label = label;
     }
+    
+    /**
+     * Set which side of the pin to draw the label on. 
+     * Use one of GatePin.NE, NW, SE, SW
+     * 
+     * @param side The side to draw the label on.
+     */
     public void setLabelSide(int side) {
         labelSide = side;
     }
@@ -79,17 +98,11 @@ public class GatePin extends Gate {
         g.setTransform(at_old);
     }
 
-    /* (non-Javadoc)
-     * @see gui.shapes.Gate2#getOutput(int)
-     */
     @Override
     public Point getOutput(int i) {
         return new Point();
     }
 
-    /* (non-Javadoc)
-     * @see gui.shapes.Gate2#getInput(int)
-     */
     @Override
     public Point getInput(int i) {
         return new Point();
@@ -99,7 +112,8 @@ public class GatePin extends Gate {
     public String toString() {
         return "Gate Pin: " + super.toString();
     }
-    
+
+    @Override
     public Rectangle getBounds() {
         return new Rectangle((int)(-1.5 * thickness), (int)(-1.5 * thickness), 3 * thickness, 3 * thickness);
     }

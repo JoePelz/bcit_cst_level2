@@ -1,6 +1,3 @@
-/**
- * 
- */
 package gui.shapes;
 
 import java.awt.Point;
@@ -8,26 +5,48 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 /**
+ * This class is a OR, XOR, NOR, or XNOR gate. 
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class GateOr extends Gate {
+    /** OR type option. ON if any inputs are ON. */
     public static final int OR = 0;
+    /** XOR type option. ON if a single input is ON. */
     public static final int XOR = 1;
+    /** NOR type option. OFF if any inputs are ON. */
     public static final int NOR = 2;
+    /** XNOR type option. OFF if a single input is ON. */
     public static final int XNOR = XOR | NOR;
     
+    /** size of the gate. */
     private static final int radius = 200;
-    
+
+    /** The bottom arc of the gate shape. */
     private Arc arcBottom;
+    /** The top arc of the gate shape. */
     private Arc arcTop;
+    /** The left arc of the gate shape. */
     private Arc arcLeft;
+
+    /** The second left arc for a XOR gate. */
     private Arc arcLeft2;
+    /** The inverter for a NOR gate. */
     private Circle inverter;
+    /** The polygon representing the main OR shape. */ 
     private Polygon polygon;
+    /** The type of this gate, one of OR, XOR, NOR, XNOR. */
     private int type;
     
+    /**
+     * Constructor, builds and places 
+     * all polygons and polylines in the right places.  
+     * 
+     * @param x The x position of the gate
+     * @param y The y position of the gate
+     * @param thickness The thickness of the stroke to draw this gate
+     */
     public GateOr(int x, int y, int thickness) {
         super(x, y, thickness * 10, 2, -1);
         polygon = new Polygon();
@@ -65,6 +84,11 @@ public class GateOr extends Gate {
         setScaleY(0.1);
     }
     
+    /**
+     * Set what type of gate this is. One of OR, XOR, NOR, XNOR.
+     * 
+     * @param gateType The gate type. GateOr.OR, XOR, NOR, XNOR.
+     */
     public void setVariation(int gateType) {
         if (gateType > 4) {
             throw new IllegalArgumentException("Gate must be of type GateOr.OR / XOR / NOR / XNOR");
@@ -205,6 +229,7 @@ public class GateOr extends Gate {
         return "Gate Or: " + super.toString();
     }
     
+    @Override
     public Rectangle getBounds() {
         Rectangle r = new Rectangle(
                 0 - thickness >> 1, 
@@ -212,11 +237,12 @@ public class GateOr extends Gate {
                 (int)(2.6 * radius) + thickness, 
                 (radius << 1) + thickness);
         
-        //extend the nose if 
+        //extend the nose if NOR gate
         if ((type & NOR) != 0) {
             r.width += (int)(0.4 * radius);
         }
-            
+        
+        //extend the head if XOR gate
         if ((type & XOR) != 0) {
             r.x -= radius * 0.42;
             r.width += radius * 0.42;

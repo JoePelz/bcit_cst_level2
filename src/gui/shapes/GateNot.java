@@ -8,15 +8,26 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 /**
+ * This class is a NOT gate to invert a signal.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class GateNot extends Gate {
+    /** The radius of the circle at the top of the not gate. */
     private static final int radius = 200;
+    /** The triangle shape of the not gate. */
     Polygon triangle = new Polygon();
+    /** The circle at the tip of the not gate. */
     Circle circle;
 
+    /**
+     * Constructor, to make a NOT at the given position.  
+     * 
+     * @param x The x position
+     * @param y The y position
+     * @param thickness The stroke thickness
+     */
     public GateNot(int x, int y, int thickness) {
         super(x, y, thickness * 10, 1, -1);
         
@@ -88,6 +99,7 @@ public class GateNot extends Gate {
         return "Gate Not: " + super.toString();
     }
 
+    @Override
     public Rectangle getBounds() {
             return new Rectangle(
                     0 - (thickness >> 1), 

@@ -181,9 +181,7 @@ public abstract class Gate extends Shape {
      * @throws IndexOutOfBoundsException if the port doesn't exist.
      */
     public void disconnectOut(int port) throws IndexOutOfBoundsException {
-        if (outputPorts[port] != null) {
-            outputPorts[port].disconnect();
-        }
+        outputPorts[port] = null;
     }
     
     /**
@@ -193,9 +191,7 @@ public abstract class Gate extends Shape {
      * @throws IndexOutOfBoundsException if the port doesn't exist.
      */
     public void disconnectIn(int port) throws IndexOutOfBoundsException {
-        if (inputPorts[port] != null) {
-            inputPorts[port].disconnect();
-        }
+        inputPorts[port] = null;
     }
 
     /**
