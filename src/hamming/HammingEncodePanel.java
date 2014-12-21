@@ -39,6 +39,8 @@ public class HammingEncodePanel extends JPanel {
      * Constructor, to build the UI for the encode panel.
      */
     public HammingEncodePanel() {
+        final int hSpacing = 10;
+        
         BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
         setLayout(layout);
         
@@ -51,11 +53,11 @@ public class HammingEncodePanel extends JPanel {
         
         dwResult.setDataWord("110010010011");
 
-        add(Spacer.Horizontal(10));
+        add(Spacer.Horizontal(hSpacing));
         add(dWord);
-        add(Spacer.Horizontal(10));
+        add(Spacer.Horizontal(hSpacing));
         add(dwField);
-        add(Spacer.Horizontal(10));
+        add(Spacer.Horizontal(hSpacing));
         add(dwResult);
         //add(Box.createHorizontalGlue());
         add(Spacer.HorizontalStretch(1));
@@ -78,12 +80,17 @@ public class HammingEncodePanel extends JPanel {
      * field for the encode panel.
      */
     private void createInputField() {
+        final int fieldWidth  = 200;
+        final int fieldMinWidth = 100;
+        final int fieldHeight = 30;
+        final int fieldColumns = 17;
+        
         BinaryFormat bf = new BinaryFormat();
         dwField = new ImprovedFormattedTextField(bf, "110010010011");
         
-        dwField.setMaximumSize(new Dimension(200, 30));
-        dwField.setMinimumSize(new Dimension(100, 0));
-        dwField.setColumns(17);
+        dwField.setMaximumSize(new Dimension(fieldWidth, fieldHeight));
+        dwField.setMinimumSize(new Dimension(fieldMinWidth, 0));
+        dwField.setColumns(fieldColumns);
         
         dwField.addKeyListener(new KeyAdapter() {
             @Override

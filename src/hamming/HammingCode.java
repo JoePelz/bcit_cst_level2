@@ -1,6 +1,3 @@
-/**
- * 
- */
 package hamming;
 
 import java.awt.Color;
@@ -26,9 +23,9 @@ public class HammingCode extends JPanel {
     private JPanel pResults;
 
     /** Array of HCodeDigits holding the actual hamming code. */
-    private HCodeDigit bits[];
+    private HCodeDigit[] bits;
     /** if each bit is valid. i.e. no parity error on this bit. */
-    private boolean vBits[];
+    private boolean[] vBits;
     /** Track whether parity is even or odd. */
     private boolean parityEven = true;
     
@@ -86,18 +83,18 @@ public class HammingCode extends JPanel {
             bitSum = 0;
             
             //For all bits in the string AFTER the current parity bit.
-            for (int j = i+1; j <= result.length(); j++) {
+            for (int j = i + 1; j <= result.length(); j++) {
                 // if the current bit is important for the parity bit
                 if ((j & i) == i) {
-                    bitSum += (result.charAt(j-1) == '1' ? 1 : 0);
+                    bitSum += (result.charAt(j - 1) == '1' ? 1 : 0);
                 }
             }
             
             //check if bitSum is odd or even and match parity.
             if ((bitSum % 2 == 0) == parityEven) {
-                result.setCharAt(i-1, '0');
+                result.setCharAt(i - 1, '0');
             } else {
-                result.setCharAt(i-1, '1');
+                result.setCharAt(i - 1, '1');
             }
         }
         return result;
@@ -134,12 +131,13 @@ public class HammingCode extends JPanel {
     public String getDataWord() {
         StringBuffer dword = new StringBuffer();
 
-        for(int i = 0; i < bits.length; i++) {
+        for (int i = 0; i < bits.length; i++) {
             if (!bits[i].isParity()) {
-                if (vBits[i])
+                if (vBits[i]) {
                     dword.append(bits[i].getBitValue());
-                else
+                } else {
                     dword.append(1 - bits[i].getBitValue());
+                }
             }
         }
         return dword.toString();
@@ -177,26 +175,26 @@ public class HammingCode extends JPanel {
             bitSum = 0;
             
             //if parity bit:
-            if (bits[i-1].isParity()) {
+            if (bits[i - 1].isParity()) {
                 //find other bits that use it and mark them true/false
                 for (int j = i; j <= bits.length; j++) {
                     if ((j & i) == i) {
-                        bitSum += bits[j-1].getBitValue();
+                        bitSum += bits[j - 1].getBitValue();
                     }
                     
                     if ((bitSum % 2 == 0) == parityEven) {
                         //good
-                        bits[i-1].setBackground(Color.GREEN);
-                        vBits[i-1] = true;
+                        bits[i - 1].setBackground(Color.GREEN);
+                        vBits[i - 1] = true;
                     } else {
                         //bad
-                        bits[i-1].setBackground(Color.PINK);
-                        vBits[i-1] = false;
+                        bits[i - 1].setBackground(Color.PINK);
+                        vBits[i - 1] = false;
                     }
                 }
                 
             } else { //if not parity bit:                
-                bits[i-1].setBackground(Color.GREEN);
+                bits[i - 1].setBackground(Color.GREEN);
             }
         }
         
@@ -207,13 +205,13 @@ public class HammingCode extends JPanel {
          */ 
         int target = 0; 
         for (int i = 1; i <= bits.length; i *= 2) {
-            if (vBits[i-1] == false) {
+            if (!vBits[i - 1]) {
                 target += i;
             }
         }
         if (target <= bits.length && target != 0) {
-            bits[target-1].setBackground(Color.PINK);
-            vBits[target-1] = false;
+            bits[target - 1].setBackground(Color.PINK);
+            vBits[target - 1] = false;
         }
         
         /*

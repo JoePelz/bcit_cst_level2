@@ -23,10 +23,10 @@ import javax.swing.border.TitledBorder;
  * @version 1.0
  */
 public class HammingPanel extends JPanel {
+    /** A nice fixed-width font to use. */
+    public static final Font FONT = new Font("Consolas", Font.PLAIN, 14);
     /**  Generated serial ID. */
     private static final long serialVersionUID = 1089393901520809383L;
-    /** A nice fixed-width font to use. */
-    public static Font font = new Font("Consolas", Font.PLAIN, 14);
 
     /** Parity choice button group. */
     private ButtonGroup group = new ButtonGroup();
@@ -36,15 +36,16 @@ public class HammingPanel extends JPanel {
     private JRadioButton rbOdd = new JRadioButton("Odd parity");
 
     /** Hamming encoding panel. */
-    HammingEncodePanel hep;
+    private HammingEncodePanel hep;
     /** Hamming decoding panel. */
-    HammingDecodePanel hdp; 
+    private HammingDecodePanel hdp; 
     
     /**
      * Constructor to build the panel and components.
      */
     public HammingPanel() {
-        super();
+        final int vMargin = 10;
+        final int minWidth = 900;
         
         group = new ButtonGroup();
         rbEven = new JRadioButton("Even parity");
@@ -80,22 +81,22 @@ public class HammingPanel extends JPanel {
         radioRow.setAlignmentX(LEFT_ALIGNMENT);
         radioRow.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         add(radioRow);
-        add(Spacer.Vertical(5));
+        add(Spacer.Vertical(vMargin / 2));
 
         hep = new HammingEncodePanel();
-        hep.setFont(font);
+        hep.setFont(FONT);
         hep.setAlignmentX(LEFT_ALIGNMENT);
         add(hep);
-        add(Spacer.Vertical(10));
+        add(Spacer.Vertical(vMargin));
 
         hdp = new HammingDecodePanel();
-        hdp.setFont(font);
+        hdp.setFont(FONT);
         hdp.setAlignmentX(LEFT_ALIGNMENT);
         add(hdp);
-        add(Spacer.VerticalStretch(10));
+        add(Spacer.VerticalStretch(vMargin));
 
         
-        setMinimumSize(new Dimension(900, 0));
+        setMinimumSize(new Dimension(minWidth, 0));
         TitledBorder myBorder = BorderFactory.createTitledBorder("Hamming Code");
         setBorder(myBorder);
         setAlignmentX(LEFT_ALIGNMENT);

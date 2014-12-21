@@ -17,22 +17,25 @@ import javax.swing.JPanel;
  * This class draws a picture of a single Hamming Code digit,
  * with the value on top and the constituent powers of two below.
  *  
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class HCodeDigit extends JPanel {
     /** Unique id for serialization. */
     private static final long serialVersionUID = 3427769338112327838L;
+    /** The margin to the left and right of each hamming digit. */
+    private static final int MARGIN = 5;
+
     /** The height of a character. */
-    private int CH;
+    private int ch;
     /** The width of a 0 in this font. */
-    private int CW;
-    /** The width the char string, with a margin. */
-    private int MW;
+    private int cw;
+    /** The width of the char string, with a margin. */
+    private int mw;
     /** Code-Array. The first array element is the actual binary value. 
      * subsequent array elements are the constituent powers of two that
      * make up the value. */
-    private int[] CA;
+    private int[] ca;
     
     /**
      * Constructor to take the index and initialize the code array for drawing.
@@ -42,8 +45,8 @@ public class HCodeDigit extends JPanel {
      *            first bit or ninth bit)
      */
     public HCodeDigit(final int index) {
-        super();
-
+        
+        
         /*  CA should equal the number, 
          *  and the powers of 2 composing its index.
          *  e.g.
@@ -52,21 +55,15 @@ public class HCodeDigit extends JPanel {
          *  index = 31, CA = [0, 16, 8, 4, 2, 1]
          *  index = 32, CA = [0, 32] 
          */
-        CA = getCodeArray(index + 1);
+        ca = getCodeArray(index + 1);
         
         FontMetrics metrics = getFontMetrics(getFont());
         Dimension size = new Dimension();
         
-        CH = metrics.getHeight();
-        CW = metrics.getWidths()[48];
-        if (CA[1] >= 100) {
-            MW = CW * 3 + 10;
-        } else if (CA[1] >= 10) {
-            MW = CW * 2 + 10;
-        } else {
-            MW = CW * 1 + 10;
-        }
-        size.setSize(MW, CH * CA.length + 2);
+        ch = metrics.getHeight();
+        cw = metrics.getWidths()['0'];
+        mw = Integer.toString(ca[1]).length() * cw + MARGIN * 2;
+        size.setSize(mw, ch * ca.length + 2);
 
         setPreferredSize(size);
         setMinimumSize(size);
@@ -81,9 +78,9 @@ public class HCodeDigit extends JPanel {
      */
     public void setBitValue(final char c) {
         if (c == '0' || c == 0) {
-            CA[0] = 0;
+            ca[0] = 0;
         }  else {
-            CA[0] = 1;
+            ca[0] = 1;
         }
     }
     
@@ -93,7 +90,7 @@ public class HCodeDigit extends JPanel {
      * @return numeric 1 if the bit is on, 0 if the bit is off.
      */
     public int getBitValue() {
-        return CA[0];
+        return ca[0];
     }
     
     /**
@@ -104,8 +101,8 @@ public class HCodeDigit extends JPanel {
      * @return True if this digit is checked by the given parity bit.
      */
     public boolean uses(final int i) {
-        for (int n = 1; n < CA.length; n++) {
-            if (CA[n]==i) {
+        for (int n = 1; n < ca.length; n++) {
+            if (ca[n] == i) {
                 return true;
             }
         }
@@ -123,15 +120,16 @@ public class HCodeDigit extends JPanel {
      * @return The array of bits
      */
     public int[] getCodeArray(final int index) {
-        char binaryString[] = Integer.toBinaryString(index).toCharArray();
+        char[] binaryString = Integer.toBinaryString(index).toCharArray();
         
         int rLen = 1;
         for (char c : binaryString) {
-            if (c == '1')
+            if (c == '1') {
                 rLen++;
+            }
         }
         
-        int result[] = new int[rLen];
+        int[] result = new int[rLen];
         result[0] = 0;
         int otherCounter = 1;
         for (int i = 0; i < binaryString.length; i++) {
@@ -151,18 +149,18 @@ public class HCodeDigit extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        for (int i : CA) {
+        for (int i : ca) {
             g2.drawString("" + i, 
-                    MW / 2 - (("" + i).length() * CW) / 2, 
-                    CH * line);
+                    mw / 2 - (("" + i).length() * cw) / 2, 
+                    ch * line);
             line++;
         }
 
         //underscore the bit
-        g.drawLine(5,
-                CH + 2,
-                MW - 5,
-                CH + 2);
+        g.drawLine(MARGIN,
+                ch + 2,
+                mw - MARGIN,
+                ch + 2);
         
         //If the bit is a parity bit, outline it.
         if (isParity()) {
@@ -177,6 +175,6 @@ public class HCodeDigit extends JPanel {
      * @return True if this is a parity bit.
      */
     public final boolean isParity() {
-        return CA.length == 2;
+        return ca.length == 2;
     }
 }
