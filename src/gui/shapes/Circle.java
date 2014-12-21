@@ -4,16 +4,22 @@
 package gui.shapes;
 
 /**
+ * This class draws a circle shape.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class Circle extends Shape {
-
+    /** The radius of the circle. */
     private double radius;
+    /** The number of subdivisions 
+     * in the polygon representation of the circle. */
     private int subdivisions;
     
     /**
+     * Constructor to make a circle at the given position, 
+     * with the given radius.
+     * 
      * @param x the x position of the circle center.
      * @param y The y position of the circle center. 
      * @param radius The radius of the circle in pixels.
@@ -26,6 +32,12 @@ public class Circle extends Shape {
         subdivisions = 8;
     }
     
+    /**
+     * Set the number of subdivisions to use 
+     * when making the polygon representation.
+     * 
+     * @param num The number of edges in the polygon circle.
+     */
     public void setSubdivisions(int num) {
         if (num < 3 || num > 100) {
             throw new IllegalArgumentException("Subdivisions must be between 3 and 100.\nNumber given was " + num + ".");

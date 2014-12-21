@@ -1,6 +1,3 @@
-/**
- * 
- */
 package gui.shapes;
 
 import java.awt.Point;
@@ -8,23 +5,34 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 /**
+ * This class is an AND or NAND gate for building circuits.
  * 
- * @author Joe Pelz - A00893517
+ * @author Joe Pelz
  * @version 1.0
  */
 public class GateAnd extends Gate {
+    /** AND gate. On when all inputs are 1. */
     public static final int AND = 0;
+    /** NAND gate. Off when all inputs are 1. */
     public static final int NAND = 1;
+    /** The radius of the curve at the front of the AND gate. */
     private static final int radius = 200;
+    /** The polygon representation of the AND gate shape. */
     private Polygon poly = new Polygon();
+    /** The curved arc at the front of the AND gate. */
     private Arc arc;
+    /** The inverter circle at the front of a NAND gate. */
     private Circle inverter;
+    /** The type of the gate. One of GateAnd.AND, GateAnd.NAND. */
     private int type;
 
     /**
-     * @param x
-     * @param y
-     * @param thickness
+     * Constructor to make an AND gate at the given position.
+     * 
+     * @param x The x position of the and gate
+     * @param y The y position of the and gate
+     * @param thickness The thickness of the stroke 
+     *                  used to draw the gate.
      */
     public GateAnd(int x, int y, int thickness) {
         super(x, y, thickness * 10, 2, -1);
@@ -45,6 +53,11 @@ public class GateAnd extends Gate {
         setScaleX(0.1);
     }
     
+    /**
+     * Set the variation (AND, NAND) for this gate.
+     * 
+     * @param gateType One of GateAnd.AND, or GateAnd.NAND
+     */
     public void setVariation(int gateType) {
         if (gateType > 2) {
             throw new IllegalArgumentException("Gate must be of type GateAnd.AND / NAND");
@@ -97,13 +110,13 @@ public class GateAnd extends Gate {
     
     @Override
     public int calcOut() {
+        //TODO: add nand functionality.
         boolean out = true;
         for(Link l : inputPorts) {
             if (l == null) {
                 out = false;
                 break;
             }
-//            System.out.print("(" + getName() + ") input " + l.getPortIn() + ": " + l.getGateOut().getState() + ",  ");
             if (l.getGateOut().getState() != GateState.ON) {
                 out = false;
                 break;
@@ -111,18 +124,15 @@ public class GateAnd extends Gate {
         }
         if (out) {
             if (getState() != GateState.ON) {
-//                System.out.println(this.toString() + " flipped on!");
                 setState(GateState.ON);
                 return 1;
             }
         } else {
             if (getState() != GateState.OFF) {
-//                System.out.println(this.toString() + " flipped off!");
                 setState(GateState.OFF);
                 return 1;
             }
         }
-//        System.out.println(this.toString() + " didn't change.");
         return 0;
     }
 
@@ -131,6 +141,7 @@ public class GateAnd extends Gate {
         return "gateAnd (" + ((!getName().equals("")) ? getName() : super.toString()) + ")";
     }
 
+    @Override
     public Rectangle getBounds() {
         if (type == NAND)
             return new Rectangle(
