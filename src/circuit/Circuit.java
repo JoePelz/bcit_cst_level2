@@ -108,7 +108,7 @@ public abstract class Circuit extends JPanel {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getWheelRotation() > 0) {
                     translate.x = (int) ((translate.x - e.getX()) / ZOOM_FACTOR) + e.getX();
-                    translate.y = (int) ((translate.y - e.getY()) * ZOOM_FACTOR) + e.getY();
+                    translate.y = (int) ((translate.y - e.getY()) / ZOOM_FACTOR) + e.getY();
                     scale /= ZOOM_FACTOR; 
                 } else if (e.getWheelRotation() < 0) {
                     translate.x = (int) ((translate.x - e.getX()) * ZOOM_FACTOR) + e.getX();
