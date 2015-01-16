@@ -9,6 +9,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import binarytree.BinaryTreePanel;
 import settheory.SetPanel;
 import circuit.CircuitPanel;
 import edgetrigger.EdgeTriggerPanel;
@@ -46,9 +47,10 @@ public class Main {
       //Put the JComboBox in a JPanel to get a nicer look.
         CircuitPanel circuits = new CircuitPanel();
         
-        tabbedPane.addTab("Architecture", null, archPanel, "COMP 2721");
-        tabbedPane.addTab("Math", null, new SetPanel(), "COMP 2121");
-        tabbedPane.addTab("Circuits", null, circuits, "Math, Arch");
+        tabbedPane.addTab("Architecture", null, archPanel, "Hamming Code and Edge Trigger");
+        tabbedPane.addTab("Set Theory", null, new SetPanel(), "Venn diagram generator");
+        tabbedPane.addTab("Binary Trees", null, new BinaryTreePanel(), "Venn diagram generator");
+        tabbedPane.addTab("Circuits", null, circuits, "Boolean Logic and Computer Architecture");
         frame.add(tabbedPane);
         
         frame.pack();
