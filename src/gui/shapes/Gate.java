@@ -52,8 +52,8 @@ public abstract class Gate extends Shape {
      * @param x The x position to place the gate at.
      * @param y The y position to place the gate at.
      * @param thickness The thickness of the gate.
-     * @param in The number of input connections permitted.
-     * @param out The number of output connections permitted.
+     * @param in The number of input connections permitted. -1 forunlimited.
+     * @param out The number of output connections permitted. -1 for unlimited.
      * @throws IllegalArgumentException When {@code in} or {@code out} are 0 or <-1.
      */
     public Gate(int x, int y, int thickness, int in, int out) {
