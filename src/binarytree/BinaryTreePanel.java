@@ -52,9 +52,9 @@ public class BinaryTreePanel extends JPanel {
         JLabel lPreOrder  = new JLabel("  Pre-Order");
         JLabel lInOrder   = new JLabel("  In-Order");
         JLabel lPostOrder = new JLabel("  Post-Order");
-        final JTextField tePreOrder  = new JTextField("3, 2, 7, 6, 8");
-        final JTextField teInOrder   = new JTextField("2, 3, 6, 7, 8");
-        final JTextField tePostOrder = new JTextField("2, 6, 8, 7, 3");
+        final JTextField tePreOrder  = new JTextField();
+        final JTextField teInOrder   = new JTextField();
+        final JTextField tePostOrder = new JTextField();
         teInOrder.setEditable(false);
         tePostOrder.setEditable(false);
         entryPane.add(lPreOrder);
@@ -98,10 +98,24 @@ public class BinaryTreePanel extends JPanel {
                     tePostOrder.setText(tree.getPostOrder());
                     teInOrder.setText(tree.getInOrder());
                 } catch (IllegalArgumentException e) {
-                    System.err.println("Invalid equation.");
+                    //error parsing the values.
+                    //I'm just going to hide the error :P
+                    return;
                 }
             }
         });
+        
+        tePreOrder.setText("3, 2, 7, 6, 8");
+        ArrayList<Integer> values = new ArrayList<Integer>(5);
+        values.add(3);
+        values.add(2);
+        values.add(7);
+        values.add(6);
+        values.add(8);
+        binaryTree.setPreOrder(values);
+        SimpleTree<Integer> tree = binaryTree.getTree();
+        tePostOrder.setText(tree.getPostOrder());
+        teInOrder.setText(tree.getInOrder());
     }
     
     /**
